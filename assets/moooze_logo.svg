@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180">
+<!-- Original UI emblem: seated scarf-wearing moose on a snow-dusted tank. -->
+<ellipse cx="116" cy="162" rx="98" ry="10" fill="#081f2b" opacity=".3"/>
+<g stroke="#183449" stroke-width="4" stroke-linejoin="round">
+<rect x="31" y="132" width="169" height="31" rx="15" fill="#183449"/>
+<path d="M49 148h133" stroke="#648ba4" stroke-width="17" stroke-linecap="round"/>
+<path d="M56 141v14m24-14v14m24-14v14m24-14v14m24-14v14m24-14v14" stroke="#183449"/>
+<path d="M48 108h121l27 27H32z" fill="#368dc3"/>
+<path d="M48 108h121l7 8H43z" fill="#eef8ff" stroke="none"/>
+<rect x="131" y="95" width="91" height="13" rx="4" fill="#659fc2"/>
+<path d="M77 112V91q0-12 12-12h49q15 0 15 15v18" fill="#368dc3"/>
+<path d="M91 82h43" stroke="#eef8ff" stroke-linecap="round"/>
+<ellipse cx="102" cy="86" rx="28" ry="28" fill="#755038"/>
+<ellipse cx="102" cy="88" rx="17" ry="21" fill="#b48a60" stroke="none"/>
+<ellipse cx="81" cy="108" rx="15" ry="8" fill="#755038"/>
+<ellipse cx="126" cy="108" rx="15" ry="8" fill="#755038"/>
+<path d="M85 76l-5 21m39-21 6 21" stroke="#412e25" stroke-linecap="round"/>
+<path d="M86 38 65 25 52 27 45 16m20 9-1-17m1 17 14-14M119 38l21-13 13 2 7-11m-20 9 1-17m-1 17-14-14" fill="none" stroke="#d9b888" stroke-width="8" stroke-linecap="round"/>
+<path d="m82 40-20-4q-1 18 19 16m42-12 20-4q1 18-19 16" fill="#916846"/>
+<rect x="79" y="29" width="48" height="45" rx="21" fill="#755038"/>
+<ellipse cx="103" cy="62" rx="29" ry="17" fill="#b48a60"/>
+<path d="M91 72q12 9 24 0" fill="none" stroke="#412e25" stroke-width="2.5" stroke-linecap="round"/>
+</g>
+<g fill="#152a32"><circle cx="91" cy="45" r="4"/><circle cx="115" cy="45" r="4"/><ellipse cx="88" cy="61" rx="2" ry="3"/><ellipse cx="118" cy="61" rx="2" ry="3"/></g>
+<g fill="white"><circle cx="92" cy="44" r="1.4"/><circle cx="116" cy="44" r="1.4"/></g>
+<path d="M80 78q22 10 45 0l-2 9q-22 8-42 0z" fill="#df5861"/>
+<path d="m116 84 10 4 4 18-12 2z" fill="#df5861"/>
+<path d="m119 100 10-1" stroke="#ffd890" stroke-width="3"/>
+<path d="m53 120 4 5-4 5-4-5z" fill="#ffd890"/>
+</svg>
