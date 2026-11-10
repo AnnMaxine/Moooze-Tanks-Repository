@@ -1,9 +1,12 @@
 ﻿extends CharacterBody2D
 
 signal emerged
+signal provoked
 
 # Moose are yielding contact hazards: walls block them, tanks never get pinned.
 const SPEED := 68.0
+const CHARGE_SPEED := 300.0
+const CHARGE_DURATION := 2.0
 const CONTACT_RADIUS := 45.0
 var tanks: Array = []
 var heading := Vector2.RIGHT
@@ -12,6 +15,31 @@ var turn_timer := 3.0
 var gait := 0.0
 var sprite: Sprite2D
 var previous_contacts: Array = []
+var hazard: Area2D
+var overlapping_tanks: Array = []
+var charge_target: Node2D
+var charge_remaining := 0.0
+
+func nearest_tank() -> Node2D:
+	var nearest: Node2D
+	var distance := INF
+	for tank in tanks:
+		if is_instance_valid(tank) and tank.active:
+			var candidate := global_position.distance_squared_to(tank.global_position)
+			if candidate < distance:
+				distance = candidate
+				nearest = tank
+	return nearest
+
+func hit() -> void:
+	if get_tree().paused:
+		return
+	charge_target = nearest_tank()
+	if charge_target == null:
+		return
+	emerge_delay = 0.0
+	charge_remaining = CHARGE_DURATION
+	provoked.emit()
 
 func _ready() -> void:
 	collision_layer = 4
@@ -22,6 +50,20 @@ func _ready() -> void:
 	circle.radius = 21.0
 	shape.shape = circle
 	add_child(shape)
+	# Combined with the tank's 24px circle, this preserves the 45px contact reach.
+	hazard = Area2D.new()
+	hazard.name = "ContactHazard"
+	hazard.collision_layer = 0
+	hazard.collision_mask = 2
+	hazard.monitorable = false
+	var trigger_shape := CollisionShape2D.new()
+	trigger_shape.shape = circle.duplicate()
+	hazard.add_child(trigger_shape)
+	hazard.body_entered.connect(func(body):
+		if body in tanks and not overlapping_tanks.has(body):
+			overlapping_tanks.append(body))
+	hazard.body_exited.connect(func(body): overlapping_tanks.erase(body))
+	add_child(hazard)
 	sprite = Sprite2D.new()
 	sprite.texture = preload("res://assets/moose.svg")
 	add_child(sprite)
@@ -33,20 +75,34 @@ func _physics_process(delta: float) -> void:
 		if emerge_delay <= 0.0:
 			emerged.emit()
 		return
-	turn_timer -= delta
-	if turn_timer <= 0.0:
-		heading = heading.rotated(0.85)
-		turn_timer = 3.0
-	velocity = heading * SPEED
+	charge_remaining = maxf(0.0, charge_remaining - delta)
+	if charge_remaining > 0.0:
+		if not is_instance_valid(charge_target) or not charge_target.active:
+			charge_target = nearest_tank()
+		if charge_target == null:
+			charge_remaining = 0.0
+		else:
+			heading = global_position.direction_to(charge_target.global_position)
+	if charge_remaining == 0.0:
+		charge_target = null
+		turn_timer -= delta
+		if turn_timer <= 0.0:
+			heading = heading.rotated(0.85)
+			turn_timer = 3.0
+	velocity = heading * (CHARGE_SPEED if charge_remaining > 0.0 else SPEED)
 	move_and_slide()
 	if get_slide_collision_count() > 0:
+		charge_remaining = 0.0
+		charge_target = null
 		heading = heading.bounce(get_slide_collision(0).get_normal()).rotated(0.25).normalized()
 		turn_timer = 2.0
 	var contacts: Array = []
-	for tank in tanks:
+	for tank in overlapping_tanks:
 		if not is_instance_valid(tank) or not tank.active:
 			continue
 		if global_position.distance_to(tank.global_position) < CONTACT_RADIUS:
+			charge_remaining = 0.0
+			charge_target = null
 			contacts.append(tank)
 			# Only fresh contact damages; sustained overlap requires separation first.
 			if not previous_contacts.has(tank):

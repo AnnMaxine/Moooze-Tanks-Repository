@@ -107,6 +107,7 @@ func run() -> void:
 	check(game.state == "playing" and game.score == 0 and not paused, "UI4: Play Again starts fresh")
 	for i in range(3):
 		game.player.take_damage(100)
+	await create_timer(1.2).timeout
 	check("Winner: None" in content() and "0 health / 0 lives" in content() and "0 / 35 bricks cleared" in content(), "UI4: defeat has no invented winner and accurate stats")
 	await click("Main Menu")
 	await click("Play")

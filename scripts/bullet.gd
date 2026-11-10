@@ -24,7 +24,9 @@ func _physics_process(delta: float) -> void:
 	# cannot shoot through it. The tank is on a different collision layer.
 	var start := origin if first_step else global_position
 	first_step = false
-	var query := PhysicsRayQueryParameters2D.create(start, next, 1)
+	# Walls (1) and moose (4) stop snowballs; tanks (2) remain friendly.
+	var query := PhysicsRayQueryParameters2D.create(start, next, 1 | 4)
+	query.hit_from_inside = true
 	var result := get_world_2d().direct_space_state.intersect_ray(query)
 	if not result.is_empty():
 		if result.collider.has_method("hit"):

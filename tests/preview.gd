@@ -6,6 +6,14 @@ func _initialize() -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	if "--explosion" in OS.get_cmdline_user_args():
+		game.start_game()
+		game.player.lives = 1
+		game.player.health = game.player.MOOSE_DAMAGE
+		game.player.take_moose_hit(Vector2.RIGHT)
+		await capture("explosion")
+		quit()
+		return
 	await create_timer(0.5).timeout
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://tests/menu-preview.png")

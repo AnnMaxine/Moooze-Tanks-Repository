@@ -37,6 +37,7 @@ func run() -> void:
 		game.sound.last_played.moose_roar = Time.get_ticks_msec()
 		tank.take_moose_hit(Vector2.RIGHT)
 		check(game.sound.voices.moose_roar.playing and not game.sound.voices.moose_blast.playing, "Contact roar bypasses ambient cooldown for player %d" % tank.player_number)
+		check(game.sound.voices.moose_roar.volume_db > game.sound.voices.engine.volume_db + 10, "Contact roar stands out above driving engine")
 		var stamp = game.sound.last_played.moose_roar
 		check(not tank.take_moose_hit() and stamp == game.sound.last_played.moose_roar, "Protected contact does not retrigger roar")
 		game.sound.last_played.erase("explosion")
@@ -45,7 +46,8 @@ func run() -> void:
 	game.sound.last_played.erase("moose_roar")
 	await create_timer(1.5).timeout
 	check(game.sound.last_played.has("moose_roar"), "Emerging moose trigger a bounded roar")
-	game.on_brick_destroyed(Vector2(300, 300))
+	var obstacle = game.world.get_children().filter(func(node): return node.get_script() == game.Brick and not node.reinforced)[0]
+	obstacle.hit()
 	check(game.sound.voices.brick.playing, "Brick destruction sound starts")
 	Input.action_press("p2_move_left")
 	await frames(15)
@@ -77,10 +79,38 @@ func run() -> void:
 	check(not game.sound.voices.victory.playing, "Restart clears victory")
 	game.player.lives = 1
 	game.player_two.lives = 1
-	game.player.take_damage(100)
-	game.player_two.take_damage(100)
+	for tank in [game.player, game.player_two]:
+		tank.health = tank.MOOSE_DAMAGE
+		tank.moose_cooldown = 0
+		tank.take_moose_hit(Vector2.RIGHT)
 	await process_frame
+	check(game.state == "dying" and game.sound.voices.explosion.playing and game.sound.voices.moose_roar.playing, "Final moose hit plays explosion and roar before Game Over")
+	check(not game.player.visible and not game.player_two.visible and not is_instance_valid(game.panel), "Destroyed tanks disappear while explosion is unobscured")
+	var final_time = game.elapsed
+	await create_timer(1.2).timeout
+	check(game.state == "results" and not game.sound.voices.explosion.playing and game.elapsed == final_time, "Game Over waits for explosion with match time frozen")
+	check(game.world.get_children().filter(func(node): return node.get_script() == load("res://scripts/tank_explosion.gd")).is_empty(), "Explosion effects clean up after defeat")
 	check(not game.sound.voices.victory.playing and not game.sound.voices.idle.playing, "Defeat never plays victory or leaves idle looping")
+	game.restart_game()
+	game.remaining = 1
+	game.sound.last_played.erase("brick")
+	game.on_brick_destroyed(Vector2(300, 300))
+	await process_frame
+	check(game.state == "results" and game.sound.voices.brick.playing, "Last obstacle destruction rings through field-clear results")
+	game.start_game()
+	game.sound.set_volume(0)
+	game.player.lives = 1
+	game.player.health = game.player.MOOSE_DAMAGE
+	game.player.take_moose_hit()
+	check(game.state == "dying" and not game.sound.voices.explosion.playing, "Muted defeat still begins visual explosion")
+	await create_timer(1.2).timeout
+	check(game.state == "results", "Muted explosion still reaches Game Over")
+	game.restart_game()
+	game.player.lives = 1
+	game.player.take_damage(100)
+	game.restart_game()
+	await create_timer(1.2).timeout
+	check(game.state == "playing" and game.player.visible, "Restart cancels pending Game Over and restores visible tank")
 	game.show_menu()
 	game.show_sound()
 	var slider = game.panel.find_children("*", "HSlider", true, false)[0]

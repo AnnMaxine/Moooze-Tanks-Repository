@@ -18,7 +18,7 @@
 - Preserve existing code and user changes. Make the smallest focused change needed for the requested task; avoid unrelated rewrites, renames, deletions, scene regeneration, and configuration changes.
 - Do not overwrite existing implementations with scaffolding or replace assets without authorization. Inspect working changes before editing when version control is available.
 - The user has authorized gameplay implementation and testing. Limit future modifications to the current requested task; preserve the requirements document and unrelated work. Maintain requirement IDs R1–R9 and UI1–UI9 in documentation.
-- UI6 is `README.md` and UI7 is `AGENTS.md`. UI8 and UI9 describe `status.md` and `prompt_log.md`; their presence in the plan alone does not authorize creating or updating them. Maintain them only when included in an authorized task.
+- UI6 is `README.md` and UI7 is `AGENTS.md`. Maintain UI8 (`status.md`) when included in an authorized task. The user's November 6, 2026 instruction authorizes ongoing UI9 (`prompt_log.md`) maintenance whenever a project change is made: append the request, date, affected requirement IDs/files, changes, actual checks/results and remaining limitations as part of that task. Preserve earlier entries, label summaries versus exact prompts, and mark corrections explicitly. Do not invent missing history or claim tests were rerun for a documentation-only update.
 
 ## Gameplay Acceptance Expectations
 

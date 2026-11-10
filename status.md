@@ -1,6 +1,14 @@
 # Moooze Tanks status
 
-Updated: November 3, 2026
+Updated: November 10, 2026
+
+## Current mechanics review - November 10, 2026
+
+- R1/R5/R6: runtime checks verified both tank spawn points are clear of solid geometry, all WASD directions and release, normalized diagonal speed, smooth chassis facing and independent turret behavior. Existing controls/physics retained by user confirmation.
+- R8/R9: perimeter/cover blocking, wall sliding, cover destruction and cleared-space movement pass existing checks. Added Area2D entry/exit detection to the existing moose contact hazards, preserving contact reach, damage protection, knockback, charge and appearance.
+- R9: four moose still spawn once with staggered emergence. The user explicitly requested no additional moose; recurring waves were not added.
+- UI2/UI3/UI4: existing elapsed timer advances during play, freezes outside play and resets on restart. Respawn, defeat explosion delay, HUD and replay behavior retained. No countdown or server match contract introduced.
+- UI6/UI8/UI9: updated README, this status and prompt-log Entry 35. New tests/mechanics.gd and adjusted forest checks document the review. UI7 and ReqMgmtPlan.docx preserved. The earlier sections below remain historical evidence.
 
 The source plan reports R1 In Progress and R2?R9/UI1?UI9 To Be Confirmed. The evidence below describes the current implementation separately; it does not change the source plan's acceptance statuses.
 
@@ -64,3 +72,5 @@ UI1-UI5: implemented the requested main menu, top HUD, pause, results, Controls 
 Observed: Godot 4.7.2 import exited 0 without parser errors. Passed 40 graphical UI, 32 smoke, 16 co-op, 18 forest and 25 graphical audio assertions (131 total). UI suite sends GUI mouse events and Escape key events and checks accurate health/score/results and HUD bounds. Screenshots of menu, mode selection, both HUD modes, pause, results, Controls and Help inspected. Visual inspection found an oversized logo; the strengthened UI bounds check reproduced it, and the final correction passed.
 
 Limitations: existing log/certificate/editor-settings access errors and occasional two-instance ObjectDB shutdown warnings remain. Full human playtesting, physical two-player input, resizing/readability on other displays and audio listening are still outstanding. Exit remains connected to the existing quit callback; automated UI navigation does not click Exit to terminate its own test runner. Network multiplayer remains unimplemented. Prior sections are historical evidence, not current UI descriptions.
+
+November 10 review validation: 141 assertions passed in Godot 4.7.2 (20 mechanics, 19 forest, 33 smoke, 16 co-op, 18 graphical charge, 35 graphical audio); editor import had no script/parser errors. An initial recoil assertion required an extra physics-step allowance for Area2D notifications and passed after synchronization was corrected. Existing log/certificate/editor-settings errors and 2-8 ObjectDB shutdown warnings remain. No human playtest or audio-listening claim; source acceptance statuses unchanged.

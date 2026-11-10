@@ -359,3 +359,103 @@ These entries continue Entry 19 and preserve the earlier history. Dates use the 
 - **Files:** scripts/game.gd; added assets/moooze_logo.svg and tests/ui.gd with engine metadata; updated tests/smoke.gd for the explicitly changed initial HUD presentation and tests/preview.gd for extra UI captures; refreshed tests/menu-preview.png, game-preview.png, coop-preview.png and added pause/results/controls/help/play-preview.png; README.md, status.md, prompt_log.md. Existing gameplay scripts, SVG sprites, audio assets/scripts, scene, inputs, project settings, health/lives, moose movement, collision rules and shooting mechanics were not edited.
 - **Actual checks:** Godot --headless --path . --editor --import --quit exited 0, no parser/script errors. First graphical UI run passed 38 checks, but screenshot inspection exposed the logo exceeding its HUD space; added an actual logo bounds assertion, which failed until texture sizing order was corrected. Final graphical UI suite passed 40 checks (including two added Escape key assertions), exit 0. It dispatches mouse events through the viewport for menu navigation and buttons, validates both modes, pause/resume/restart, co-op/solo wins, defeat, accurate statistics, cleanup and HUD/logo bounds. Existing suites passed 32 headless smoke, 16 headless local co-op, 18 headless forest (including 30-second roaming), and 25 graphical audio checks, all exit 0. Total final assertions: 131 passed. Graphical tests/preview.gd ran successfully; inspected main menu, mode selection, solo/co-op HUD, pause, victory results, Controls and Help PNGs. Final HUD previews show no overlap with the arena or important text.
 - **Observed warnings/limits:** Existing root certificate, user log and editor-settings access errors persist. Some smoke/forest/audio/UI/preview runs reported 2 ObjectDB leaked instances at shutdown. These are recorded separately from passing assertions; no claim of clean environment output. No human playtest or audio listening performed. Physical two-player input, keyboard focus comfort and resized-window readability on target displays still need manual testing. Exit callback retained and inspected; the UI suite does not click Exit and terminate itself. Network Host/Join remain unavailable.
+
+## Conversation supplement - November 6, 2026
+
+Entries 28-32 record requests and tool results visible in this conversation. Dates use the client date; exact timestamps are not recorded. Earlier entries are preserved as historical accounts, not current feature descriptions. Correction to repository availability: Git status and diff commands now work in this workspace; earlier statements that no Git repository existed describe the earlier inspections. Tests listed below ran during their respective implementation tasks, not during this log update. Source-plan acceptance statuses remain unchanged.
+
+### Entry 28 - Louder gameplay sound effects
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> Can we add these sounds to the game: Tabk Engine SFX, Tank Engine Driving SFX, When the Moose hits the tank there should be a loud Moose roar, obstacle destruction SFX, and when the moose hits the tank and ther'es no lifes left, there should be a tank explosion
+
+- **Changes:** R5/R8, UI3/UI4/UI6; UI9 records this work retrospectively. Reused existing WAV assets and event connections; raised idle/driving engine, destruction and explosion levels. Contact boosts the roar above its ambient level without adding overlapping voices. Preserved the last obstacle's sound through field-clear results and verified final-hit audio through Game Over. The next entry changes defeat timing and adds the visible explosion.
+- **Files:** scripts/sound.gd, scripts/game.gd, tests/sound.gd, README.md.
+- **Actual checks:** Confirmed Godot 4.7.2; editor import completed. Initial audio/smoke runs found an Array argument type mismatch in stop_gameplay; corrected it. Final runs passed 29 graphical audio and 32 headless smoke checks, exit 0, no script errors. git diff --check passed.
+- **Limits:** Log/certificate/editor-settings access errors remained; smoke reported two ObjectDB instances leaked at shutdown. No human speaker listening or full playtest.
+
+### Entry 29 - Visible final-life explosion before Game Over
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> the tank should explode when the moose hits the tank and there are no more lives and there should be a tank explosion sound before the game over
+
+- **Changes:** R1/R8, UI2/UI3/UI4/UI6; UI9 records this work retrospectively. Final-life loss hides the tank and produces a one-second fireball, smoke, shockwave and metal debris. When all tanks are eliminated, gameplay/time freeze and Game Over waits for the visual delay and explosion playback to finish. A surviving teammate continues. Mute still permits completion; restart cancels the pending defeat transition.
+- **Files:** scripts/game.gd, new scripts/tank_explosion.gd and metadata, tests/smoke.gd, tests/local_coop.gd, tests/ui.gd, tests/sound.gd, tests/preview.gd, tests/explosion-preview.png, README.md. The preview image's import metadata was generated by a subsequent editor import.
+- **Actual checks:** Godot 4.7.2 import completed; 33 smoke, 16 co-op, 40 graphical UI and 35 graphical audio checks passed (124 total). Rendered and inspected the explosion using tests/preview.gd with -- --explosion. git diff --check passed.
+- **Limits:** Existing environment access errors and ObjectDB shutdown warnings remained. Screenshot/playback checks do not establish animation feel or speaker quality.
+
+### Entry 30 - Snowball-provoked moose charge
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> Can you add when the moose is hit with a bullet(snow ball projectile) it will make a loud noise and charge with the closest tank.
+
+- **Changes:** R3/R7/R8/R9, UI3/UI5/UI6; UI9 records this work retrospectively. Snowballs now collide with moose and are consumed on impact. A hit triggers the existing loud roar and selects the nearest active tank, regardless of shooter. Charge speed is 300 pixels/second for up to two seconds; tank contact, walls, timeout or no targets end the charge. Eliminated targets are replaced, and further hits refresh targeting/duration. Preserved damage protection, scoring, friendly-fire exclusion and containment; updated Help and README.
+- **Files:** scripts/moose.gd, scripts/bullet.gd, scripts/game.gd, tests/sound.gd, new tests/moose_charge.gd and metadata, README.md.
+- **Actual checks:** Godot 4.7.2 version/import verified. Passed 18 graphical charge, 33 smoke, 16 co-op, 35 graphical sound, 40 graphical UI and 18 forest checks (160 total), including the 30-second roaming containment check. All suites exited 0; no script/parser errors. git diff --check passed.
+- **Limits:** Existing environment access errors and ObjectDB shutdown warnings remained. Charge difficulty, physical two-player controls and audible quality require human playtesting.
+
+### Entry 31 - Review project documentation
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> can you review the AGENTS.md, README.md and status.md and ReqMgmtPlan and follow the documentation
+
+- **Review:** UI6/UI7/UI8, recorded under UI9. Read the four documents and compared scope, requirement IDs and evidence. Found status.md ends November 3 and lacks the latest work; README's opening test summary/project tree are older than later updates; some requirement ranges contain question marks. The plan's team names differ from user-confirmed names, so the confirmed @Studio names/roles remain authoritative.
+- **Outcome/checks:** Review only; no files changed and no tests rerun. Preserve R1-R9/UI1-UI9, the source acceptance criteria, Godot 4.7.2 compatibility and evidence-based reporting. Documentation gaps were reported, not silently treated as fixed.
+
+### Entry 32 - Keep the prompt log current
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> Also reveiew the prompt log and update whenever there is a change
+
+- **Changes:** UI7/UI9. Reviewed the existing log, preserved Entries 1-27, and appended Entries 28-32 using the available conversation evidence. Added an explicit correction for current Git availability. Updated AGENTS.md to retain the user's standing authorization: append a prompt-log entry whenever a project change is made, including request/date, requirement IDs/files, changes, actual checks/results and limitations. Future tasks should maintain the log as part of the change, without requiring a separate logging request.
+- **Files:** AGENTS.md and prompt_log.md only for this task. Existing gameplay and other working changes preserved.
+- **Documentation checks:** Checked sequential entry numbering, preservation of the earlier log, referenced file existence and diff whitespace. No Godot tests rerun for this documentation-only task; earlier results above are attributed to their actual runs.
+- **Follow-up:** Keep future entries current and mark corrections explicitly. The status/README gaps from Entry 31 remain; no formal acceptance statuses changed.
+
+### Entry 33 - Dense forest border and grass
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> Can you also add more trees to the borders, just so there is a stack of trees and it looks like and actual forest with lots of trees and grasses
+
+- **Changes:** R9/UI6/UI9. Added two staggered decorative layers of evergreens around all four borders, varying size/shade and mirroring the existing forest-tree SVG. Added grass tufts with snowy bases along the forest edge. Kept the original solid boundary, collision shapes, arena dimensions, interior bricks, controls and moose behavior. Decorative trees are built once and remain behind gameplay and UI.
+- **Files:** scripts/game.gd, README.md, prompt_log.md; refreshed tests/menu-preview.png, game-preview.png, coop-preview.png, pause-preview.png, results-preview.png, controls-preview.png, help-preview.png and play-preview.png through the existing preview script.
+- **Actual checks:** Godot 4.7.2 editor import exited 0 without script/parser errors. Headless tests/smoke.gd passed 33 checks, including wall sliding, destruction and containment. Graphical tests/preview.gd exited 0; inspected menu and solo arena captures for forest density, grass, HUD readability and unobstructed play space. git diff --check passed.
+- **Limits:** Existing log/certificate/editor-settings access errors remain; smoke reported two ObjectDB leaked instances at exit. No full human playtest or performance profiling. Source requirement acceptance statuses unchanged.
+
+### Entry 34 - Restore original border trees and retain grass
+
+- **Date:** November 6, 2026.
+- **Exact user prompt:**
+
+> can you reverse the previous chnage, remove the new trees added and it should just be the initial trees with just grasses around it
+
+- **Changes:** R9/UI6/UI9. Removed the extra decorative tree-layer construction and its helper from scripts/game.gd. Original perimeter tree sprites/collisions remain; retained the new decorative grass. Updated README to supersede the dense-tree appearance while preserving Entry 33 as history.
+- **Files:** scripts/game.gd, README.md, prompt_log.md; refreshed the existing menu, game, co-op, pause, results, controls, help and play preview PNGs.
+- **Actual checks:** Godot 4.7.2 editor import completed; 33 headless smoke checks passed, exit 0. Graphical preview script exited 0; arena screenshot inspected and confirmed original single tree border with grass and no extra tree layers. git diff --check passed. No gameplay code or collision configuration changed.
+- **Limits:** Existing log/certificate/editor-settings access errors remain; smoke reported four ObjectDB leaked instances at shutdown. No full human playtest. Formal requirement statuses unchanged.
+
+### Entry 35 - Review movement, collision, spawning, hazards and timer
+
+- **Date:** November 10, 2026.
+- **Exact user prompt:**
+
+> Please inspect my existing Moooze Tanks project and check whether these mechanics are implemented correctly: WASD chassis directional movement, WASD steering physics, perimeter and cover collision detection, tank spawning, moose wave spawning, Area2D environmental hazard triggers, and match timer. Implement any missing or incomplete features while preserving existing gameplay and visuals. Update the project documentation and prompt_log.md, and report what was implemented and tested.
+
+- **Clarifications:** The user selected "Preserve current movement and elapsed timer" and replied "do not add more moose just used the existing gameplay" to the wave/hazard question. No extra moose or recurring reinforcement waves were implemented.
+- **Findings:** Existing direct normalized WASD movement, smooth chassis facing, independent turret aiming, CharacterBody2D wall/cover collision, fixed tank spawn/respawn and elapsed timer were already implemented. Moose spawn as one initial group of four with staggered emergence. Contact detection was distance-based; no Area2D hazard trigger existed.
+- **Changes:** R8/R9: added an invisible Area2D to each existing moose, with a tank-only mask, entry/exit tracking and the existing contact/damage pipeline. Preserved the combined 45px reach, 20 damage, two-second protection, separation requirement, knockback, roar, charge and final explosion. R1/R5/R6 and UI2/UI3/UI4 verified without changing controls, spawning or timer behavior. Added focused mechanics checks; forest assertions allow physics-step overlap notification and confirm the herd stays at four. UI6/UI8/UI9 documentation updated.
+- **Files:** scripts/moose.gd, new tests/mechanics.gd and engine metadata, tests/forest.gd, README.md, status.md, prompt_log.md. Earlier uncommitted work preserved. No visual assets, arena geometry, scene/project configuration or requirements document changes for this task.
+- **Actual checks/results:** Installed engine reported 4.7.2; editor import completed without script/parser errors. Baseline smoke/co-op/forest suites passed before implementation. The first Area2D forest run passed contact damage but checked P1 recoil before the next physics step; extended the contact wait from three to five frames and reran. Final suites passed: 20 mechanics, 19 forest (including 30-second containment and four-moose limit), 33 smoke, 16 local co-op, 18 graphical moose-charge and 35 graphical sound checks (141 total), exit 0. git diff --check and documentation file-reference/entry-number checks passed. No screenshots regenerated because visuals were unchanged.
+- **Limits:** Existing log/root-certificate/editor-settings access errors and ObjectDB shutdown leak warnings remained (2-8 instances across runs). Automated input and playback do not replace human control-comfort, fairness, audio listening or full playtesting. No countdown timer, tank-style pivot controls, separate stationary hazards, additional moose, server contracts or formal acceptance-status changes were introduced.

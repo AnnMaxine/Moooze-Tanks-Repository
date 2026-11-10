@@ -122,6 +122,8 @@ func run() -> void:
 	game.player.take_damage(100)
 	check(game.player.lives == 1 and game.player.health == 100, "Second death leaves one life")
 	game.player.take_damage(100)
+	check(game.state == "dying" and not game.player.visible and not is_instance_valid(game.panel), "Final death shows explosion before results")
+	await create_timer(1.2).timeout
 	check(game.player.lives == 0 and game.player.health == 0 and not game.player.active and paused and game.state == "results", "UI4: final death ends play")
 	check("0 HEALTH     0 LIVES" in game.hud.text and game.panel.find_children("*", "Label", true, false)[0].text == "GAME OVER", "UI2/UI4: final HUD and game-over message")
 	game.player.take_damage(100)

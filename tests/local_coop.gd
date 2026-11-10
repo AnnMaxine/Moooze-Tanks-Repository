@@ -89,6 +89,7 @@ func run() -> void:
 	check(game.state == "playing" and game.player.active and not game.player_two.active, "UI4: survivor continues after teammate loses all lives")
 	for i in range(3):
 		game.player.take_damage(100)
+	await create_timer(1.2).timeout
 	check(game.state == "results" and paused, "UI4: game over when both are eliminated")
 	game.restart_game()
 	await frames(3)

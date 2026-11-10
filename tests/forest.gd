@@ -43,11 +43,12 @@ func run() -> void:
 	game.player_two.position = Vector2(800, 420)
 	moose.position = game.player.position + Vector2(40, 0)
 	moose.heading = Vector2.LEFT
-	await frames(3)
+	# Area2D overlap notifications and the resulting recoil need separate physics steps.
+	await frames(5)
 	check(game.player.health == 80 and game.player_two.health == 100 and "P1: 80 HEALTH" in game.hud.text, "UI2/R8: actual P1 contact damages only P1 and updates HUD")
 	check(game.player.position.x < 500 and game.player.hit_flash > 0, "R8: actual moose impact pushes P1 away and flashes")
 	moose.position = game.player_two.position + Vector2(40, 0)
-	await frames(3)
+	await frames(5)
 	check(game.player_two.health == 80 and "P2: 80 HEALTH" in game.hud.text, "UI2/R8: actual P2 contact updates health/HUD")
 	check(game.player_two.position.x < 800 and game.player_two.hit_flash > 0, "R8: actual moose impact pushes P2 away and flashes")
 	var second = herd[1]
@@ -110,6 +111,7 @@ func run() -> void:
 			contained = contained and Rect2(132, 173, 1016, 518).has_point(animal.position)
 		traveled = traveled or roaming.position.distance_to(roam_start) > 200
 	check(contained and traveled, "R9: 30-second roam stays inside perimeter and travels across arena")
+	check(get_nodes_in_group("moose").size() == 4, "R9: initial wave stays at four moose without reinforcement spawning")
 	game.show_menu()
 	await frames(3)
 	check(get_nodes_in_group("moose").is_empty() and get_nodes_in_group("corner_trees").is_empty(), "UI1: menu removes all moose and trees")

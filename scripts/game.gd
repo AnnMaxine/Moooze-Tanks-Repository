@@ -26,6 +26,7 @@ var elapsed := 0.0
 var state := "menu"
 var particles: Array[Dictionary] = []
 var finish_pending := false
+var defeat_delay := 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -228,7 +229,7 @@ func show_help() -> void:
 	label_in(box, "KEEP YOUR CREW ROLLING", 22, Color("#ffd890"))
 	label_in(box, "Each tank starts with 100 health and 3 lives.\nAt zero health, lose a life and respawn at full health.\nA tank with no lives is out; a surviving teammate can continue.\nThe round ends in defeat when no tanks have lives left.", 19)
 	label_in(box, "GIVE THE MOOSE SOME ROOM", 22, Color("#ffd890"))
-	label_in(box, "Roaming moose turn and bounce off obstacles.\nContact deals 20 damage and knocks your tank back.\nA gold ring means 2 seconds of protection; separate to re-hit.\nMoose yield to tanks. Snowballs pass through moose.\nTanks cannot damage each other.", 19)
+	label_in(box, "Snowball hits make moose roar and charge the nearest tank.\nCharges end at a tank, obstacle, or after 2 seconds.\nContact deals 20 damage and knocks your tank back.\nA gold ring means 2 seconds of protection; separate to re-hit.\nMoose yield to tanks. Tanks cannot damage each other.", 19)
 	button_in(box, "Controls", show_controls)
 	button_in(box, "Main Menu", show_menu).grab_focus()
 
@@ -280,7 +281,7 @@ func start_game(coop: bool = false) -> void:
 	player = Player.new()
 	player.position = Vector2(208, 612)
 	player.moose_hit.connect(sound.play_moose_contact)
-	player.exploded.connect(func(): sound.play("explosion"))
+	player.exploded.connect(on_tank_exploded.bind(player))
 	player.fired.connect(spawn_bullet)
 	player.vitals_changed.connect(update_hud)
 	player.lives_depleted.connect(on_lives_depleted)
@@ -290,7 +291,7 @@ func start_game(coop: bool = false) -> void:
 		player_two.player_number = 2
 		player_two.position = Vector2(1072, 612)
 		player_two.moose_hit.connect(sound.play_moose_contact)
-		player_two.exploded.connect(func(): sound.play("explosion"))
+		player_two.exploded.connect(on_tank_exploded.bind(player_two))
 		player_two.fired.connect(spawn_bullet)
 		player_two.vitals_changed.connect(update_hud)
 		player_two.lives_depleted.connect(on_lives_depleted)
@@ -305,6 +306,7 @@ func start_game(coop: bool = false) -> void:
 		if local_coop:
 			moose.tanks.append(player_two)
 		moose.emerged.connect(func(): sound.play("moose_roar"))
+		moose.provoked.connect(sound.play_moose_contact)
 		world.add_child(moose)
 	build_hud()
 	state = "playing"
@@ -389,6 +391,10 @@ func burst(at: Vector2) -> void:
 		particles.append({"position": at, "velocity": Vector2.from_angle(randf() * TAU) * randf_range(50, 190), "life": 0.5, "size": randf_range(2, 6)})
 
 func _process(delta: float) -> void:
+	if state == "dying":
+		defeat_delay -= delta
+		if defeat_delay <= 0.0 and not sound.voices.explosion.playing:
+			show_game_over()
 	var moving := false
 	var idle := false
 	if state == "playing":
@@ -443,13 +449,31 @@ func resume_game() -> void:
 	if remaining == 0:
 		finish_game.call_deferred()
 
+func on_tank_exploded(tank: Node2D) -> void:
+	# The signal precedes the life decrement and respawn.
+	sound.last_played.erase("explosion")
+	sound.play("explosion")
+	if tank.lives != 1:
+		return
+	tank.hide()
+	var effect := preload("res://scripts/tank_explosion.gd").new()
+	effect.position = tank.position
+	effect.game = self
+	world.add_child(effect)
+
 func on_lives_depleted() -> void:
 	if local_coop and (player.active or player_two.active):
 		return
 	if state != "playing":
 		return
-	state = "results"
+	state = "dying"
+	defeat_delay = maxf(preload("res://scripts/tank_explosion.gd").DURATION, sound.voices.explosion.stream.get_length())
+	sound.stop_gameplay(["explosion", "moose_roar"])
 	get_tree().paused = true
+	pause_button.disabled = true
+
+func show_game_over() -> void:
+	state = "results"
 	var box := overlay()
 	label_in(box, "GAME OVER", 48, MINT)
 	label_in(box, "Winner: None - no lives remaining", 23, Color("#ffd890"))
@@ -460,7 +484,7 @@ func on_lives_depleted() -> void:
 func finish_game() -> void:
 	if state != "playing":
 		return
-	sound.stop_gameplay()
+	sound.stop_gameplay(["brick"])
 	sound.play("victory")
 	update_hud()
 	state = "results"
@@ -480,7 +504,21 @@ func results_summary(box: VBoxContainer) -> void:
 	if local_coop:
 		label_in(box, "Player 2: %d health / %d lives" % [player_two.health, player_two.lives], 20, Color("#e3b7ff"))
 
-# Pure background drawing: no nodes, collisions, input, or gameplay state.
+# Decorative grass adds no collisions or gameplay state.
+func draw_border_grass() -> void:
+	for i in range(85):
+		for bottom in [false, true]:
+			draw_grass_tuft(Vector2(18 + i * 15, (754 if bottom else 150) + (i % 3) * 2), i)
+	for i in range(43):
+		for right in [false, true]:
+			draw_grass_tuft(Vector2(1170 if right else 110, 164 + i * 13), i)
+
+func draw_grass_tuft(at: Vector2, variation: int) -> void:
+	for blade in range(5):
+		var tip := at + Vector2((blade - 2) * 3, -6 - (variation + blade * 3) % 9)
+		draw_line(at, tip, Color("#52895c") if blade % 2 == 0 else Color("#94ad72"), 1.8, true)
+	draw_line(at + Vector2(-4, 1), at + Vector2(4, 1), Color("#dceee8"), 2.0, true)
+
 func draw_holiday_border() -> void:
 	var festive := [Color("#ef5360"), Color("#62d29a"), Color("#ffd66b"), Color("#67c9ff"), Color("#f5fbff")]
 	# Lights frame the field without covering the HUD or brick perimeter.
@@ -513,6 +551,7 @@ func _draw() -> void:
 			draw_line(at - Vector2(5, 0), at + Vector2(5, 0), Color.WHITE, 1.2, true)
 			draw_line(at - Vector2(0, 5), at + Vector2(0, 5), Color.WHITE, 1.2, true)
 	draw_rect(Rect2(62, 106, 1156, 648), Color("#91bcd3"), false, 2)
+	draw_border_grass()
 	draw_holiday_border()
 	draw_line(Vector2(64, 91), Vector2(1216, 91), MINT, 2)
 	for particle in particles:
