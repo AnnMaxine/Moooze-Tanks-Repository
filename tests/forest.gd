@@ -1,5 +1,7 @@
 ﻿extends SceneTree
 
+const HudValues = preload("res://tests/hud_values.gd")
+
 var failures := 0
 var game: Node2D
 
@@ -45,11 +47,11 @@ func run() -> void:
 	moose.heading = Vector2.LEFT
 	# Area2D overlap notifications and the resulting recoil need separate physics steps.
 	await frames(5)
-	check(game.player.health == 80 and game.player_two.health == 100 and "P1: 80 HEALTH" in game.hud.text, "UI2/R8: actual P1 contact damages only P1 and updates HUD")
+	check(game.player.health == 80 and game.player_two.health == 100 and HudValues.health(game, 1) == 80, "UI2/R8: actual P1 contact damages only P1 and updates HUD")
 	check(game.player.position.x < 500 and game.player.hit_flash > 0, "R8: actual moose impact pushes P1 away and flashes")
 	moose.position = game.player_two.position + Vector2(40, 0)
 	await frames(5)
-	check(game.player_two.health == 80 and "P2: 80 HEALTH" in game.hud.text, "UI2/R8: actual P2 contact updates health/HUD")
+	check(game.player_two.health == 80 and HudValues.health(game, 2) == 80, "UI2/R8: actual P2 contact updates health/HUD")
 	check(game.player_two.position.x < 800 and game.player_two.hit_flash > 0, "R8: actual moose impact pushes P2 away and flashes")
 	var second = herd[1]
 	second.emerge_delay = 0

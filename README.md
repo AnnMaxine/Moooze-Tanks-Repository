@@ -212,3 +212,34 @@ Validation: Godot 4.7.2 import reported no script/parser errors (exit 0). Graphi
 Run `tests/ui.gd` with the same Godot executable above and `--path . --script res://tests/ui.gd`; run `tests/preview.gd` graphically to refresh screenshots. Existing environment errors remain for user-log/root-certificate/editor-settings access; some test/preview runs reported two ObjectDB leaked instances at shutdown. Human testing should cover two-person input, readability/window resizing on the target display, keyboard focus comfort and audio listening. Network multiplayer remains unavailable.
 
 Mechanics review validation (November 10): Godot 4.7.2 import completed without script/parser errors. Passed 20 mechanics, 19 forest, 33 smoke, 16 co-op, 18 graphical charge and 35 graphical audio checks (141 total). The forest suite includes 30-second containment and the unchanged four-moose population. Existing log/certificate/editor-settings access errors and 2-8 ObjectDB shutdown warnings remain. No visual changes or new screenshots; physical input comfort and audio listening still require human testing.
+
+
+## Block power-ups - November 17, 2026
+
+Updated November 17: eight of the existing 35 destructible icy blocks hide power-ups: two each for heavy ammo, shield, speed and health. All intact icy blocks look alike. Shooting a containing block reveals a floating reward icon for 1.2 seconds and immediately grants its power-up to the shooter in Solo Practice or Local Co-op. Normal blocks retain their original behavior; the forest perimeter remains indestructible. The user confirmed that each power-up should have a distinct visible tank effect.
+
+| Power-up | Effect | Tank feedback |
+| --- | --- | --- |
+| Heavy ammo | Refills to 5 heavy shots. Each consumes one round and breaks the struck icy block plus unbroken icy blocks whose centers are within 58 pixels of that block. | Orange ring/barrel glow and larger orange projectiles. |
+| Shield | Blocks damage and new moose knockback for 8 seconds. | Blue protective bubble. |
+| Speed boost | Multiplies movement speed by 1.5 for 8 seconds (352.5 px/s versus the existing 235). | Green trailing chevrons. |
+| Health recovery | Immediately restores 35 health, capped at 100; cannot restore lives or revive an eliminated tank. | Heart-shaped reward reveal and a floating pink heart/ring for 2 seconds. |
+
+These are implementation defaults for this user-authorized extension. Different powers coexist; repeated pickups refill ammo or refresh timers rather than accumulate. Pause freezes timers. Losing a life, restarting or leaving gameplay clears active effects. Heavy shots preserve the existing firing interval and projectile lifetime; hitting a moose still provokes its existing charge, and teammates cannot be shot. Splash-destroyed power-up blocks credit the same shooter, with one score award per block. The HUD shows each player's remaining ammunition/effect duration; Main Menu > Help > Power-ups explains all four effects.
+
+Requirement mapping: R1/R3/R4 (effects, projectiles and reward reveals), R5/R6 (boosted movement with independent aim), R7/R8/R9 (shot ownership, blast/destruction, protection and containment), UI2/UI3/UI5 (live status, pause/reset and help), UI6/UI8/UI9 (documentation). Source acceptance criteria/statuses and ReqMgmtPlan.docx remain unchanged; no server contracts were introduced.
+
+Validation in installed Godot 4.7.2: editor import completed without final parser/script errors; 38 power-up, 33 smoke, 16 local co-op, 55 graphical UI and 18 graphical moose-charge checks passed (160 total). Tests include real projectile awards to P2, P1 heavy firing, one-time grants, adjacent destruction/scoring, ammo depletion, projectile cleanup, health caps, shield expiry, boosted input/release/aiming/wall sliding/containment, pause/resume, respawn, restart and cleanup. UI mouse navigation and worst-case combined co-op HUD bounds passed. Graphical power-up arena and help captures were inspected. Existing log/certificate/editor-settings access errors and 2-4 ObjectDB shutdown leak warnings remain; automated tests/screenshots do not establish human balance, readability on other displays, or a full playtest.
+
+Run the focused suite with the existing Godot executable and `--headless --path . --script res://tests/powerups.gd`. Capture the effects/help with `--path . --script res://tests/preview.gd -- --powerups` (graphical renderer required). New captures are `tests/powerups-preview.png` and `tests/powerup-help-preview.png`.
+
+
+### Hidden rewards and image-based vitals - November 17, 2026
+
+The user clarified that power-ups should be revealed when the containing **block** is shot. Intact blocks no longer show badges. The reward icon rises and fades at the destroyed block; its animation pauses with gameplay and is removed on expiry or world cleanup. Existing automatic shooter ownership, power-up effects, quantities, scoring, splash and containment remain unchanged.
+
+The HUD replaces health/lives words with images for each player: three heart slots show remaining lives (lost hearts dim), and five gold gas-tank icons show health. Each gas tank holds 20 health; partially filled icons reflect exact intermediate values, while empty tanks have a dark outline. Damage drains gas; recovery refills it up to 100. Losing a life dims a heart and respawns with full gas tanks; elimination leaves all hearts dim and all gas tanks empty. Hovering an icon provides exact health/life counts. Health recovery remains a heart-shaped power-up, distinct from the gas-tank health display. Help explains both symbols.
+
+Requirements: R4/R7/R8 for hidden reward appearance and impact reveals; UI2/UI3/UI5 for accurate image-based vitals, pausing and help; UI6/UI8/UI9 for documentation. No source acceptance statuses changed. Godot 4.7.2 import completed without script/parser errors. Passed 45 power-up, 33 smoke, 16 co-op, 59 graphical UI and 19 forest checks (172 total, including 30-second containment). Checks read actual rendered heart/fuel controls rather than the removed text labels. Inspected hidden/revealed-block, partial-health/lost-life HUD and help previews; full preview suite refreshed. Existing log/certificate/editor-settings access errors and 4-7 ObjectDB shutdown warnings remain. Human readability/input testing remains outstanding.
+
+Use `--path . --script res://tests/preview.gd -- --vitals` to capture `tests/hidden-powerups-preview.png`, `tests/revealed-powerup-preview.png` and the updated help screen with the graphical renderer.

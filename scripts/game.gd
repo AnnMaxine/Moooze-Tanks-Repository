@@ -5,6 +5,7 @@ const Player = preload("res://scripts/player.gd")
 const Moose = preload("res://scripts/moose.gd")
 const CORNERS := [Vector2(166, 206), Vector2(1114, 206), Vector2(166, 662), Vector2(1114, 662)]
 const Bullet = preload("res://scripts/bullet.gd")
+const Powerups = preload("res://scripts/powerups.gd")
 const MINT := Color("#a6dfff")
 const CREAM := Color("#eef8ff")
 var sound: Node
@@ -14,9 +15,11 @@ var player_two: CharacterBody2D
 var local_coop := false
 var ui: CanvasLayer
 var panel: Control
-var hud: Label
+var hud: VBoxContainer
+var vitals_rows: Array[Dictionary] = []
 var hud_root: Panel
 var hud_stats: Label
+var hud_powerups: Label
 var pause_button: Button
 var remaining := 0
 var total := 0
@@ -27,6 +30,7 @@ var state := "menu"
 var particles: Array[Dictionary] = []
 var finish_pending := false
 var defeat_delay := 0.0
+var winner_number := 0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -185,8 +189,8 @@ func show_play() -> void:
 	label_in(box, "CHOOSE YOUR CREW", 36, MINT)
 	label_in(box, "Clear the icy field alone or together.", 20)
 	button_in(box, "Solo Practice", start_game).grab_focus()
-	button_in(box, "Local Co-op / 2 Players", start_game.bind(true))
-	label_in(box, "Local co-op shares one score and one objective.", 17, MINT)
+	button_in(box, "Local Duel / 2 Players", start_game.bind(true))
+	label_in(box, "Duel: shoot your opponent. Last tank with lives wins.", 17, MINT)
 	var host := button_in(box, "Host Game - Coming with multiplayer", Callable(), true)
 	host.tooltip_text = "Server integration is not available yet."
 	button_in(box, "Join Game - Coming with multiplayer", Callable(), true)
@@ -223,14 +227,43 @@ func show_sound() -> void:
 
 func show_help() -> void:
 	var box := overlay()
+	box.add_theme_constant_override("separation", 8)
 	label_in(box, "FIELD GUIDE", 40, MINT)
 	label_in(box, "CLEAR THE WINTER FIELD", 22, Color("#ffd890"))
-	label_in(box, "Shoot all 35 icy bricks to win. Each earns 100 points.\nThe forest border is indestructible. Slide along walls to pass.\nIn local co-op, both players share the score and victory.", 19)
+	label_in(box, "Solo: shoot all 35 icy bricks to win. Each earns 100 points.\nDuel: eliminate the other tank's three lives to win.\nThe forest border is indestructible. Slide along walls to pass.", 19)
 	label_in(box, "KEEP YOUR CREW ROLLING", 22, Color("#ffd890"))
-	label_in(box, "Each tank starts with 100 health and 3 lives.\nAt zero health, lose a life and respawn at full health.\nA tank with no lives is out; a surviving teammate can continue.\nThe round ends in defeat when no tanks have lives left.", 19)
+	label_in(box, "Hearts show lives; five gas tanks show 100 health (20 each).\nStart: 100 health and 3 lives. Normal shots deal 20; heavy 40.\nAt zero health, lose a heart and respawn with full health.\nRespawn blocks shots for 2 seconds. Zero hearts: Game Over.", 19)
 	label_in(box, "GIVE THE MOOSE SOME ROOM", 22, Color("#ffd890"))
-	label_in(box, "Snowball hits make moose roar and charge the nearest tank.\nCharges end at a tank, obstacle, or after 2 seconds.\nContact deals 20 damage and knocks your tank back.\nA gold ring means 2 seconds of protection; separate to re-hit.\nMoose yield to tanks. Tanks cannot damage each other.", 19)
+	label_in(box, "Snowball hits make moose roar and charge the nearest tank.\nCharges end at a tank, obstacle, or after 2 seconds.\nContact deals 20 damage and knocks your tank back.\nA gold ring marks protection; separate to re-hit a moose.\nIn a duel, bricks block shots and shields protect tanks.", 19)
+	button_in(box, "Power-ups", show_powerup_help)
 	button_in(box, "Controls", show_controls)
+	button_in(box, "Main Menu", show_menu).grab_focus()
+
+func show_powerup_help() -> void:
+	var box := overlay()
+	label_in(box, "BLOCK POWER-UPS", 36, MINT)
+	label_in(box, "Some icy blocks hide a surprise power-up.\nShoot the block to reveal it and receive it immediately.", 20)
+	for entry in [
+		["heavy", "HEAVY AMMO", "5 orange shots: blast adjacent icy bricks within 58 pixels."],
+		["shield", "SHIELD", "Blue bubble: blocks damage and moose knockback for 8 seconds."],
+		["speed", "SPEED BOOST", "Green trails: move 50% faster for 8 seconds."],
+		["health", "HEALTH RECOVERY", "Pink heart: refills 35 health in your gas tanks. Cannot revive."],
+	]:
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		box.add_child(row)
+		var icon := TextureRect.new()
+		icon.texture = Powerups.ICONS[entry[0]]
+		icon.custom_minimum_size = Vector2(32, 32)
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		row.add_child(icon)
+		var title := Label.new()
+		title.text = entry[1]
+		title.add_theme_color_override("font_color", Powerups.COLORS[entry[0]])
+		row.add_child(title)
+		label_in(box, entry[2], 18)
+	label_in(box, "Different effects combine. Repeats refill shots or refresh time.\nPause freezes effects; losing a life clears them.\nHeavy shots deal 40 damage in duels; the border stays intact.", 17, MINT)
+	button_in(box, "Help", show_help)
 	button_in(box, "Main Menu", show_menu).grab_focus()
 
 func show_credits() -> void:
@@ -264,6 +297,7 @@ func start_game(coop: bool = false) -> void:
 	shots = 0
 	elapsed = 0.0
 	finish_pending = false
+	winner_number = 0
 	particles.clear()
 	for col in range(24):
 		add_brick(Vector2(88 + col * 48, 132), true)
@@ -282,7 +316,7 @@ func start_game(coop: bool = false) -> void:
 	player.position = Vector2(208, 612)
 	player.moose_hit.connect(sound.play_moose_contact)
 	player.exploded.connect(on_tank_exploded.bind(player))
-	player.fired.connect(spawn_bullet)
+	player.fired.connect(spawn_bullet.bind(player))
 	player.vitals_changed.connect(update_hud)
 	player.lives_depleted.connect(on_lives_depleted)
 	world.add_child(player)
@@ -292,7 +326,7 @@ func start_game(coop: bool = false) -> void:
 		player_two.position = Vector2(1072, 612)
 		player_two.moose_hit.connect(sound.play_moose_contact)
 		player_two.exploded.connect(on_tank_exploded.bind(player_two))
-		player_two.fired.connect(spawn_bullet)
+		player_two.fired.connect(spawn_bullet.bind(player_two))
 		player_two.vitals_changed.connect(update_hud)
 		player_two.lives_depleted.connect(on_lives_depleted)
 		world.add_child(player_two)
@@ -336,16 +370,27 @@ func build_hud() -> void:
 	brand.position = Vector2(7, 58)
 	brand.add_theme_font_size_override("font_size", 12)
 	hud_root.add_child(brand)
-	hud = Label.new()
-	hud.position = Vector2(118, 10)
-	hud.add_theme_font_size_override("font_size", 20)
-	hud.add_theme_color_override("font_color", CREAM)
+	vitals_rows.clear()
+	hud = VBoxContainer.new()
+	hud.position = Vector2(118, 2)
+	hud.add_theme_constant_override("separation", 2)
 	hud_root.add_child(hud)
+	build_vitals_row(1)
+	if local_coop:
+		build_vitals_row(2)
 	hud_stats = Label.new()
-	hud_stats.position = Vector2(550, 12)
+	hud_stats.position = Vector2(550, 2)
 	hud_stats.add_theme_font_size_override("font_size", 17)
 	hud_stats.add_theme_color_override("font_color", Color("#ffd890"))
 	hud_root.add_child(hud_stats)
+	hud_powerups = Label.new()
+	hud_powerups.name = "PowerupStatus"
+	hud_powerups.position = Vector2(118, 58)
+	hud_powerups.add_theme_font_size_override("font_size", 13)
+	hud_powerups.add_theme_color_override("font_color", CREAM)
+	hud_powerups.add_theme_color_override("font_outline_color", Color("#102f3c"))
+	hud_powerups.add_theme_constant_override("outline_size", 5)
+	hud_root.add_child(hud_powerups)
 	pause_button = Button.new()
 	pause_button.theme = get_meta("ui_theme")
 	pause_button.focus_mode = Control.FOCUS_NONE
@@ -356,16 +401,55 @@ func build_hud() -> void:
 	pause_button.pressed.connect(pause_game)
 	hud_root.add_child(pause_button)
 
+func build_vitals_row(number: int) -> void:
+	var row := HBoxContainer.new()
+	row.name = "P%d" % number
+	row.add_theme_constant_override("separation", 5)
+	hud.add_child(row)
+	var name_label := Label.new()
+	name_label.text = "P%d" % number
+	name_label.custom_minimum_size.x = 32
+	name_label.add_theme_font_size_override("font_size", 16)
+	name_label.add_theme_color_override("font_color", Color("#8fd5ff") if number == 1 else Color("#e3b7ff"))
+	row.add_child(name_label)
+	var hearts: Array[TextureRect] = []
+	for i in range(Player.STARTING_LIVES):
+		var heart := TextureRect.new()
+		heart.texture = Powerups.ICONS.health
+		heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		heart.custom_minimum_size = Vector2(24, 24)
+		row.add_child(heart)
+		hearts.append(heart)
+	var gap := Control.new()
+	gap.custom_minimum_size.x = 12
+	row.add_child(gap)
+	var fuel: Array[TextureProgressBar] = []
+	for i in range(5):
+		var can := TextureProgressBar.new()
+		can.texture_under = preload("res://assets/health_gas_tank_empty.svg")
+		can.texture_progress = preload("res://assets/health_gas_tank.svg")
+		can.fill_mode = TextureProgressBar.FILL_BOTTOM_TO_TOP
+		can.max_value = 20
+		can.custom_minimum_size = Vector2(24, 24)
+		row.add_child(can)
+		fuel.append(can)
+	vitals_rows.append({"hearts": hearts, "fuel": fuel})
+
 func add_brick(at: Vector2, reinforced: bool) -> void:
 	var brick := Brick.new()
 	brick.position = at
 	brick.reinforced = reinforced
+	# Eight hidden rewards, two of each type, spread across the four clusters.
+	if not reinforced and remaining < 32 and remaining % 4 == 2:
+		brick.powerup = Powerups.TYPES[(remaining / 4) % Powerups.TYPES.size()]
+	brick.powerup_released.connect(on_powerup_released.bind(at))
 	brick.destroyed.connect(on_brick_destroyed)
 	world.add_child(brick)
 	if not reinforced:
 		remaining += 1
 
-func spawn_bullet(origin: Vector2, muzzle: Vector2, direction: Vector2) -> void:
+func spawn_bullet(origin: Vector2, muzzle: Vector2, direction: Vector2, shooter: Node = null) -> void:
 	if state != "playing":
 		return
 	var bullet := Bullet.new()
@@ -373,16 +457,36 @@ func spawn_bullet(origin: Vector2, muzzle: Vector2, direction: Vector2) -> void:
 	bullet.origin = origin
 	bullet.direction = direction
 	bullet.impact = burst
+	bullet.shooter = shooter
+	bullet.hits_tanks = local_coop and is_instance_valid(shooter)
+	bullet.heavy = is_instance_valid(shooter) and shooter.shot_is_heavy
+	bullet.heavy_impact = on_heavy_impact
 	world.add_child(bullet)
 	shots += 1
 	sound.play("shoot")
+
+func on_powerup_released(kind: String, recipient: Node, at: Vector2) -> void:
+	if state == "playing" and is_instance_valid(recipient) and recipient.active:
+		recipient.apply_powerup(kind)
+		var reveal := preload("res://scripts/powerup_reveal.gd").new()
+		reveal.texture = Powerups.ICONS[kind]
+		reveal.position = at
+		world.add_child(reveal)
+
+func on_heavy_impact(at: Vector2, shooter: Node) -> void:
+	# Only a hit on a destructible block starts a blast; perimeter/moose stay intact.
+	for brick in world.get_children():
+		if brick is Brick and not brick.reinforced and not brick.broken:
+			if brick.global_position.distance_to(at) <= Powerups.BLAST_RADIUS:
+				brick.hit(shooter)
+	burst(at)
 
 func on_brick_destroyed(at: Vector2) -> void:
 	sound.play("brick")
 	remaining -= 1
 	score += 100
 	burst(at)
-	if remaining == 0 and not finish_pending:
+	if remaining == 0 and not local_coop and not finish_pending:
 		finish_pending = true
 		finish_game.call_deferred()
 
@@ -394,7 +498,10 @@ func _process(delta: float) -> void:
 	if state == "dying":
 		defeat_delay -= delta
 		if defeat_delay <= 0.0 and not sound.voices.explosion.playing:
-			show_game_over()
+			if winner_number > 0:
+				show_duel_victory()
+			else:
+				show_game_over()
 	var moving := false
 	var idle := false
 	if state == "playing":
@@ -403,7 +510,7 @@ func _process(delta: float) -> void:
 				var driving: bool = tank.get_real_velocity().length_squared() > 1.0
 				moving = moving or driving
 				idle = idle or not driving
-	sound.update_ambience(state == "playing", moving, idle, state == "paused")
+	sound.update_ambience(state == "playing", moving, idle, state == "paused", state not in ["dying", "results"])
 	if state == "playing":
 		elapsed += delta
 		update_hud()
@@ -415,10 +522,20 @@ func _process(delta: float) -> void:
 
 func update_hud() -> void:
 	if is_instance_valid(hud):
-		hud.text = "PLAYER 1 / SOLO\n%d HEALTH     %d LIVES" % [player.health, player.lives]
+		var tanks := [player, player_two]
+		for row_index in range(vitals_rows.size()):
+			var tank = tanks[row_index]
+			var row := vitals_rows[row_index]
+			for i in range(row.hearts.size()):
+				row.hearts[i].modulate = Color.WHITE if i < tank.lives else Color(0.4, 0.4, 0.4, 0.35)
+				row.hearts[i].tooltip_text = "P%d: %d lives" % [row_index + 1, tank.lives]
+			for i in range(row.fuel.size()):
+				row.fuel[i].value = clampi(tank.health - i * 20, 0, 20)
+				row.fuel[i].tooltip_text = "P%d: %d / 100 health" % [row_index + 1, tank.health]
+		hud_stats.text = "%s: %04d POINTS   |   %02d:%02d\nICE LEFT: %d / %d   |   SHOTS: %d" % ["FIELD SCORE" if local_coop else "SCORE", score, int(elapsed) / 60, int(elapsed) % 60, remaining, total, shots]
+		hud_powerups.text = "P1: " + player.powerup_status()
 		if local_coop and is_instance_valid(player_two):
-			hud.text = "P1: %d HEALTH / %d LIVES\nP2: %d HEALTH / %d LIVES" % [player.health, player.lives, player_two.health, player_two.lives]
-		hud_stats.text = "%s: %04d POINTS   |   %02d:%02d\nICE LEFT: %d / %d   |   SHOTS: %d" % ["TEAM SCORE" if local_coop else "SCORE", score, int(elapsed) / 60, int(elapsed) % 60, remaining, total, shots]
+			hud_powerups.text += "     |     P2: " + player_two.powerup_status()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
@@ -446,7 +563,7 @@ func resume_game() -> void:
 	clear_panel()
 	state = "playing"
 	get_tree().paused = false
-	if remaining == 0:
+	if remaining == 0 and not local_coop:
 		finish_game.call_deferred()
 
 func on_tank_exploded(tank: Node2D) -> void:
@@ -462,18 +579,28 @@ func on_tank_exploded(tank: Node2D) -> void:
 	world.add_child(effect)
 
 func on_lives_depleted() -> void:
-	if local_coop and (player.active or player_two.active):
-		return
 	if state != "playing":
 		return
+	if local_coop:
+		winner_number = 1 if player.active else (2 if player_two.active else 0)
 	state = "dying"
 	defeat_delay = maxf(preload("res://scripts/tank_explosion.gd").DURATION, sound.voices.explosion.stream.get_length())
 	sound.stop_gameplay(["explosion", "moose_roar"])
+	sound.set_loop("music", false)
+	if winner_number > 0:
+		# A short loss cue precedes the winner's celebration on the shared screen.
+		sound.last_played.erase("defeat")
+		sound.play("defeat")
+		defeat_delay = maxf(defeat_delay, sound.voices.defeat.stream.get_length())
 	get_tree().paused = true
 	pause_button.disabled = true
 
 func show_game_over() -> void:
 	state = "results"
+	sound.stop_gameplay()
+	sound.set_loop("music", false)
+	sound.last_played.erase("defeat")
+	sound.play("defeat")
 	var box := overlay()
 	label_in(box, "GAME OVER", 48, MINT)
 	label_in(box, "Winner: None - no lives remaining", 23, Color("#ffd890"))
@@ -482,23 +609,49 @@ func show_game_over() -> void:
 	button_in(box, "Main Menu", show_menu)
 
 func finish_game() -> void:
-	if state != "playing":
+	if state != "playing" or local_coop:
 		return
 	sound.stop_gameplay(["brick"])
 	sound.play("victory")
 	update_hud()
 	state = "results"
+	winner_number = 1
+	sound.set_loop("music", false)
 	get_tree().paused = true
 	var box := overlay()
-	label_in(box, "FIELD CLEARED", 48, MINT)
-	label_in(box, "Winner: Team P1 + P2" if local_coop else "Winner: Player 1", 25, Color("#ffd890"))
-	label_in(box, "Local co-op complete" if local_coop else "Solo practice complete", 19, MINT)
+	label_in(box, "YOU WIN!", 48, Color("#ffd890"))
+	label_in(box, "Winner: Player 1", 25, Color("#ffd890"))
+	label_in(box, "FIELD CLEARED - Solo practice complete", 19, MINT)
 	results_summary(box)
 	button_in(box, "Play Again", restart_game).grab_focus()
 	button_in(box, "Main Menu", show_menu)
+	add_confetti()
+
+func add_confetti() -> void:
+	var confetti := preload("res://scripts/confetti.gd").new()
+	confetti.name = "VictoryConfetti"
+	panel.add_child(confetti)
+	# Above the shade but behind the card, keeping text and buttons readable.
+	panel.move_child(confetti, 1)
+
+func show_duel_victory() -> void:
+	state = "results"
+	sound.stop_gameplay()
+	sound.set_loop("music", false)
+	sound.last_played.erase("victory")
+	sound.play("victory")
+	var box := overlay()
+	label_in(box, "PLAYER %d WINS!" % winner_number, 46, Color("#ffd890"))
+	label_in(box, "Winner: Player %d" % winner_number, 25, MINT)
+	label_in(box, "GAME OVER - PLAYER %d" % (3 - winner_number), 24, Color("#ff9cae"))
+	label_in(box, "All hearts lost. The duel is over.", 19)
+	results_summary(box)
+	button_in(box, "Play Again", restart_game).grab_focus()
+	button_in(box, "Main Menu", show_menu)
+	add_confetti()
 
 func results_summary(box: VBoxContainer) -> void:
-	label_in(box, "%s: %d points" % ["Shared team score" if local_coop else "Score", score], 26)
+	label_in(box, "%s: %d points" % ["Field destruction score" if local_coop else "Score", score], 26)
 	label_in(box, "%d / %d bricks cleared   |   %d shots fired\nTime played: %02d:%02d" % [total - remaining, total, shots, int(elapsed) / 60, int(elapsed) % 60], 21)
 	label_in(box, "Player 1: %d health / %d lives" % [player.health, player.lives], 20, Color("#8fd5ff"))
 	if local_coop:

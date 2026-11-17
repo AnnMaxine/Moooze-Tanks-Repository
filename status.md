@@ -74,3 +74,20 @@ Observed: Godot 4.7.2 import exited 0 without parser errors. Passed 40 graphical
 Limitations: existing log/certificate/editor-settings access errors and occasional two-instance ObjectDB shutdown warnings remain. Full human playtesting, physical two-player input, resizing/readability on other displays and audio listening are still outstanding. Exit remains connected to the existing quit callback; automated UI navigation does not click Exit to terminate its own test runner. Network multiplayer remains unimplemented. Prior sections are historical evidence, not current UI descriptions.
 
 November 10 review validation: 141 assertions passed in Godot 4.7.2 (20 mechanics, 19 forest, 33 smoke, 16 co-op, 18 graphical charge, 35 graphical audio); editor import had no script/parser errors. An initial recoil assertion required an extra physics-step allowance for Area2D notifications and passed after synchronization was corrected. Existing log/certificate/editor-settings errors and 2-8 ObjectDB shutdown warnings remain. No human playtest or audio-listening claim; source acceptance statuses unchanged.
+
+
+## Block power-ups - November 17, 2026
+
+- R1/R3/R4/R5/R6/R7/R8/R9: eight marked blocks grant heavy ammo, shield, speed or heart-shaped health recovery to the shooter. Distinct orange, blue, green and pink tank effects; existing sprites, controls, 35-block objective, perimeter and moose rules preserved. Implementation defaults are documented in README.md.
+- UI2/UI3/UI5: per-player ammo/timer HUD, pause/reset handling, and a separate illustrated Power-ups help screen. UI6/UI8/UI9 documentation maintained; UI7 and source-plan statuses unchanged.
+- Observed checks: installed Godot 4.7.2; final import without parser/script errors; 38 power-up, 33 smoke, 16 co-op, 55 graphical UI and 18 graphical moose-charge assertions passed (160 total). Corrected HUD overlap found by a new bounds check. Graphical arena/effects and help previews inspected; git diff whitespace check passed.
+- Limitations: initial bullet type syntax was corrected after import identified a parser error. Existing log/certificate/editor-settings access errors and 2-4 shutdown ObjectDB leak warnings remain. No human playtest, physical input-comfort assessment, or balance claim; network multiplayer remains outside this extension.
+
+
+## Hidden rewards and heart/gas-tank HUD - November 17, 2026
+
+- R4/R7/R8: power-up blocks have no visible badge before impact. Shooting a containing block reveals its reward icon for 1.2 seconds and grants it to the shooter. Existing power-up values, score, collision and perimeter behavior preserved.
+- UI2/UI3/UI5: each player has three heart images for lives and five gas-tank images for health (20 health each, partial fills supported). Lost hearts dim; health damage/recovery, respawn and elimination update the actual icons. Tooltips provide exact values. Help updated; reveal animation pauses and cleans up.
+- UI6/UI8/UI9: README and prompt log updated, preserving prior history and source requirement statuses. This supersedes the visible block badges described in the earlier power-up entry.
+- Verified in Godot 4.7.2: editor import without parser errors; 45 power-up, 33 smoke, 16 local co-op, 59 graphical UI and 19 forest checks passed (172 total). Screenshots inspected for hidden/revealed rewards, lost hearts, partial gas tanks and help. Tight Help layout found visually and reduced spacing; new bounds assertion passes. Git whitespace check passed.
+- Limits: existing log/root-certificate/editor-settings access errors and 4-7 ObjectDB shutdown leak warnings. No full human playtest or target-display accessibility/readability certification.

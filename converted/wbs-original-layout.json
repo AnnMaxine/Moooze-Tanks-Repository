@@ -1,0 +1,3148 @@
+[
+  {
+    "id": "root",
+    "text": "Moooze Tanks",
+    "x": 1060,
+    "y": 413,
+    "w": 227,
+    "h": 56,
+    "parent": null,
+    "color": "dark"
+  },
+  {
+    "id": "pm",
+    "text": "Project Management",
+    "x": 318,
+    "y": 522,
+    "w": 199,
+    "h": 57,
+    "parent": "root",
+    "color": "orange",
+    "route": [
+      [
+        1173.5,
+        469
+      ],
+      [
+        1173.5,
+        497
+      ],
+      [
+        417.5,
+        497
+      ],
+      [
+        417.5,
+        522
+      ]
+    ]
+  },
+  {
+    "id": "dev",
+    "text": "Project Development",
+    "x": 1871,
+    "y": 510,
+    "w": 202,
+    "h": 57,
+    "parent": "root",
+    "color": "orange",
+    "route": [
+      [
+        1173.5,
+        469
+      ],
+      [
+        1173.5,
+        491
+      ],
+      [
+        1972.0,
+        491
+      ],
+      [
+        1972.0,
+        510
+      ]
+    ]
+  },
+  {
+    "id": "init",
+    "text": "Initiation",
+    "x": 143,
+    "y": 609,
+    "w": 115,
+    "h": 56,
+    "parent": "pm",
+    "color": "yellow",
+    "route": [
+      [
+        417.5,
+        579
+      ],
+      [
+        417.5,
+        594
+      ],
+      [
+        200.5,
+        594
+      ],
+      [
+        200.5,
+        609
+      ]
+    ]
+  },
+  {
+    "id": "plan",
+    "text": "Planning",
+    "x": 288,
+    "y": 610,
+    "w": 116,
+    "h": 54,
+    "parent": "pm",
+    "color": "yellow",
+    "route": [
+      [
+        417.5,
+        579
+      ],
+      [
+        417.5,
+        594
+      ],
+      [
+        346.0,
+        594
+      ],
+      [
+        346.0,
+        610
+      ]
+    ]
+  },
+  {
+    "id": "exec",
+    "text": "Execution",
+    "x": 434,
+    "y": 609,
+    "w": 114,
+    "h": 57,
+    "parent": "pm",
+    "color": "yellow",
+    "route": [
+      [
+        417.5,
+        579
+      ],
+      [
+        417.5,
+        594
+      ],
+      [
+        491.0,
+        594
+      ],
+      [
+        491.0,
+        609
+      ]
+    ]
+  },
+  {
+    "id": "close",
+    "text": "Closing",
+    "x": 579,
+    "y": 609,
+    "w": 115,
+    "h": 56,
+    "parent": "pm",
+    "color": "yellow",
+    "route": [
+      [
+        417.5,
+        579
+      ],
+      [
+        417.5,
+        594
+      ],
+      [
+        636.5,
+        594
+      ],
+      [
+        636.5,
+        609
+      ]
+    ]
+  },
+  {
+    "id": "init_0",
+    "text": "Develop Design\nDocument",
+    "x": 146,
+    "y": 694,
+    "w": 113,
+    "h": 57,
+    "parent": "init",
+    "color": "white",
+    "route": [
+      [
+        258,
+        637.0
+      ],
+      [
+        269,
+        637.0
+      ],
+      [
+        269,
+        722.5
+      ],
+      [
+        259,
+        722.5
+      ]
+    ]
+  },
+  {
+    "id": "init_1",
+    "text": "Develop Scope\nStatement",
+    "x": 144,
+    "y": 780,
+    "w": 115,
+    "h": 57,
+    "parent": "init",
+    "color": "white",
+    "route": [
+      [
+        258,
+        637.0
+      ],
+      [
+        269,
+        637.0
+      ],
+      [
+        269,
+        808.5
+      ],
+      [
+        259,
+        808.5
+      ]
+    ]
+  },
+  {
+    "id": "init_2",
+    "text": "Develop Project\nCharter",
+    "x": 143,
+    "y": 866,
+    "w": 117,
+    "h": 56,
+    "parent": "init",
+    "color": "white",
+    "route": [
+      [
+        258,
+        637.0
+      ],
+      [
+        269,
+        637.0
+      ],
+      [
+        269,
+        894.0
+      ],
+      [
+        260,
+        894.0
+      ]
+    ]
+  },
+  {
+    "id": "init_3",
+    "text": "Develop Team\nBuilding Activity",
+    "x": 144,
+    "y": 953,
+    "w": 116,
+    "h": 56,
+    "parent": "init",
+    "color": "white",
+    "route": [
+      [
+        258,
+        637.0
+      ],
+      [
+        269,
+        637.0
+      ],
+      [
+        269,
+        981.0
+      ],
+      [
+        260,
+        981.0
+      ]
+    ]
+  },
+  {
+    "id": "plan_0",
+    "text": "Develop Work\nBreakdown\nStructure",
+    "x": 289,
+    "y": 694,
+    "w": 114,
+    "h": 57,
+    "parent": "plan",
+    "color": "white",
+    "route": [
+      [
+        404,
+        637.0
+      ],
+      [
+        412,
+        637.0
+      ],
+      [
+        412,
+        722.5
+      ],
+      [
+        403,
+        722.5
+      ]
+    ]
+  },
+  {
+    "id": "plan_1",
+    "text": "Develop\nEstimating\nWorksheet",
+    "x": 290,
+    "y": 779,
+    "w": 112,
+    "h": 58,
+    "parent": "plan",
+    "color": "white",
+    "route": [
+      [
+        404,
+        637.0
+      ],
+      [
+        412,
+        637.0
+      ],
+      [
+        412,
+        808.0
+      ],
+      [
+        402,
+        808.0
+      ]
+    ]
+  },
+  {
+    "id": "plan_2",
+    "text": "Develop Gantt\nChart",
+    "x": 289,
+    "y": 866,
+    "w": 114,
+    "h": 57,
+    "parent": "plan",
+    "color": "white",
+    "route": [
+      [
+        404,
+        637.0
+      ],
+      [
+        412,
+        637.0
+      ],
+      [
+        412,
+        894.5
+      ],
+      [
+        403,
+        894.5
+      ]
+    ]
+  },
+  {
+    "id": "plan_3",
+    "text": "Develop Alpha\nNarrative",
+    "x": 289,
+    "y": 952,
+    "w": 114,
+    "h": 57,
+    "parent": "plan",
+    "color": "white",
+    "route": [
+      [
+        404,
+        637.0
+      ],
+      [
+        412,
+        637.0
+      ],
+      [
+        412,
+        980.5
+      ],
+      [
+        403,
+        980.5
+      ]
+    ]
+  },
+  {
+    "id": "plan_4",
+    "text": "Develop Risk\nRegistry",
+    "x": 290,
+    "y": 1037,
+    "w": 112,
+    "h": 46,
+    "parent": "plan",
+    "color": "white",
+    "route": [
+      [
+        404,
+        637.0
+      ],
+      [
+        412,
+        637.0
+      ],
+      [
+        412,
+        1060.0
+      ],
+      [
+        402,
+        1060.0
+      ]
+    ]
+  },
+  {
+    "id": "plan_5",
+    "text": "Develop\nKanban Board",
+    "x": 289,
+    "y": 1112,
+    "w": 113,
+    "h": 45,
+    "parent": "plan",
+    "color": "white",
+    "route": [
+      [
+        404,
+        637.0
+      ],
+      [
+        412,
+        637.0
+      ],
+      [
+        412,
+        1134.5
+      ],
+      [
+        402,
+        1134.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_0",
+    "text": "Manage Change\nLog",
+    "x": 435,
+    "y": 694,
+    "w": 113,
+    "h": 45,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        716.5
+      ],
+      [
+        548,
+        716.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_1",
+    "text": "Submit Change\nRequest",
+    "x": 436,
+    "y": 768,
+    "w": 112,
+    "h": 46,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        791.0
+      ],
+      [
+        548,
+        791.0
+      ]
+    ]
+  },
+  {
+    "id": "exec_2",
+    "text": "Maintain Issue\nLog",
+    "x": 434,
+    "y": 843,
+    "w": 114,
+    "h": 45,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        865.5
+      ],
+      [
+        548,
+        865.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_3",
+    "text": "Maintain\nRequirement\nManagement\nPlan",
+    "x": 435,
+    "y": 917,
+    "w": 113,
+    "h": 77,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        955.5
+      ],
+      [
+        548,
+        955.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_4",
+    "text": "Submit Scrum-\nWorksheet",
+    "x": 435,
+    "y": 1023,
+    "w": 113,
+    "h": 46,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1046.0
+      ],
+      [
+        548,
+        1046.0
+      ]
+    ]
+  },
+  {
+    "id": "exec_5",
+    "text": "Submit Status\nUpdates",
+    "x": 435,
+    "y": 1097,
+    "w": 112,
+    "h": 46,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1120.0
+      ],
+      [
+        547,
+        1120.0
+      ]
+    ]
+  },
+  {
+    "id": "exec_6",
+    "text": "Record Meeting\nMinutes",
+    "x": 435,
+    "y": 1172,
+    "w": 113,
+    "h": 45,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1194.5
+      ],
+      [
+        548,
+        1194.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_7",
+    "text": "Submit Test Log",
+    "x": 435,
+    "y": 1246,
+    "w": 112,
+    "h": 57,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1274.5
+      ],
+      [
+        547,
+        1274.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_8",
+    "text": "Submit Prompt\nLog",
+    "x": 435,
+    "y": 1332,
+    "w": 112,
+    "h": 57,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1360.5
+      ],
+      [
+        547,
+        1360.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_9",
+    "text": "Develop Alpha\nDemo",
+    "x": 435,
+    "y": 1418,
+    "w": 113,
+    "h": 57,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1446.5
+      ],
+      [
+        548,
+        1446.5
+      ]
+    ]
+  },
+  {
+    "id": "exec_10",
+    "text": "Develop Beta\nDemo",
+    "x": 435,
+    "y": 1504,
+    "w": 113,
+    "h": 46,
+    "parent": "exec",
+    "color": "white",
+    "route": [
+      [
+        548,
+        637.5
+      ],
+      [
+        557,
+        637.5
+      ],
+      [
+        557,
+        1527.0
+      ],
+      [
+        548,
+        1527.0
+      ]
+    ]
+  },
+  {
+    "id": "close_0",
+    "text": "Compile full\ndocumentation\nfor project",
+    "x": 581,
+    "y": 694,
+    "w": 114,
+    "h": 57,
+    "parent": "close",
+    "color": "white",
+    "route": [
+      [
+        694,
+        637.0
+      ],
+      [
+        704,
+        637.0
+      ],
+      [
+        704,
+        722.5
+      ],
+      [
+        695,
+        722.5
+      ]
+    ]
+  },
+  {
+    "id": "close_1",
+    "text": "Review the\nproject with\nsponsors",
+    "x": 581,
+    "y": 780,
+    "w": 114,
+    "h": 57,
+    "parent": "close",
+    "color": "white",
+    "route": [
+      [
+        694,
+        637.0
+      ],
+      [
+        704,
+        637.0
+      ],
+      [
+        704,
+        808.5
+      ],
+      [
+        695,
+        808.5
+      ]
+    ]
+  },
+  {
+    "id": "close_2",
+    "text": "Submit project to\nclient/instructor",
+    "x": 581,
+    "y": 866,
+    "w": 113,
+    "h": 45,
+    "parent": "close",
+    "color": "white",
+    "route": [
+      [
+        694,
+        637.0
+      ],
+      [
+        704,
+        637.0
+      ],
+      [
+        704,
+        888.5
+      ],
+      [
+        694,
+        888.5
+      ]
+    ]
+  },
+  {
+    "id": "close_3",
+    "text": "Conduct Peer\nEvaluation",
+    "x": 581,
+    "y": 940,
+    "w": 113,
+    "h": 46,
+    "parent": "close",
+    "color": "white",
+    "route": [
+      [
+        694,
+        637.0
+      ],
+      [
+        704,
+        637.0
+      ],
+      [
+        704,
+        963.0
+      ],
+      [
+        694,
+        963.0
+      ]
+    ]
+  },
+  {
+    "id": "close_4",
+    "text": "Develop Lessons\nLearned",
+    "x": 581,
+    "y": 1014,
+    "w": 113,
+    "h": 46,
+    "parent": "close",
+    "color": "white",
+    "route": [
+      [
+        694,
+        637.0
+      ],
+      [
+        704,
+        637.0
+      ],
+      [
+        704,
+        1037.0
+      ],
+      [
+        694,
+        1037.0
+      ]
+    ]
+  },
+  {
+    "id": "close_5",
+    "text": "Present Finished\nProduct",
+    "x": 582,
+    "y": 1088,
+    "w": 112,
+    "h": 46,
+    "parent": "close",
+    "color": "white",
+    "route": [
+      [
+        694,
+        637.0
+      ],
+      [
+        704,
+        637.0
+      ],
+      [
+        704,
+        1111.0
+      ],
+      [
+        694,
+        1111.0
+      ]
+    ]
+  },
+  {
+    "id": "res",
+    "text": "Resources & Assets",
+    "x": 1411,
+    "y": 604,
+    "w": 143,
+    "h": 57,
+    "parent": "dev",
+    "color": "yellow",
+    "route": [
+      [
+        1972.0,
+        567
+      ],
+      [
+        1972.0,
+        586
+      ],
+      [
+        1482.5,
+        586
+      ],
+      [
+        1482.5,
+        604
+      ]
+    ]
+  },
+  {
+    "id": "screens",
+    "text": "Screens",
+    "x": 1900,
+    "y": 603,
+    "w": 143,
+    "h": 57,
+    "parent": "dev",
+    "color": "yellow",
+    "route": [
+      [
+        1972.0,
+        567
+      ],
+      [
+        1972.0,
+        586
+      ],
+      [
+        1971.5,
+        586
+      ],
+      [
+        1971.5,
+        603
+      ]
+    ]
+  },
+  {
+    "id": "prog",
+    "text": "Programming",
+    "x": 2115,
+    "y": 603,
+    "w": 143,
+    "h": 57,
+    "parent": "dev",
+    "color": "yellow",
+    "route": [
+      [
+        1972.0,
+        567
+      ],
+      [
+        1972.0,
+        586
+      ],
+      [
+        2186.5,
+        586
+      ],
+      [
+        2186.5,
+        603
+      ]
+    ]
+  },
+  {
+    "id": "qa",
+    "text": "Final Testing and\nQuality Assurance",
+    "x": 2613,
+    "y": 603,
+    "w": 143,
+    "h": 57,
+    "parent": "dev",
+    "color": "yellow",
+    "route": [
+      [
+        1972.0,
+        567
+      ],
+      [
+        1972.0,
+        586
+      ],
+      [
+        2684.5,
+        586
+      ],
+      [
+        2684.5,
+        603
+      ]
+    ]
+  },
+  {
+    "id": "graphics",
+    "text": "Graphic Objects",
+    "x": 994,
+    "y": 709,
+    "w": 141,
+    "h": 46,
+    "parent": "res",
+    "color": "white",
+    "route": [
+      [
+        1482.5,
+        661
+      ],
+      [
+        1482.5,
+        685
+      ],
+      [
+        1064.5,
+        685
+      ],
+      [
+        1064.5,
+        709
+      ]
+    ]
+  },
+  {
+    "id": "audio",
+    "text": "Audio Assets",
+    "x": 1415,
+    "y": 709,
+    "w": 135,
+    "h": 46,
+    "parent": "res",
+    "color": "white",
+    "route": [
+      [
+        1482.5,
+        661
+      ],
+      [
+        1482.5,
+        685
+      ],
+      [
+        1482.5,
+        685
+      ],
+      [
+        1482.5,
+        709
+      ]
+    ]
+  },
+  {
+    "id": "training",
+    "text": "Training Materials",
+    "x": 1644,
+    "y": 709,
+    "w": 141,
+    "h": 46,
+    "parent": "res",
+    "color": "white",
+    "route": [
+      [
+        1482.5,
+        661
+      ],
+      [
+        1482.5,
+        685
+      ],
+      [
+        1714.5,
+        685
+      ],
+      [
+        1714.5,
+        709
+      ]
+    ]
+  },
+  {
+    "id": "sprites",
+    "text": "Tank Sprites &\nAnimations",
+    "x": 853,
+    "y": 791,
+    "w": 105,
+    "h": 52,
+    "parent": "graphics",
+    "color": "white",
+    "route": [
+      [
+        1064.5,
+        755
+      ],
+      [
+        1064.5,
+        773
+      ],
+      [
+        905.5,
+        773
+      ],
+      [
+        905.5,
+        791
+      ]
+    ]
+  },
+  {
+    "id": "sprites_0",
+    "text": "Tank 1 Chassis\nSprite",
+    "x": 853,
+    "y": 870,
+    "w": 104,
+    "h": 45,
+    "parent": "sprites",
+    "color": "white",
+    "route": [
+      [
+        958,
+        817.0
+      ],
+      [
+        967,
+        817.0
+      ],
+      [
+        967,
+        892.5
+      ],
+      [
+        957,
+        892.5
+      ]
+    ]
+  },
+  {
+    "id": "sprites_1",
+    "text": "Tank 2 Chassis\nSprite",
+    "x": 854,
+    "y": 936,
+    "w": 103,
+    "h": 46,
+    "parent": "sprites",
+    "color": "white",
+    "route": [
+      [
+        958,
+        817.0
+      ],
+      [
+        967,
+        817.0
+      ],
+      [
+        967,
+        959.0
+      ],
+      [
+        957,
+        959.0
+      ]
+    ]
+  },
+  {
+    "id": "sprites_2",
+    "text": "Tank 1 Turret\nSprite",
+    "x": 853,
+    "y": 1003,
+    "w": 104,
+    "h": 45,
+    "parent": "sprites",
+    "color": "white",
+    "route": [
+      [
+        958,
+        817.0
+      ],
+      [
+        967,
+        817.0
+      ],
+      [
+        967,
+        1025.5
+      ],
+      [
+        957,
+        1025.5
+      ]
+    ]
+  },
+  {
+    "id": "sprites_3",
+    "text": "Tank 2 Turret\nSprite",
+    "x": 853,
+    "y": 1070,
+    "w": 105,
+    "h": 45,
+    "parent": "sprites",
+    "color": "white",
+    "route": [
+      [
+        958,
+        817.0
+      ],
+      [
+        967,
+        817.0
+      ],
+      [
+        967,
+        1092.5
+      ],
+      [
+        958,
+        1092.5
+      ]
+    ]
+  },
+  {
+    "id": "sprites_4",
+    "text": "Tank Explosion",
+    "x": 853,
+    "y": 1136,
+    "w": 104,
+    "h": 45,
+    "parent": "sprites",
+    "color": "white",
+    "route": [
+      [
+        958,
+        817.0
+      ],
+      [
+        967,
+        817.0
+      ],
+      [
+        967,
+        1158.5
+      ],
+      [
+        957,
+        1158.5
+      ]
+    ]
+  },
+  {
+    "id": "sprites_5",
+    "text": "Tank Shell\nProjectile",
+    "x": 853,
+    "y": 1203,
+    "w": 105,
+    "h": 45,
+    "parent": "sprites",
+    "color": "white",
+    "route": [
+      [
+        958,
+        817.0
+      ],
+      [
+        967,
+        817.0
+      ],
+      [
+        967,
+        1225.5
+      ],
+      [
+        958,
+        1225.5
+      ]
+    ]
+  },
+  {
+    "id": "env",
+    "text": "Environment\nObjects",
+    "x": 1012,
+    "y": 789,
+    "w": 106,
+    "h": 53,
+    "parent": "graphics",
+    "color": "white",
+    "route": [
+      [
+        1064.5,
+        755
+      ],
+      [
+        1064.5,
+        773
+      ],
+      [
+        1065.0,
+        773
+      ],
+      [
+        1065.0,
+        789
+      ]
+    ]
+  },
+  {
+    "id": "env_0",
+    "text": "Destructible\nWooden Crate\nObstacle",
+    "x": 1011,
+    "y": 867,
+    "w": 108,
+    "h": 57,
+    "parent": "env",
+    "color": "white",
+    "route": [
+      [
+        1118,
+        815.5
+      ],
+      [
+        1128,
+        815.5
+      ],
+      [
+        1128,
+        895.5
+      ],
+      [
+        1119,
+        895.5
+      ]
+    ]
+  },
+  {
+    "id": "env_1",
+    "text": "Destructible\nBrick Wall\nObstacle",
+    "x": 1012,
+    "y": 949,
+    "w": 106,
+    "h": 58,
+    "parent": "env",
+    "color": "white",
+    "route": [
+      [
+        1118,
+        815.5
+      ],
+      [
+        1128,
+        815.5
+      ],
+      [
+        1128,
+        978.0
+      ],
+      [
+        1118,
+        978.0
+      ]
+    ]
+  },
+  {
+    "id": "env_2",
+    "text": "Indestructible\nSolid\nPerimeter Wall",
+    "x": 1011,
+    "y": 1029,
+    "w": 108,
+    "h": 57,
+    "parent": "env",
+    "color": "white",
+    "route": [
+      [
+        1118,
+        815.5
+      ],
+      [
+        1128,
+        815.5
+      ],
+      [
+        1128,
+        1057.5
+      ],
+      [
+        1119,
+        1057.5
+      ]
+    ]
+  },
+  {
+    "id": "env_3",
+    "text": "Indestructible\nConcrete Pillar",
+    "x": 1011,
+    "y": 1110,
+    "w": 107,
+    "h": 46,
+    "parent": "env",
+    "color": "white",
+    "route": [
+      [
+        1118,
+        815.5
+      ],
+      [
+        1128,
+        815.5
+      ],
+      [
+        1128,
+        1133.0
+      ],
+      [
+        1118,
+        1133.0
+      ]
+    ]
+  },
+  {
+    "id": "env_4",
+    "text": "Moving Moose\nEntity",
+    "x": 1011,
+    "y": 1176,
+    "w": 108,
+    "h": 45,
+    "parent": "env",
+    "color": "white",
+    "route": [
+      [
+        1118,
+        815.5
+      ],
+      [
+        1128,
+        815.5
+      ],
+      [
+        1128,
+        1198.5
+      ],
+      [
+        1119,
+        1198.5
+      ]
+    ]
+  },
+  {
+    "id": "gui",
+    "text": "GUI & Buttons",
+    "x": 1173,
+    "y": 789,
+    "w": 106,
+    "h": 53,
+    "parent": "graphics",
+    "color": "white",
+    "route": [
+      [
+        1064.5,
+        755
+      ],
+      [
+        1064.5,
+        773
+      ],
+      [
+        1226.0,
+        773
+      ],
+      [
+        1226.0,
+        789
+      ]
+    ]
+  },
+  {
+    "id": "buttons",
+    "text": "Buttons",
+    "x": 1188,
+    "y": 854,
+    "w": 107,
+    "h": 40,
+    "parent": "gui",
+    "color": "white",
+    "route": [
+      [
+        1173,
+        815.5
+      ],
+      [
+        1164,
+        815.5
+      ],
+      [
+        1164,
+        874.0
+      ],
+      [
+        1188,
+        874.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_0",
+    "text": "Host Game\nButton",
+    "x": 1200,
+    "y": 906,
+    "w": 106,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        929.0
+      ],
+      [
+        1306,
+        929.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_1",
+    "text": "Join Game\nButton",
+    "x": 1200,
+    "y": 968,
+    "w": 106,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        991.0
+      ],
+      [
+        1306,
+        991.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_2",
+    "text": "Solo Practice\nButton",
+    "x": 1200,
+    "y": 1030,
+    "w": 107,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        1053.0
+      ],
+      [
+        1307,
+        1053.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_3",
+    "text": "Controls Button",
+    "x": 1200,
+    "y": 1092,
+    "w": 107,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        1115.0
+      ],
+      [
+        1307,
+        1115.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_4",
+    "text": "Help Button",
+    "x": 1200,
+    "y": 1154,
+    "w": 107,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        1177.0
+      ],
+      [
+        1307,
+        1177.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_5",
+    "text": "Credits Button",
+    "x": 1200,
+    "y": 1216,
+    "w": 107,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        1239.0
+      ],
+      [
+        1307,
+        1239.0
+      ]
+    ]
+  },
+  {
+    "id": "buttons_6",
+    "text": "Exit Button",
+    "x": 1200,
+    "y": 1278,
+    "w": 107,
+    "h": 46,
+    "parent": "buttons",
+    "color": "white",
+    "route": [
+      [
+        1295,
+        874.0
+      ],
+      [
+        1317,
+        874.0
+      ],
+      [
+        1317,
+        1301.0
+      ],
+      [
+        1307,
+        1301.0
+      ]
+    ]
+  },
+  {
+    "id": "guicontrols",
+    "text": "GUI Controls",
+    "x": 1188,
+    "y": 1347,
+    "w": 108,
+    "h": 40,
+    "parent": "gui",
+    "color": "white",
+    "route": [
+      [
+        1173,
+        815.5
+      ],
+      [
+        1164,
+        815.5
+      ],
+      [
+        1164,
+        1367.0
+      ],
+      [
+        1188,
+        1367.0
+      ]
+    ]
+  },
+  {
+    "id": "guicontrols_0",
+    "text": "Player Life\nCounter UI",
+    "x": 1199,
+    "y": 1404,
+    "w": 108,
+    "h": 45,
+    "parent": "guicontrols",
+    "color": "white",
+    "route": [
+      [
+        1296,
+        1367.0
+      ],
+      [
+        1317,
+        1367.0
+      ],
+      [
+        1317,
+        1426.5
+      ],
+      [
+        1307,
+        1426.5
+      ]
+    ]
+  },
+  {
+    "id": "guicontrols_1",
+    "text": "Match Score\nCounter UI",
+    "x": 1199,
+    "y": 1466,
+    "w": 108,
+    "h": 45,
+    "parent": "guicontrols",
+    "color": "white",
+    "route": [
+      [
+        1296,
+        1367.0
+      ],
+      [
+        1317,
+        1367.0
+      ],
+      [
+        1317,
+        1488.5
+      ],
+      [
+        1307,
+        1488.5
+      ]
+    ]
+  },
+  {
+    "id": "guicontrols_2",
+    "text": "Pre-Moose\nHazard Warning\nVisual",
+    "x": 1199,
+    "y": 1528,
+    "w": 108,
+    "h": 57,
+    "parent": "guicontrols",
+    "color": "white",
+    "route": [
+      [
+        1296,
+        1367.0
+      ],
+      [
+        1317,
+        1367.0
+      ],
+      [
+        1317,
+        1556.5
+      ],
+      [
+        1307,
+        1556.5
+      ]
+    ]
+  },
+  {
+    "id": "guicontrols_3",
+    "text": "Player Health\nCounter",
+    "x": 1199,
+    "y": 1602,
+    "w": 108,
+    "h": 39,
+    "parent": "guicontrols",
+    "color": "white",
+    "route": [
+      [
+        1296,
+        1367.0
+      ],
+      [
+        1317,
+        1367.0
+      ],
+      [
+        1317,
+        1621.5
+      ],
+      [
+        1307,
+        1621.5
+      ]
+    ]
+  },
+  {
+    "id": "audio_0",
+    "text": "Background Music",
+    "x": 1438,
+    "y": 772,
+    "w": 140,
+    "h": 29,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        786.5
+      ],
+      [
+        1438,
+        786.5
+      ]
+    ]
+  },
+  {
+    "id": "audio_1",
+    "text": "Tank Engine Idle SFX",
+    "x": 1437,
+    "y": 818,
+    "w": 142,
+    "h": 28,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        832.0
+      ],
+      [
+        1437,
+        832.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_2",
+    "text": "Tank Engine\nDriving SFX",
+    "x": 1437,
+    "y": 864,
+    "w": 142,
+    "h": 40,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        884.0
+      ],
+      [
+        1437,
+        884.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_3",
+    "text": "Cannon Firing SFX",
+    "x": 1437,
+    "y": 921,
+    "w": 142,
+    "h": 46,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        944.0
+      ],
+      [
+        1437,
+        944.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_4",
+    "text": "Moose Blast SFX",
+    "x": 1437,
+    "y": 984,
+    "w": 142,
+    "h": 46,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        1007.0
+      ],
+      [
+        1437,
+        1007.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_5",
+    "text": "Moose Roar SFX",
+    "x": 1437,
+    "y": 1047,
+    "w": 142,
+    "h": 46,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        1070.0
+      ],
+      [
+        1437,
+        1070.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_6",
+    "text": "Obstacle Destruction\nSFX",
+    "x": 1437,
+    "y": 1110,
+    "w": 142,
+    "h": 46,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        1133.0
+      ],
+      [
+        1437,
+        1133.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_7",
+    "text": "Tank Explosion SFX",
+    "x": 1437,
+    "y": 1173,
+    "w": 142,
+    "h": 46,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        1196.0
+      ],
+      [
+        1437,
+        1196.0
+      ]
+    ]
+  },
+  {
+    "id": "audio_8",
+    "text": "Match Victory SFX",
+    "x": 1437,
+    "y": 1236,
+    "w": 142,
+    "h": 46,
+    "parent": "audio",
+    "color": "white",
+    "route": [
+      [
+        1415,
+        732.0
+      ],
+      [
+        1406,
+        732.0
+      ],
+      [
+        1406,
+        1259.0
+      ],
+      [
+        1437,
+        1259.0
+      ]
+    ]
+  },
+  {
+    "id": "codex",
+    "text": "Codex",
+    "x": 1658,
+    "y": 774,
+    "w": 141,
+    "h": 28,
+    "parent": "training",
+    "color": "white",
+    "route": [
+      [
+        1644,
+        732.0
+      ],
+      [
+        1634,
+        732.0
+      ],
+      [
+        1634,
+        788.0
+      ],
+      [
+        1658,
+        788.0
+      ]
+    ]
+  },
+  {
+    "id": "codex_0",
+    "text": "Setup",
+    "x": 1675,
+    "y": 818,
+    "w": 141,
+    "h": 28,
+    "parent": "codex",
+    "color": "white",
+    "route": [
+      [
+        1799,
+        788.0
+      ],
+      [
+        1827,
+        788.0
+      ],
+      [
+        1827,
+        832.0
+      ],
+      [
+        1816,
+        832.0
+      ]
+    ]
+  },
+  {
+    "id": "codex_1",
+    "text": "Training",
+    "x": 1675,
+    "y": 862,
+    "w": 141,
+    "h": 28,
+    "parent": "codex",
+    "color": "white",
+    "route": [
+      [
+        1799,
+        788.0
+      ],
+      [
+        1827,
+        788.0
+      ],
+      [
+        1827,
+        876.0
+      ],
+      [
+        1816,
+        876.0
+      ]
+    ]
+  },
+  {
+    "id": "codex_2",
+    "text": "Developer Instructions\n(agent.md)",
+    "x": 1675,
+    "y": 906,
+    "w": 141,
+    "h": 58,
+    "parent": "codex",
+    "color": "white",
+    "route": [
+      [
+        1799,
+        788.0
+      ],
+      [
+        1827,
+        788.0
+      ],
+      [
+        1827,
+        935.0
+      ],
+      [
+        1816,
+        935.0
+      ]
+    ]
+  },
+  {
+    "id": "godot",
+    "text": "Godot",
+    "x": 1658,
+    "y": 980,
+    "w": 141,
+    "h": 29,
+    "parent": "training",
+    "color": "white",
+    "route": [
+      [
+        1644,
+        732.0
+      ],
+      [
+        1634,
+        732.0
+      ],
+      [
+        1634,
+        994.5
+      ],
+      [
+        1658,
+        994.5
+      ]
+    ]
+  },
+  {
+    "id": "godot_0",
+    "text": "Setup",
+    "x": 1675,
+    "y": 1025,
+    "w": 142,
+    "h": 28,
+    "parent": "godot",
+    "color": "white",
+    "route": [
+      [
+        1799,
+        994.5
+      ],
+      [
+        1827,
+        994.5
+      ],
+      [
+        1827,
+        1039.0
+      ],
+      [
+        1817,
+        1039.0
+      ]
+    ]
+  },
+  {
+    "id": "godot_1",
+    "text": "Training",
+    "x": 1675,
+    "y": 1070,
+    "w": 142,
+    "h": 28,
+    "parent": "godot",
+    "color": "white",
+    "route": [
+      [
+        1799,
+        994.5
+      ],
+      [
+        1827,
+        994.5
+      ],
+      [
+        1827,
+        1084.0
+      ],
+      [
+        1817,
+        1084.0
+      ]
+    ]
+  },
+  {
+    "id": "screens_0",
+    "text": "Main Menu Screen",
+    "x": 1921,
+    "y": 688,
+    "w": 142,
+    "h": 57,
+    "parent": "screens",
+    "color": "white",
+    "route": [
+      [
+        1900,
+        631.5
+      ],
+      [
+        1892,
+        631.5
+      ],
+      [
+        1892,
+        716.5
+      ],
+      [
+        1921,
+        716.5
+      ]
+    ]
+  },
+  {
+    "id": "screens_1",
+    "text": "Gameplay HUD\nOverlay",
+    "x": 1921,
+    "y": 774,
+    "w": 142,
+    "h": 57,
+    "parent": "screens",
+    "color": "white",
+    "route": [
+      [
+        1900,
+        631.5
+      ],
+      [
+        1892,
+        631.5
+      ],
+      [
+        1892,
+        802.5
+      ],
+      [
+        1921,
+        802.5
+      ]
+    ]
+  },
+  {
+    "id": "screens_2",
+    "text": "Pause Overlay\nScreen",
+    "x": 1921,
+    "y": 860,
+    "w": 142,
+    "h": 57,
+    "parent": "screens",
+    "color": "white",
+    "route": [
+      [
+        1900,
+        631.5
+      ],
+      [
+        1892,
+        631.5
+      ],
+      [
+        1892,
+        888.5
+      ],
+      [
+        1921,
+        888.5
+      ]
+    ]
+  },
+  {
+    "id": "screens_3",
+    "text": "Match Results/\nSummary Screen",
+    "x": 1921,
+    "y": 946,
+    "w": 142,
+    "h": 45,
+    "parent": "screens",
+    "color": "white",
+    "route": [
+      [
+        1900,
+        631.5
+      ],
+      [
+        1892,
+        631.5
+      ],
+      [
+        1892,
+        968.5
+      ],
+      [
+        1921,
+        968.5
+      ]
+    ]
+  },
+  {
+    "id": "screens_4",
+    "text": "Controls Screen",
+    "x": 1921,
+    "y": 1020,
+    "w": 141,
+    "h": 46,
+    "parent": "screens",
+    "color": "white",
+    "route": [
+      [
+        1900,
+        631.5
+      ],
+      [
+        1892,
+        631.5
+      ],
+      [
+        1892,
+        1043.0
+      ],
+      [
+        1921,
+        1043.0
+      ]
+    ]
+  },
+  {
+    "id": "screens_5",
+    "text": "Help Screen",
+    "x": 1921,
+    "y": 1095,
+    "w": 142,
+    "h": 45,
+    "parent": "screens",
+    "color": "white",
+    "route": [
+      [
+        1900,
+        631.5
+      ],
+      [
+        1892,
+        631.5
+      ],
+      [
+        1892,
+        1117.5
+      ],
+      [
+        1921,
+        1117.5
+      ]
+    ]
+  },
+  {
+    "id": "controls",
+    "text": "Player Controls",
+    "x": 2116,
+    "y": 722,
+    "w": 141,
+    "h": 57,
+    "parent": "prog",
+    "color": "white",
+    "route": [
+      [
+        2115,
+        631.5
+      ],
+      [
+        2107,
+        631.5
+      ],
+      [
+        2107,
+        750.5
+      ],
+      [
+        2116,
+        750.5
+      ]
+    ]
+  },
+  {
+    "id": "controls_0",
+    "text": "WASD Chassis\nDirectional Movement",
+    "x": 2305,
+    "y": 665,
+    "w": 141,
+    "h": 46,
+    "parent": "controls",
+    "color": "white",
+    "route": [
+      [
+        2257,
+        750.5
+      ],
+      [
+        2282,
+        750.5
+      ],
+      [
+        2282,
+        688.0
+      ],
+      [
+        2305,
+        688.0
+      ]
+    ]
+  },
+  {
+    "id": "controls_1",
+    "text": "WASD Chassis\nSteering Physics",
+    "x": 2305,
+    "y": 722,
+    "w": 141,
+    "h": 57,
+    "parent": "controls",
+    "color": "white",
+    "route": [
+      [
+        2257,
+        750.5
+      ],
+      [
+        2282,
+        750.5
+      ],
+      [
+        2282,
+        750.5
+      ],
+      [
+        2305,
+        750.5
+      ]
+    ]
+  },
+  {
+    "id": "controls_2",
+    "text": "Mouse 360-Degree\nTurret Aiming",
+    "x": 2305,
+    "y": 791,
+    "w": 141,
+    "h": 46,
+    "parent": "controls",
+    "color": "white",
+    "route": [
+      [
+        2257,
+        750.5
+      ],
+      [
+        2282,
+        750.5
+      ],
+      [
+        2282,
+        814.0
+      ],
+      [
+        2305,
+        814.0
+      ]
+    ]
+  },
+  {
+    "id": "controls_3",
+    "text": "Mouse Cannon Firing\nTrigger",
+    "x": 2305,
+    "y": 848,
+    "w": 141,
+    "h": 46,
+    "parent": "controls",
+    "color": "white",
+    "route": [
+      [
+        2257,
+        750.5
+      ],
+      [
+        2282,
+        750.5
+      ],
+      [
+        2282,
+        871.0
+      ],
+      [
+        2305,
+        871.0
+      ]
+    ]
+  },
+  {
+    "id": "mechanics",
+    "text": "Game Mechanics",
+    "x": 2133,
+    "y": 1238,
+    "w": 142,
+    "h": 57,
+    "parent": "prog",
+    "color": "white",
+    "route": [
+      [
+        2115,
+        631.5
+      ],
+      [
+        2107,
+        631.5
+      ],
+      [
+        2107,
+        1266.5
+      ],
+      [
+        2133,
+        1266.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_0",
+    "text": "Static Perimeter\nCollision Detection",
+    "x": 2304,
+    "y": 946,
+    "w": 142,
+    "h": 57,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        974.5
+      ],
+      [
+        2304,
+        974.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_1",
+    "text": "Cover Node Collision\nDetection",
+    "x": 2304,
+    "y": 1015,
+    "w": 143,
+    "h": 45,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1037.5
+      ],
+      [
+        2304,
+        1037.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_2",
+    "text": "Tank Spawning\nMechanism",
+    "x": 2304,
+    "y": 1072,
+    "w": 143,
+    "h": 45,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1094.5
+      ],
+      [
+        2304,
+        1094.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_3",
+    "text": "Moose Wave\nSpawning Mechanism",
+    "x": 2305,
+    "y": 1129,
+    "w": 141,
+    "h": 46,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1152.0
+      ],
+      [
+        2305,
+        1152.0
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_4",
+    "text": "Area2D Environmental\nHazard Triggers",
+    "x": 2305,
+    "y": 1186,
+    "w": 141,
+    "h": 58,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1215.0
+      ],
+      [
+        2305,
+        1215.0
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_5",
+    "text": "Match Timer\nMechanism",
+    "x": 2304,
+    "y": 1256,
+    "w": 143,
+    "h": 45,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1278.5
+      ],
+      [
+        2304,
+        1278.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_6",
+    "text": "Score Tracking\nSystem",
+    "x": 2305,
+    "y": 1313,
+    "w": 141,
+    "h": 45,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1335.5
+      ],
+      [
+        2305,
+        1335.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_7",
+    "text": "Life Tracking System",
+    "x": 2305,
+    "y": 1370,
+    "w": 141,
+    "h": 46,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1393.0
+      ],
+      [
+        2305,
+        1393.0
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_8",
+    "text": "Client-Server\nSocket Connection",
+    "x": 2305,
+    "y": 1427,
+    "w": 141,
+    "h": 46,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1450.0
+      ],
+      [
+        2305,
+        1450.0
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_9",
+    "text": "Socket Network Data\nFormatting",
+    "x": 2304,
+    "y": 1485,
+    "w": 143,
+    "h": 45,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1507.5
+      ],
+      [
+        2304,
+        1507.5
+      ]
+    ]
+  },
+  {
+    "id": "mechanics_10",
+    "text": "Health Tracking\nSystem",
+    "x": 2304,
+    "y": 1540,
+    "w": 142,
+    "h": 45,
+    "parent": "mechanics",
+    "color": "white",
+    "route": [
+      [
+        2275,
+        1266.5
+      ],
+      [
+        2290,
+        1266.5
+      ],
+      [
+        2290,
+        1562.5
+      ],
+      [
+        2304,
+        1562.5
+      ]
+    ]
+  },
+  {
+    "id": "qa_0",
+    "text": "Quality\nControl/Management",
+    "x": 2614,
+    "y": 682,
+    "w": 141,
+    "h": 57,
+    "parent": "qa",
+    "color": "white",
+    "route": [
+      [
+        2613,
+        631.5
+      ],
+      [
+        2605,
+        631.5
+      ],
+      [
+        2605,
+        710.5
+      ],
+      [
+        2614,
+        710.5
+      ]
+    ]
+  },
+  {
+    "id": "qa_1",
+    "text": "Risk Assessment",
+    "x": 2613,
+    "y": 763,
+    "w": 143,
+    "h": 57,
+    "parent": "qa",
+    "color": "white",
+    "route": [
+      [
+        2613,
+        631.5
+      ],
+      [
+        2605,
+        631.5
+      ],
+      [
+        2605,
+        791.5
+      ],
+      [
+        2613,
+        791.5
+      ]
+    ]
+  },
+  {
+    "id": "qa_2",
+    "text": "Risk Management",
+    "x": 2613,
+    "y": 843,
+    "w": 143,
+    "h": 57,
+    "parent": "qa",
+    "color": "white",
+    "route": [
+      [
+        2613,
+        631.5
+      ],
+      [
+        2605,
+        631.5
+      ],
+      [
+        2605,
+        871.5
+      ],
+      [
+        2613,
+        871.5
+      ]
+    ]
+  },
+  {
+    "id": "qa_3",
+    "text": "Testing and Validation",
+    "x": 2614,
+    "y": 923,
+    "w": 142,
+    "h": 57,
+    "parent": "qa",
+    "color": "white",
+    "route": [
+      [
+        2613,
+        631.5
+      ],
+      [
+        2605,
+        631.5
+      ],
+      [
+        2605,
+        951.5
+      ],
+      [
+        2614,
+        951.5
+      ]
+    ]
+  },
+  {
+    "id": "qa_4",
+    "text": "Defect Prevention",
+    "x": 2614,
+    "y": 1003,
+    "w": 141,
+    "h": 57,
+    "parent": "qa",
+    "color": "white",
+    "route": [
+      [
+        2613,
+        631.5
+      ],
+      [
+        2605,
+        631.5
+      ],
+      [
+        2605,
+        1031.5
+      ],
+      [
+        2614,
+        1031.5
+      ]
+    ]
+  },
+  {
+    "id": "qa_5",
+    "text": "Product Reviews",
+    "x": 2614,
+    "y": 1083,
+    "w": 141,
+    "h": 57,
+    "parent": "qa",
+    "color": "white",
+    "route": [
+      [
+        2613,
+        631.5
+      ],
+      [
+        2605,
+        631.5
+      ],
+      [
+        2605,
+        1111.5
+      ],
+      [
+        2614,
+        1111.5
+      ]
+    ]
+  }
+]

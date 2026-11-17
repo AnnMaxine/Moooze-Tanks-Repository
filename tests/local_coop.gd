@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HudValues = preload("res://tests/hud_values.gd")
+
 var game: Node2D
 var failures := 0
 
@@ -56,7 +58,7 @@ func run() -> void:
 	game.player_two.turret.rotation = -PI / 2
 	game.player_two.shoot()
 	await frames(20)
-	check(game.score >= 100 and game.remaining < 35, "R3/R7/R8: P2 shot destroys ice and awards shared points")
+	check(game.score >= 100 and game.remaining < 35, "R3/R7/R8: P2 shot destroys ice and awards field points")
 	game.player_two.position = Vector2(1130, 612)
 	Input.action_press("p2_move_right")
 	await frames(30)
@@ -81,28 +83,26 @@ func run() -> void:
 	check(game.player.position == p1 and game.player_two.position == p2 and game.shots == before, "UI3: pause freezes both players")
 	game.resume_game()
 	game.player_two.take_damage(25)
-	check(game.player.health == 100 and game.player_two.health == 75 and "P2: 75 HEALTH" in game.hud.text, "UI2: independent health and live HUD")
+	check(game.player.health == 100 and game.player_two.health == 75 and HudValues.health(game, 2) == 75, "UI2: independent health and live HUD")
 	game.player_two.take_damage(100)
 	check(game.player_two.position == Vector2(1072, 612) and game.player_two.lives == 2 and game.player.lives == 3, "UI2: P2 respawns independently")
 	game.player_two.take_damage(100)
 	game.player_two.take_damage(100)
-	check(game.state == "playing" and game.player.active and not game.player_two.active, "UI4: survivor continues after teammate loses all lives")
-	for i in range(3):
-		game.player.take_damage(100)
-	await create_timer(1.2).timeout
-	check(game.state == "results" and paused, "UI4: game over when both are eliminated")
+	check(game.state == "dying" and paused and game.player.active and not game.player_two.active, "UI4: duel freezes when one player loses all lives")
+	await create_timer(2.4).timeout
+	check(game.state == "results" and game.winner_number == 1 and game.panel.has_node("VictoryConfetti"), "UI4: surviving player wins with confetti")
 	game.restart_game()
 	await frames(3)
-	check(game.local_coop and game.player_two.lives == 3 and game.player.lives == 3, "UI3/UI4: restart preserves co-op and resets both")
+	check(game.local_coop and game.player_two.lives == 3 and game.player.lives == 3, "UI3/UI4: restart preserves duel and resets both")
 	for child in game.world.get_children():
 		if child.get_script() == load("res://scripts/brick.gd") and not child.reinforced:
 			child.hit()
 	await frames(3)
-	check(game.state == "results" and game.score == 3500, "UI4: shared field completion")
+	check(game.state == "playing" and game.score == 3500, "UI4: clearing bricks does not end a duel")
 	game.show_menu()
 	await frames(3)
 	game.start_game()
 	await frames(3)
 	check(not game.local_coop and game.player_two == null, "UI1: Solo Practice remains single-player")
-	print("CO-OP TEST FAILURES: ", failures)
+	print("TWO-PLAYER TEST FAILURES: ", failures)
 	quit(1 if failures else 0)

@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HudValues = preload("res://tests/hud_values.gd")
+
 var game: Node2D
 var failures := 0
 
@@ -100,9 +102,9 @@ func run() -> void:
 	game.start_game()
 	await frames(3)
 	check(game.remaining == 35 and game.score == 0 and not paused, "Replay resets field and score")
-	check(game.player.health == 100 and game.player.lives == 3 and "100 HEALTH     3 LIVES" in game.hud.text and "SCORE: 0000 POINTS" in game.hud_stats.text, "UI2: initial HUD shows accurate vitals and score")
+	check(game.player.health == 100 and game.player.lives == 3 and HudValues.health(game) == 100 and HudValues.lives(game) == 3 and "SCORE: 0000 POINTS" in game.hud_stats.text, "UI2: initial HUD shows accurate vitals and score")
 	game.player.take_damage(25)
-	check(game.player.health == 75 and game.player.lives == 3 and "75 HEALTH" in game.hud.text, "UI2: damage updates HUD immediately")
+	check(game.player.health == 75 and game.player.lives == 3 and HudValues.health(game) == 75, "UI2: damage updates HUD immediately")
 	game.player.take_damage(0)
 	game.player.take_damage(-25)
 	check(game.player.health == 75, "Invalid damage ignored")
@@ -114,7 +116,7 @@ func run() -> void:
 	game.score = 100
 	game.player.take_damage(1000)
 	check(game.player.health == 100 and game.player.lives == 2 and game.player.position == Vector2(208, 612) and game.player.velocity == Vector2.ZERO and game.score == 100 and game.remaining == 35, "Lethal damage loses one life and respawns preserving field/score")
-	check("100 HEALTH     2 LIVES" in game.hud.text and game.state == "playing", "UI2: respawn updates HUD")
+	check(HudValues.health(game) == 100 and HudValues.lives(game) == 2 and game.state == "playing", "UI2: respawn updates HUD")
 	Input.action_press("move_right")
 	await frames(5)
 	Input.action_release("move_right")
@@ -125,7 +127,7 @@ func run() -> void:
 	check(game.state == "dying" and not game.player.visible and not is_instance_valid(game.panel), "Final death shows explosion before results")
 	await create_timer(1.2).timeout
 	check(game.player.lives == 0 and game.player.health == 0 and not game.player.active and paused and game.state == "results", "UI4: final death ends play")
-	check("0 HEALTH     0 LIVES" in game.hud.text and game.panel.find_children("*", "Label", true, false)[0].text == "GAME OVER", "UI2/UI4: final HUD and game-over message")
+	check(HudValues.health(game) == 0 and HudValues.lives(game) == 0 and game.panel.find_children("*", "Label", true, false)[0].text == "GAME OVER", "UI2/UI4: final HUD and game-over message")
 	game.player.take_damage(100)
 	check(game.player.lives == 0, "Post-game damage ignored")
 	game.start_game()

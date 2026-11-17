@@ -1,0 +1,1132 @@
+[
+  {
+    "id": "root",
+    "text": "Moooze Tanks",
+    "x": 732,
+    "y": 286,
+    "w": 158,
+    "h": 40,
+    "parent": null,
+    "color": "dark"
+  },
+  {
+    "id": "pm",
+    "text": "Project Management",
+    "x": 220,
+    "y": 361,
+    "w": 138,
+    "h": 40,
+    "parent": "root",
+    "color": "orange"
+  },
+  {
+    "id": "dev",
+    "text": "Project Development",
+    "x": 1292,
+    "y": 353,
+    "w": 142,
+    "h": 40,
+    "parent": "root",
+    "color": "orange"
+  },
+  {
+    "id": "init",
+    "text": "Initiation",
+    "x": 100,
+    "y": 421,
+    "w": 79,
+    "h": 40,
+    "parent": "pm",
+    "color": "yellow"
+  },
+  {
+    "id": "plan",
+    "text": "Planning",
+    "x": 200,
+    "y": 421,
+    "w": 79,
+    "h": 40,
+    "parent": "pm",
+    "color": "yellow"
+  },
+  {
+    "id": "exec",
+    "text": "Execution",
+    "x": 300,
+    "y": 421,
+    "w": 79,
+    "h": 40,
+    "parent": "pm",
+    "color": "yellow"
+  },
+  {
+    "id": "close",
+    "text": "Closing",
+    "x": 401,
+    "y": 421,
+    "w": 79,
+    "h": 40,
+    "parent": "pm",
+    "color": "yellow"
+  },
+  {
+    "id": "init_0",
+    "text": "Develop Design\nDocument",
+    "x": 100,
+    "y": 480,
+    "w": 80,
+    "h": 40,
+    "parent": "init",
+    "color": "white"
+  },
+  {
+    "id": "init_1",
+    "text": "Develop Scope\nStatement",
+    "x": 100,
+    "y": 540,
+    "w": 80,
+    "h": 40,
+    "parent": "init",
+    "color": "white"
+  },
+  {
+    "id": "init_2",
+    "text": "Develop Project\nCharter",
+    "x": 100,
+    "y": 600,
+    "w": 80,
+    "h": 40,
+    "parent": "init",
+    "color": "white"
+  },
+  {
+    "id": "init_3",
+    "text": "Develop Team\nBuilding Activity",
+    "x": 100,
+    "y": 660,
+    "w": 80,
+    "h": 40,
+    "parent": "init",
+    "color": "white"
+  },
+  {
+    "id": "plan_0",
+    "text": "Develop Work\nBreakdown\nStructure",
+    "x": 200,
+    "y": 480,
+    "w": 79,
+    "h": 40,
+    "parent": "plan",
+    "color": "white"
+  },
+  {
+    "id": "plan_1",
+    "text": "Develop\nEstimating\nWorksheet",
+    "x": 200,
+    "y": 538,
+    "w": 79,
+    "h": 40,
+    "parent": "plan",
+    "color": "white"
+  },
+  {
+    "id": "plan_2",
+    "text": "Develop Gantt\nChart",
+    "x": 200,
+    "y": 596,
+    "w": 79,
+    "h": 40,
+    "parent": "plan",
+    "color": "white"
+  },
+  {
+    "id": "plan_3",
+    "text": "Develop Alpha\nNarrative",
+    "x": 200,
+    "y": 654,
+    "w": 79,
+    "h": 40,
+    "parent": "plan",
+    "color": "white"
+  },
+  {
+    "id": "plan_4",
+    "text": "Develop Risk\nRegistry",
+    "x": 200,
+    "y": 712,
+    "w": 79,
+    "h": 40,
+    "parent": "plan",
+    "color": "white"
+  },
+  {
+    "id": "plan_5",
+    "text": "Develop\nKanban Board",
+    "x": 200,
+    "y": 770,
+    "w": 79,
+    "h": 40,
+    "parent": "plan",
+    "color": "white"
+  },
+  {
+    "id": "exec_0",
+    "text": "Manage Change\nLog",
+    "x": 300,
+    "y": 480,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_1",
+    "text": "Submit Change\nRequest",
+    "x": 300,
+    "y": 536,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_2",
+    "text": "Maintain Issue\nLog",
+    "x": 300,
+    "y": 592,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_3",
+    "text": "Maintain\nRequirement\nManagement\nPlan",
+    "x": 300,
+    "y": 648,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_4",
+    "text": "Submit Scrum-\nWorksheet",
+    "x": 300,
+    "y": 704,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_5",
+    "text": "Submit Status\nUpdates",
+    "x": 300,
+    "y": 760,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_6",
+    "text": "Record Meeting\nMinutes",
+    "x": 300,
+    "y": 816,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_7",
+    "text": "Submit Test Log",
+    "x": 300,
+    "y": 872,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_8",
+    "text": "Submit Prompt\nLog",
+    "x": 300,
+    "y": 928,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_9",
+    "text": "Develop Alpha\nDemo",
+    "x": 300,
+    "y": 984,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "exec_10",
+    "text": "Develop Beta\nDemo",
+    "x": 300,
+    "y": 1040,
+    "w": 80,
+    "h": 40,
+    "parent": "exec",
+    "color": "white"
+  },
+  {
+    "id": "close_0",
+    "text": "Compile full\ndocumentation\nfor project",
+    "x": 401,
+    "y": 480,
+    "w": 80,
+    "h": 40,
+    "parent": "close",
+    "color": "white"
+  },
+  {
+    "id": "close_1",
+    "text": "Review the\nproject with\nsponsors",
+    "x": 401,
+    "y": 536,
+    "w": 80,
+    "h": 40,
+    "parent": "close",
+    "color": "white"
+  },
+  {
+    "id": "close_2",
+    "text": "Submit project to\nclient/instructor",
+    "x": 401,
+    "y": 592,
+    "w": 80,
+    "h": 40,
+    "parent": "close",
+    "color": "white"
+  },
+  {
+    "id": "close_3",
+    "text": "Conduct Peer\nEvaluation",
+    "x": 401,
+    "y": 648,
+    "w": 80,
+    "h": 40,
+    "parent": "close",
+    "color": "white"
+  },
+  {
+    "id": "close_4",
+    "text": "Develop Lessons\nLearned",
+    "x": 401,
+    "y": 704,
+    "w": 80,
+    "h": 40,
+    "parent": "close",
+    "color": "white"
+  },
+  {
+    "id": "close_5",
+    "text": "Present Finished\nProduct",
+    "x": 401,
+    "y": 760,
+    "w": 80,
+    "h": 40,
+    "parent": "close",
+    "color": "white"
+  },
+  {
+    "id": "res",
+    "text": "Resources & Assets",
+    "x": 975,
+    "y": 417,
+    "w": 100,
+    "h": 40,
+    "parent": "dev",
+    "color": "yellow"
+  },
+  {
+    "id": "screens",
+    "text": "Screens",
+    "x": 1313,
+    "y": 417,
+    "w": 100,
+    "h": 40,
+    "parent": "dev",
+    "color": "yellow"
+  },
+  {
+    "id": "prog",
+    "text": "Programming",
+    "x": 1462,
+    "y": 417,
+    "w": 100,
+    "h": 40,
+    "parent": "dev",
+    "color": "yellow"
+  },
+  {
+    "id": "qa",
+    "text": "Final Testing and\nQuality Assurance",
+    "x": 1806,
+    "y": 417,
+    "w": 100,
+    "h": 40,
+    "parent": "dev",
+    "color": "yellow"
+  },
+  {
+    "id": "graphics",
+    "text": "Graphic Objects",
+    "x": 687,
+    "y": 490,
+    "w": 99,
+    "h": 32,
+    "parent": "res",
+    "color": "white"
+  },
+  {
+    "id": "audio",
+    "text": "Audio Assets",
+    "x": 976,
+    "y": 490,
+    "w": 98,
+    "h": 32,
+    "parent": "res",
+    "color": "white"
+  },
+  {
+    "id": "training",
+    "text": "Training Materials",
+    "x": 1136,
+    "y": 490,
+    "w": 99,
+    "h": 32,
+    "parent": "res",
+    "color": "white"
+  },
+  {
+    "id": "sprites",
+    "text": "Tank Sprites &\nAnimations",
+    "x": 590,
+    "y": 547,
+    "w": 73,
+    "h": 36,
+    "parent": "graphics",
+    "color": "white"
+  },
+  {
+    "id": "sprites_0",
+    "text": "Tank 1 Chassis\nSprite",
+    "x": 590,
+    "y": 601,
+    "w": 73,
+    "h": 33,
+    "parent": "sprites",
+    "color": "white"
+  },
+  {
+    "id": "sprites_1",
+    "text": "Tank 2 Chassis\nSprite",
+    "x": 590,
+    "y": 647,
+    "w": 73,
+    "h": 33,
+    "parent": "sprites",
+    "color": "white"
+  },
+  {
+    "id": "sprites_2",
+    "text": "Tank 1 Turret\nSprite",
+    "x": 590,
+    "y": 693,
+    "w": 73,
+    "h": 33,
+    "parent": "sprites",
+    "color": "white"
+  },
+  {
+    "id": "sprites_3",
+    "text": "Tank 2 Turret\nSprite",
+    "x": 590,
+    "y": 739,
+    "w": 73,
+    "h": 33,
+    "parent": "sprites",
+    "color": "white"
+  },
+  {
+    "id": "sprites_4",
+    "text": "Tank Explosion",
+    "x": 590,
+    "y": 785,
+    "w": 73,
+    "h": 33,
+    "parent": "sprites",
+    "color": "white"
+  },
+  {
+    "id": "sprites_5",
+    "text": "Tank Shell\nProjectile",
+    "x": 590,
+    "y": 831,
+    "w": 73,
+    "h": 33,
+    "parent": "sprites",
+    "color": "white"
+  },
+  {
+    "id": "env",
+    "text": "Environment\nObjects",
+    "x": 699,
+    "y": 546,
+    "w": 75,
+    "h": 36,
+    "parent": "graphics",
+    "color": "white"
+  },
+  {
+    "id": "env_0",
+    "text": "Destructible\nWooden Crate\nObstacle",
+    "x": 699,
+    "y": 599,
+    "w": 75,
+    "h": 41,
+    "parent": "env",
+    "color": "white"
+  },
+  {
+    "id": "env_1",
+    "text": "Destructible\nBrick Wall\nObstacle",
+    "x": 699,
+    "y": 653,
+    "w": 75,
+    "h": 41,
+    "parent": "env",
+    "color": "white"
+  },
+  {
+    "id": "env_2",
+    "text": "Indestructible\nSolid\nPerimeter Wall",
+    "x": 699,
+    "y": 707,
+    "w": 75,
+    "h": 41,
+    "parent": "env",
+    "color": "white"
+  },
+  {
+    "id": "env_3",
+    "text": "Indestructible\nConcrete Pillar",
+    "x": 699,
+    "y": 761,
+    "w": 75,
+    "h": 41,
+    "parent": "env",
+    "color": "white"
+  },
+  {
+    "id": "env_4",
+    "text": "Moving Moose\nEntity",
+    "x": 699,
+    "y": 815,
+    "w": 75,
+    "h": 41,
+    "parent": "env",
+    "color": "white"
+  },
+  {
+    "id": "gui",
+    "text": "GUI & Buttons",
+    "x": 811,
+    "y": 546,
+    "w": 75,
+    "h": 36,
+    "parent": "graphics",
+    "color": "white"
+  },
+  {
+    "id": "buttons",
+    "text": "Buttons",
+    "x": 821,
+    "y": 591,
+    "w": 75,
+    "h": 28,
+    "parent": "gui",
+    "color": "white"
+  },
+  {
+    "id": "buttons_0",
+    "text": "Host Game\nButton",
+    "x": 829,
+    "y": 627,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "buttons_1",
+    "text": "Join Game\nButton",
+    "x": 829,
+    "y": 670,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "buttons_2",
+    "text": "Solo Practice\nButton",
+    "x": 829,
+    "y": 713,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "buttons_3",
+    "text": "Controls Button",
+    "x": 829,
+    "y": 756,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "buttons_4",
+    "text": "Help Button",
+    "x": 829,
+    "y": 799,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "buttons_5",
+    "text": "Credits Button",
+    "x": 829,
+    "y": 842,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "buttons_6",
+    "text": "Exit Button",
+    "x": 829,
+    "y": 885,
+    "w": 76,
+    "h": 33,
+    "parent": "buttons",
+    "color": "white"
+  },
+  {
+    "id": "guicontrols",
+    "text": "GUI Controls",
+    "x": 821,
+    "y": 931,
+    "w": 75,
+    "h": 28,
+    "parent": "gui",
+    "color": "white"
+  },
+  {
+    "id": "guicontrols_0",
+    "text": "Player Life\nCounter UI",
+    "x": 829,
+    "y": 971,
+    "w": 76,
+    "h": 34,
+    "parent": "guicontrols",
+    "color": "white"
+  },
+  {
+    "id": "guicontrols_1",
+    "text": "Match Score\nCounter UI",
+    "x": 829,
+    "y": 1016,
+    "w": 76,
+    "h": 34,
+    "parent": "guicontrols",
+    "color": "white"
+  },
+  {
+    "id": "guicontrols_2",
+    "text": "Pre-Moose\nHazard Warning\nVisual",
+    "x": 829,
+    "y": 1061,
+    "w": 76,
+    "h": 34,
+    "parent": "guicontrols",
+    "color": "white"
+  },
+  {
+    "id": "guicontrols_3",
+    "text": "Player Health\nCounter",
+    "x": 829,
+    "y": 1106,
+    "w": 76,
+    "h": 34,
+    "parent": "guicontrols",
+    "color": "white"
+  },
+  {
+    "id": "audio_0",
+    "text": "Background Music",
+    "x": 993,
+    "y": 534,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_1",
+    "text": "Tank Engine Idle SFX",
+    "x": 993,
+    "y": 575,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_2",
+    "text": "Tank Engine\nDriving SFX",
+    "x": 993,
+    "y": 616,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_3",
+    "text": "Cannon Firing SFX",
+    "x": 993,
+    "y": 657,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_4",
+    "text": "Moose Blast SFX",
+    "x": 993,
+    "y": 698,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_5",
+    "text": "Moose Roar SFX",
+    "x": 993,
+    "y": 739,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_6",
+    "text": "Obstacle Destruction\nSFX",
+    "x": 993,
+    "y": 780,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_7",
+    "text": "Tank Explosion SFX",
+    "x": 993,
+    "y": 821,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "audio_8",
+    "text": "Match Victory SFX",
+    "x": 993,
+    "y": 862,
+    "w": 100,
+    "h": 32,
+    "parent": "audio",
+    "color": "white"
+  },
+  {
+    "id": "codex",
+    "text": "Codex",
+    "x": 1146,
+    "y": 535,
+    "w": 99,
+    "h": 20,
+    "parent": "training",
+    "color": "white"
+  },
+  {
+    "id": "codex_0",
+    "text": "Setup",
+    "x": 1158,
+    "y": 566,
+    "w": 98,
+    "h": 30,
+    "parent": "codex",
+    "color": "white"
+  },
+  {
+    "id": "codex_1",
+    "text": "Training",
+    "x": 1158,
+    "y": 601,
+    "w": 98,
+    "h": 30,
+    "parent": "codex",
+    "color": "white"
+  },
+  {
+    "id": "codex_2",
+    "text": "Developer Instructions\n(agent.md)",
+    "x": 1158,
+    "y": 636,
+    "w": 98,
+    "h": 30,
+    "parent": "codex",
+    "color": "white"
+  },
+  {
+    "id": "godot",
+    "text": "Godot",
+    "x": 1146,
+    "y": 678,
+    "w": 99,
+    "h": 20,
+    "parent": "training",
+    "color": "white"
+  },
+  {
+    "id": "godot_0",
+    "text": "Setup",
+    "x": 1158,
+    "y": 709,
+    "w": 98,
+    "h": 24,
+    "parent": "godot",
+    "color": "white"
+  },
+  {
+    "id": "godot_1",
+    "text": "Training",
+    "x": 1158,
+    "y": 740,
+    "w": 98,
+    "h": 24,
+    "parent": "godot",
+    "color": "white"
+  },
+  {
+    "id": "screens_0",
+    "text": "Main Menu Screen",
+    "x": 1327,
+    "y": 476,
+    "w": 100,
+    "h": 40,
+    "parent": "screens",
+    "color": "white"
+  },
+  {
+    "id": "screens_1",
+    "text": "Gameplay HUD\nOverlay",
+    "x": 1327,
+    "y": 532,
+    "w": 100,
+    "h": 40,
+    "parent": "screens",
+    "color": "white"
+  },
+  {
+    "id": "screens_2",
+    "text": "Pause Overlay\nScreen",
+    "x": 1327,
+    "y": 588,
+    "w": 100,
+    "h": 40,
+    "parent": "screens",
+    "color": "white"
+  },
+  {
+    "id": "screens_3",
+    "text": "Match Results/\nSummary Screen",
+    "x": 1327,
+    "y": 644,
+    "w": 100,
+    "h": 40,
+    "parent": "screens",
+    "color": "white"
+  },
+  {
+    "id": "screens_4",
+    "text": "Controls Screen",
+    "x": 1327,
+    "y": 700,
+    "w": 100,
+    "h": 40,
+    "parent": "screens",
+    "color": "white"
+  },
+  {
+    "id": "screens_5",
+    "text": "Help Screen",
+    "x": 1327,
+    "y": 756,
+    "w": 100,
+    "h": 40,
+    "parent": "screens",
+    "color": "white"
+  },
+  {
+    "id": "controls",
+    "text": "Player Controls",
+    "x": 1462,
+    "y": 500,
+    "w": 99,
+    "h": 40,
+    "parent": "prog",
+    "color": "white"
+  },
+  {
+    "id": "controls_0",
+    "text": "WASD Chassis\nDirectional Movement",
+    "x": 1593,
+    "y": 460,
+    "w": 100,
+    "h": 33,
+    "parent": "controls",
+    "color": "white"
+  },
+  {
+    "id": "controls_1",
+    "text": "WASD Chassis\nSteering Physics",
+    "x": 1593,
+    "y": 500,
+    "w": 100,
+    "h": 33,
+    "parent": "controls",
+    "color": "white"
+  },
+  {
+    "id": "controls_2",
+    "text": "Mouse 360-Degree\nTurret Aiming",
+    "x": 1593,
+    "y": 540,
+    "w": 100,
+    "h": 33,
+    "parent": "controls",
+    "color": "white"
+  },
+  {
+    "id": "controls_3",
+    "text": "Mouse Cannon Firing\nTrigger",
+    "x": 1593,
+    "y": 580,
+    "w": 100,
+    "h": 33,
+    "parent": "controls",
+    "color": "white"
+  },
+  {
+    "id": "mechanics",
+    "text": "Game Mechanics",
+    "x": 1474,
+    "y": 856,
+    "w": 99,
+    "h": 40,
+    "parent": "prog",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_0",
+    "text": "Static Perimeter\nCollision Detection",
+    "x": 1593,
+    "y": 654,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_1",
+    "text": "Cover Node Collision\nDetection",
+    "x": 1593,
+    "y": 694,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_2",
+    "text": "Tank Spawning\nMechanism",
+    "x": 1593,
+    "y": 734,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_3",
+    "text": "Moose Wave\nSpawning Mechanism",
+    "x": 1593,
+    "y": 774,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_4",
+    "text": "Area2D Environmental\nHazard Triggers",
+    "x": 1593,
+    "y": 814,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_5",
+    "text": "Match Timer\nMechanism",
+    "x": 1593,
+    "y": 854,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_6",
+    "text": "Score Tracking\nSystem",
+    "x": 1593,
+    "y": 894,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_7",
+    "text": "Life Tracking System",
+    "x": 1593,
+    "y": 934,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_8",
+    "text": "Client-Server\nSocket Connection",
+    "x": 1593,
+    "y": 974,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_9",
+    "text": "Socket Network Data\nFormatting",
+    "x": 1593,
+    "y": 1014,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "mechanics_10",
+    "text": "Health Tracking\nSystem",
+    "x": 1593,
+    "y": 1054,
+    "w": 100,
+    "h": 33,
+    "parent": "mechanics",
+    "color": "white"
+  },
+  {
+    "id": "qa_0",
+    "text": "Quality\nControl/Management",
+    "x": 1806,
+    "y": 472,
+    "w": 100,
+    "h": 40,
+    "parent": "qa",
+    "color": "white"
+  },
+  {
+    "id": "qa_1",
+    "text": "Risk Assessment",
+    "x": 1806,
+    "y": 528,
+    "w": 100,
+    "h": 40,
+    "parent": "qa",
+    "color": "white"
+  },
+  {
+    "id": "qa_2",
+    "text": "Risk Management",
+    "x": 1806,
+    "y": 584,
+    "w": 100,
+    "h": 40,
+    "parent": "qa",
+    "color": "white"
+  },
+  {
+    "id": "qa_3",
+    "text": "Testing and Validation",
+    "x": 1806,
+    "y": 640,
+    "w": 100,
+    "h": 40,
+    "parent": "qa",
+    "color": "white"
+  },
+  {
+    "id": "qa_4",
+    "text": "Defect Prevention",
+    "x": 1806,
+    "y": 696,
+    "w": 100,
+    "h": 40,
+    "parent": "qa",
+    "color": "white"
+  },
+  {
+    "id": "qa_5",
+    "text": "Product Reviews",
+    "x": 1806,
+    "y": 752,
+    "w": 100,
+    "h": 40,
+    "parent": "qa",
+    "color": "white"
+  }
+]

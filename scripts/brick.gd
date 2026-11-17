@@ -1,8 +1,10 @@
 extends StaticBody2D
 
 signal destroyed(at: Vector2)
+signal powerup_released(kind: String, recipient: Node)
 var reinforced := false
 var broken := false
+var powerup := ""
 
 func _ready() -> void:
 	collision_layer = 1
@@ -19,11 +21,13 @@ func _ready() -> void:
 		sprite.position.y = -8.0
 	add_child(sprite)
 
-func hit() -> void:
+func hit(recipient: Node = null) -> void:
 	if reinforced or broken:
 		return
 	broken = true
 	hide()
 	set_deferred("collision_layer", 0)
+	if not powerup.is_empty() and is_instance_valid(recipient):
+		powerup_released.emit(powerup, recipient)
 	destroyed.emit(global_position)
 	queue_free()

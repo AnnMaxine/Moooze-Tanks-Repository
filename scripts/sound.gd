@@ -5,7 +5,7 @@ var voices: Dictionary = {}
 var last_played: Dictionary = {}
 var contact_roar := false
 const CONTACT_ROAR_DB := -9.0
-const LEVELS := {"shoot": -16.0, "brick": -12.0, "explosion": -10.0, "click": -18.0, "engine": -21.0, "idle": -28.0, "music": -27.0, "moose_blast": -20.0, "moose_roar": -25.0, "victory": -20.0}
+const LEVELS := {"shoot": -16.0, "brick": -12.0, "explosion": -10.0, "click": -18.0, "engine": -21.0, "idle": -28.0, "music": -27.0, "moose_blast": -20.0, "moose_roar": -25.0, "victory": -20.0, "defeat": -16.0}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -64,12 +64,12 @@ func set_loop(sound: String, enabled: bool) -> void:
 	else:
 		voice.stop()
 
-func update_ambience(playing: bool, moving: bool, idle: bool, paused: bool) -> void:
+func update_ambience(playing: bool, moving: bool, idle: bool, paused: bool, music_enabled: bool = true) -> void:
 	set_loop("engine", playing and moving)
 	set_loop("idle", playing and idle)
 	voices.music.stream_paused = paused
 	if not paused:
-		set_loop("music", true)
+		set_loop("music", music_enabled)
 
 func stop_gameplay(preserve: Array = []) -> void:
 	for sound in voices:

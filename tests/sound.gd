@@ -21,7 +21,7 @@ func run() -> void:
 	game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	await process_frame
-	check(game.sound.voices.size() == 10, "Ten original audio streams loaded")
+	check(game.sound.voices.size() == 11, "Eleven audio streams including defeat loaded")
 	game.sound.play("click")
 	check(game.sound.voices.click.playing, "Button click playback starts")
 	game.start_game(true)
@@ -73,24 +73,24 @@ func run() -> void:
 	game.sound.set_volume(0.5)
 	game.sound.play("shoot")
 	check(game.sound.voices.shoot.playing and game.sound.voices.shoot.volume_db < -20, "Unmute restores attenuated playback")
+	game.start_game()
 	game.finish_game()
 	check(game.sound.voices.victory.playing and not game.sound.voices.engine.playing, "Field clear plays victory and stops engines")
 	game.restart_game()
 	check(not game.sound.voices.victory.playing, "Restart clears victory")
 	game.player.lives = 1
-	game.player_two.lives = 1
-	for tank in [game.player, game.player_two]:
+	for tank in [game.player]:
 		tank.health = tank.MOOSE_DAMAGE
 		tank.moose_cooldown = 0
 		tank.take_moose_hit(Vector2.RIGHT)
 	await process_frame
 	check(game.state == "dying" and game.sound.voices.explosion.playing and game.sound.voices.moose_roar.playing, "Final moose hit plays explosion and roar before Game Over")
-	check(not game.player.visible and not game.player_two.visible and not is_instance_valid(game.panel), "Destroyed tanks disappear while explosion is unobscured")
+	check(not game.player.visible and not is_instance_valid(game.panel), "Destroyed tank disappears while explosion is unobscured")
 	var final_time = game.elapsed
 	await create_timer(1.2).timeout
 	check(game.state == "results" and not game.sound.voices.explosion.playing and game.elapsed == final_time, "Game Over waits for explosion with match time frozen")
 	check(game.world.get_children().filter(func(node): return node.get_script() == load("res://scripts/tank_explosion.gd")).is_empty(), "Explosion effects clean up after defeat")
-	check(not game.sound.voices.victory.playing and not game.sound.voices.idle.playing, "Defeat never plays victory or leaves idle looping")
+	check(game.sound.voices.defeat.playing and not game.sound.voices.victory.playing and not game.sound.voices.idle.playing and not game.sound.voices.music.playing, "Game Over plays sad cue without victory, idle or background music")
 	game.restart_game()
 	game.remaining = 1
 	game.sound.last_played.erase("brick")
