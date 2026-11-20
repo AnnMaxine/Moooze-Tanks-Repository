@@ -519,3 +519,122 @@ Entries 28-32 record requests and tool results visible in this conversation. Dat
 - **Changes:** Doubled projectile artwork scale while preserving heavy shots' existing 1.6x relative size and orange tint. Raised existing firing audio from -16 to -10 dB; retained volume/mute and two-voice playback. No changes to speed, lifetime, cadence, damage, hit detection, movement, power-ups or other gameplay. Updated existing volume assertion for the new mix and added --snowballs preview option. Original SVG/audio assets preserved.
 - **Actual checks/results:** Read ReqMgmtPlan.docx, AGENTS.md and relevant project, scene, scripts, assets, input/collision setup and tests; initial git status was clean. Installed Godot reported 4.7.2. Editor import exited 0 without parser/script errors. All 33 headless smoke checks and 35 graphical sound checks passed. Graphical snowball preview exited 0 and was visually inspected for normal and heavy projectiles. git diff --check passed.
 - **Limitations:** Existing user-log, root-certificate and editor-settings access errors remain; preview reported four ObjectDB instances leaked at shutdown. Automated playback checks do not verify physical speaker output or perceived loudness. No full human playtest or source acceptance-status changes.
+
+
+### Entry 42 - Replacement destructible bricks
+
+- Date: November 20, 2026.
+- Request summary: when a destructible brick is shot, create another elsewhere, with hidden power-ups in some; preserve other gameplay. User confirmed: Keep the 35-brick goal.
+- Requirements/files: R4/R7/R8/R9, UI2/UI4/UI6/UI8/UI9. scripts/game.gd; tests/brick_respawn.gd and UID; README.md, status.md, prompt_log.md. Branch feat/respawning-bricks.
+- Changes: deferred safe randomized replacement; existing hidden power-ups with 8/35 chance; preserve initial reward distribution and 35-destruction Solo ending; prevent batch-hit score overflow after goal; guard against stale replacements on restart. Other gameplay untouched.
+- Actual checks: read requirements document and project instructions; engine 4.7.2; editor import without parser errors. Passed 8 focused, 33 smoke, 45 power-up and 16 co-op assertions. First smoke run exposed score overflow, corrected and rerun successfully. Mechanics: 19 passes and one Results freeze match clock failure, reproduced on original HEAD and left unchanged. Removed unrelated generated import changes.
+- Limits: existing log/root-certificate/editor-settings access errors, shutdown leak warnings. No graphical/human playtest or source acceptance-status changes; changes local, not pushed.
+
+
+## Duel-only replacement correction - November 20, 2026
+
+User clarified that Solo Practice must not replace destroyed bricks. Replacement scheduling and execution now require Local Co-op/Duel. Hidden rewards and all other gameplay preserved. Updated scripts/game.gd and tests/brick_respawn.gd; README.md/status.md/prompt_log.md maintained. Requirements R4/R7/R8/R9, UI2/UI4/UI6/UI8/UI9. Godot 4.7.2: 10 respawn, 33 smoke, 45 power-up and 16 co-op checks passed (104 total), using --headless --path . --script res://tests/<suite>.gd. New assertions cover Solo no-replacement and pending Duel replacements across a switch to Solo. Existing log/certificate errors and 2-5 shutdown leak warnings remain. No graphical/human playtest. This corrects the earlier replacement-in-Solo description; source acceptance statuses unchanged.
+
+
+## Both-mode brick replacement correction - November 20, 2026
+
+Request summary: user reports missing replacements and now explicitly requests brick replacement at another location in BOTH Solo and Local Co-op. Supersedes the earlier Solo exclusion. Removed mode guards in scripts/game.gd; preserved safe placement, hidden reward chance, 35-destruction Solo goal and all other gameplay. Expanded tests/brick_respawn.gd to fire actual tank projectiles in Solo, Co-op P1 and Co-op P2 and check one visible replacement elsewhere. README.md/status.md/prompt_log.md updated. Requirements R4/R7/R8/R9, UI2/UI4/UI6/UI8/UI9. Branch fix/brick-replacement-both-modes.
+
+Actual checks in Godot 4.7.2: 16 respawn, 33 smoke, 45 power-up and 16 co-op assertions passed (110 total), using --headless --path . --script res://tests/<suite>.gd. No script/parser errors in these runs; existing log/certificate access errors and 2-4 ObjectDB shutdown leak warnings remain. No human playtest. Changes are local in C:/Users/ANNAMARIE/Desktop/Codexdemo/Moooze-Tanks-Repository, not pushed. Earlier mode-exclusion entries are historical and superseded by this clarification.
+
+
+## Credits correction - November 20, 2026
+
+Request summary: remove JDAT STUDIOS heading from Main Menu Credits; both Olaniyi Tolulope and Anna-Marie Oyemiren should be Business Analyst & Product Designer. Replaced heading with CREDITS, kept names intact, updated both displayed roles and README team table. Updated existing UI assertion. Files: scripts/game.gd, tests/ui.gd, README.md, status.md, prompt_log.md. Requirements UI1/UI6/UI8/UI9; no gameplay changes. Branch fix/credits-roles. Actual verification: graphical Godot 4.7.2 tests/ui.gd passed with UI TEST FAILURES: 0, including updated credits and menu navigation. Initial headless attempt could not drive mouse navigation, failed and was stopped; graphical rerun succeeded. No full human playtest. Existing unrelated working changes preserved.
+
+
+## Team credits layout - November 20, 2026
+
+Request summary: Credits should list @Studio - Client-Side Development with Olaniyi Tolulope and Anna-Marie Oyemiren underneath, no roles; Server-side project: Ctrl-Alt-Elite followed by Rica Vicente, Jaden Dijkstra, Harsh Patel and Malik Sultan; end with Assets generated by Codex. Updated scripts/game.gd and tests/ui.gd; removed superseded partner/artwork line. Requirements UI1/UI6/UI8/UI9. No gameplay changes. Graphical Godot 4.7.2 check: --path . --script res://tests/ui.gd, exit 0 and UI TEST FAILURES: 0. No human playtest. Supersedes earlier role descriptions for the on-screen Credits only. Branch fix/credits-team-list; changes local, not pushed.
+
+
+## Alphabetical credits correction - November 20, 2026
+
+Request summary: put Ctrl-Alt-Elite before Server-side project and alphabetize names. Credits now reads Ctrl-Alt-Elite - Server-side project, with Harsh Patel, Jaden Dijkstra, Malik Sultan, Rica Vicente. Client names are Anna-Marie Oyemiren then Olaniyi Tolulope. Names sorted by first name within each team. Updated scripts/game.gd and tests/ui.gd; README.md/status.md/prompt_log.md maintained (UI1/UI6/UI8/UI9). Graphical Godot 4.7.2 --path . --script res://tests/ui.gd exited 0, UI TEST FAILURES: 0. No gameplay changes or human playtest; local changes not pushed. Supersedes prior displayed order.
+
+
+## Server credits order - November 20, 2026
+
+Request summary: put Jaden Dijkstra first in the server-side list. Updated scripts/game.gd and existing tests/ui.gd expected text to Jaden Dijkstra, Harsh Patel, Malik Sultan, Rica Vicente; other credits unchanged. UI1/UI6/UI8/UI9. README.md/status.md/prompt_log.md updated. Verified exact ordered text in script and UI expectation; git diff --check passed. Graphical Godot 4.7.2 --path . --script res://tests/ui.gd passed (exit 0, UI TEST FAILURES: 0); no gameplay changes. Local changes not pushed.
+
+
+## Direct Solo and multiplayer lobby - November 20, 2026
+
+Request summary: remove Play/Choose Your Crew and main-menu Help; add Solo and Multiplayer, Solo goes directly into its game and Multiplayer opens a lobby based on supplied screenshot, styled consistently with main menu. Implemented direct Solo, matching frost-blue/evergreen lobby with Host/Join/Exit/List Games, empty available-games list and inactive game ID field. Exit returns to main menu; existing local duel is accessible from lobby to preserve gameplay. Help remains under Controls. There is no networking/discovery implementation in this repository: Host/Join/List Games and address entry are clearly unavailable pending the server project, requested from user. No invented sessions, user names, IPs or server protocols.
+
+Files: scripts/game.gd, tests/ui.gd, tests/preview.gd, tests/menu-preview.png, tests/lobby-preview.png; README.md/status.md/prompt_log.md. Requirements UI1/UI5/UI6/UI8/UI9. Godot 4.7.2 smoke passed 33 checks; graphical --path . --script res://tests/ui.gd exited 0, UI TEST FAILURES: 0; screenshot command --path . --script res://tests/preview.gd -- --lobby exited 0. Inspected both screenshots: layout fits and theme matches. Preview reported two ObjectDB shutdown leaks; headless smoke has existing log/certificate errors and two leaks. No full human playtest, no networking verification. Earlier Play/crew-menu descriptions superseded. Branch feat/direct-solo-multiplayer-lobby, changes local and not pushed.
+
+
+## Lobby branding update - November 20, 2026
+
+Request summary: remove List Games, add Moooze Tanks logo to lobby and remove slash between game name and Multiplayer Lobby. Updated scripts/game.gd to reuse original menu logo at 86 pixels and show MOOOZE TANKS MULTIPLAYER LOBBY. Available-games panel retained; Host/Join remain unavailable pending server integration. Updated tests/ui.gd and refreshed tests/lobby-preview.png using tests/preview.gd -- --lobby. UI1/UI6/UI8/UI9; no gameplay changes. Godot 4.7.2 graphical UI suite passed, exit 0 / UI TEST FAILURES: 0. Graphical preview exited 0 and was visually inspected for logo, title, removed button and viewport fit. git diff --check passed for changed text files. README.md/status.md/prompt_log.md updated. Branch fix/lobby-logo-title; local, not pushed.
+
+
+## Tank overhead vitals and server user ID - November 20, 2026
+
+Request summary: move each player health/lives above their tank; user ID above health bar and a heart with lives count beside it. Added player-owned upright, non-interactive overhead UI and user_id string property (server assigns tank.user_id; local fallback Player 1/Player 2 until supplied). Label truncates long IDs with ellipsis and keeps full text as tooltip. Health bar max 100 tracks exact current health; heart count updates on life loss. Existing damage/healing/respawn/elimination logic unchanged. Removed fixed heart/fuel HUD rows; score/timer/power-ups/pause remain in top HUD. Help text updated. No network protocol or authoritative server health contract invented; server integration remains pending. UI2/UI3/UI5/UI6/UI8/UI9.
+
+Files: scripts/player.gd, scripts/game.gd; tests/tank_vitals.gd, tests/hud_values.gd, tests/smoke.gd, tests/ui.gd, tests/preview.gd, tests/tank-vitals-preview.png; README.md/status.md/prompt_log.md. Godot 4.7.2: 17 overhead-vitals, 33 smoke, 45 power-up, 16 co-op and 16 brick-respawn checks passed. Graphical UI suite --path . --script res://tests/ui.gd passed, UI TEST FAILURES: 0. Preview --path . --script res://tests/preview.gd -- --tank-vitals exited 0 and was visually inspected for distinct IDs, 65%/40% health and 2/3 lives. First focused run had an incorrect Control.global_rotation test reference, fixed; smoke exact-child-count assertion replaced with explicit collision/chassis/turret checks for added UI. Existing headless log/certificate errors and 2-10 shutdown leak warnings remain; no full human playtest. Historical gas-tank HUD descriptions superseded. Local branch feat/tank-overhead-vitals; not pushed.
+
+
+## Reference health-bar layout - November 20, 2026
+
+Request summary: heart on LEFT of health bar; health display should match supplied screenshot. Changed scripts/player.gd: green 112x28 health bar with red centered user ID inside, percentage hidden; heart/lives to left. Existing dynamic fill, ID assignment and gameplay preserved. Updated tests/tank_vitals.gd assertions and tests/tank-vitals-preview.png. Requirements UI2/UI6/UI8/UI9. Godot 4.7.2: --headless --path . --script res://tests/tank_vitals.gd passed 19 checks; smoke.gd passed 33. Graphical --path . --script res://tests/preview.gd -- --tank-vitals exited 0 and screenshot inspected for red ID in bar, left heart and partial health. Existing headless log/certificate errors and two shutdown leak warnings remain; no human playtest. README.md/status.md/prompt_log.md updated. Supersedes earlier ID-above-bar/right-heart layout. Branch fix/tank-vitals-reference-layout; local changes not pushed.
+
+
+## Icy health nameplate and removal of Help - November 20, 2026
+
+Request summary: match newly uploaded icy Player 1 health-bar reference; remove Help everywhere including Controls. Updated player overhead vitals with original SVG snowy navy nameplate, cyan antlers/trim, white user ID and bright green striped health fill below; heart/lives remain LEFT per prior request. Live health, server-assigned user_id, lives and gameplay preserved. Removed show_help/show_powerup_help screens and Controls Help link, and their preview/test calls. Controls screen retained. Historical documentation/screenshots remain as history, not live Help UI.
+
+Files: scripts/player.gd, scripts/game.gd; assets/vitals_plate.svg, assets/vitals_fill.svg and Godot import metadata; tests/tank_vitals.gd, tests/ui.gd, tests/smoke.gd, tests/preview.gd, tests/tank-vitals-preview.png; README.md/status.md/prompt_log.md. UI2/UI5/UI6/UI8/UI9. Godot 4.7.2 editor import exited 0 without parser errors; 19 tank-vitals and 33 smoke checks passed with --headless --path . --script res://tests/<suite>.gd. Graphical tests/ui.gd exited 0 with UI TEST FAILURES: 0, checking Controls and absence of Help screens. Graphical preview --path . --script res://tests/preview.gd -- --tank-vitals exited 0; final image inspected for snowy nameplate, live partial fill, cyan bottom edge and left heart. Adjusted bar size after styles to avoid default-theme height obscuring trim. Search found no Help/show_help/show_powerup_help in gameplay scripts. git diff --check passed. Existing headless log/certificate/editor-settings errors and 2-9 shutdown leak warnings remain; no full human playtest. Supersedes earlier Help availability and plain red-ID bar descriptions. Local branch feat/icy-healthbar-remove-help; not pushed.
+
+
+## Shared icy winter menu theme - November 20, 2026
+
+Request summary: style main menu like uploaded winter reference and apply matching design to lobby/other screens and gameplay HUD without changing the game. Adapted portrait reference to existing 1280x800 landscape viewport: snowy navy/cyan frame, illustrated mountains/pines/snow/tank backdrop, retained original logo, bold title, prominent Solo/Multiplayer cards with tank icons/arrows, and Controls/Sound/Credits/Exit icons. Shared panel/button styling applies to lobby, Controls, Sound, Credits, pause/results and top gameplay HUD. Tank overhead health/lives and gameplay remain unchanged. Help remains removed. Existing callbacks, button names/accessibility, volume, score/timer, controls and network-disabled state preserved. Copy describes current game honestly rather than promising AI combat or connected networking from reference.
+
+Files: scripts/game.gd; new original assets/menu_winter.svg, menu_panel.svg, menu_button.svg, menu_tank.svg, menu_controls.svg, menu_sound.svg, menu_credits.svg, menu_exit.svg and imports; tests/ui.gd, tests/preview.gd and refreshed menu/lobby/play/controls/sound/credits/pause/results/game/coop previews. README.md/status.md/prompt_log.md maintained. Requirements UI1/UI2/UI3/UI4/UI5/UI6/UI8/UI9. No physics, damage, movement, spawning or networking changes. Branch feat/icy-menu-theme, local and not pushed.
+
+Actual verification: Godot 4.7.2 editor import exited 0 without parser/script errors. Graphical --path . --script res://tests/ui.gd exited 0, UI TEST FAILURES: 0, including new menu bounds and logo lookup assertions. Headless smoke (33), tank_vitals (19) and brick_respawn (16) checks passed. Full graphical tests/preview.gd exited 0; inspected menu, lobby, Controls, Sound, Credits, pause, results and gameplay HUD captures for fit/readability/consistent styling. git diff --check passed. Existing headless certificate/log/editor-settings errors and 2-5 shutdown leaks remain; no full human playtest. Original reference is visual guidance, adapted with code-native SVG artwork and existing logo, not a pixel-identical portrait reproduction. Earlier evergreen-menu styling descriptions superseded.
+
+
+## Angry moose warning and sketch vitals - November 20, 2026
+
+Request summary: shot moose should visibly shake angrily with steam from ears before charging next available tank; overhead health/lives should match supplied heart-and-bar sketch and become translucent while moving near bricks/moose. R7/R8/R9, UI2/UI3/UI6/UI8/UI9. scripts/moose.gd now has a 0.8-second stationary wind-up, sprite shake/red tint, outlined rising steam from both ears, pulsing warning ring and exclamation, then existing 300px/s charge with full two-second duration. Retargets nearest active tank; repeated hits cannot endlessly restart warning. Pause freezes warning. scripts/player.gd now shows lives number inside large left heart, user ID above adjacent green health bar. Smoothly fades vitals to 35% opacity while moving within 100px of an intact brick (including perimeter) or moose; stopping/leaving proximity restores full opacity. Existing health/lives values, scoring, movement, projectile rules and number of moose preserved. Wind-up is the requested new pre-charge delay.
+
+Files: scripts/moose.gd, scripts/player.gd; assets/vitals_heart.svg and import; tests/moose_charge.gd, tests/tank_vitals.gd, tests/preview.gd; tests/angry-moose-preview.png and tests/translucent-vitals-preview.png. README.md/status.md/prompt_log.md updated. Branch feat/angry-moose-compact-vitals, local not pushed.
+
+Actual validation in Godot 4.7.2: 27 tank-vitals, 33 smoke, 45 power-up, 19 forest checks passed, including 30-second containment. Graphical moose_charge suite passed 21 assertions, UI suite exited 0 with UI TEST FAILURES: 0. Commands use --headless --path . --script res://tests/<suite>.gd for non-graphical checks; graphical --path . --script res://tests/moose_charge.gd and tests/ui.gd. Preview --path . --script res://tests/preview.gd -- --angry-moose exited 0; final angry/steam and translucent-vitals images inspected. Initial type-inference parser error fixed with explicit bool before final successful runs. Preview restart sequence corrected to avoid trying to remove an already detached world. Existing headless logs/certificate/editor-settings access errors and 2-9 ObjectDB shutdown warnings remain. No full human balance/audio playtest. Supersedes prior icy nameplate layout with latest sketch.
+
+
+## Eight-second power-up duration - November 20, 2026
+
+Request summary: all acquired power-ups should stay on tanks for 5-10 seconds. Default chosen: eight gameplay seconds for every power-up (existing shield/speed duration). Heavy is now time-based, providing heavy shots for the full eight seconds instead of a five-round limit; cadence, damage and blast radius unchanged. Health still heals 35 immediately up to 100 and never revives/adds lives; visible recovery heart/ring now lasts eight seconds and expires without removing healed health. Shield/speed retain eight seconds. Countdown status for heavy and recovery added. Repeated pickups refresh to eight seconds; pause freezes timers; losing a life/restart/menu clears effects as before. No timer accumulation. User explicitly confirmed: Unlimited heavy shots for 8 seconds.
+
+Files: scripts/player.gd, scripts/powerups.gd; tests/powerups.gd, tests/duel.gd, new tests/powerup_duration.gd. README.md/status.md/prompt_log.md maintained. R3/R5/R7/R8, UI2/UI3/UI6/UI8/UI9. Branch fix/powerup-eight-second-duration, local not pushed.
+
+Actual checks in Godot 4.7.2: headless --path . --script res://tests/powerup_duration.gd passed 17 assertions (real eight-second gameplay timer on both players, still active after 5.1 seconds, pause, expiry, health persistence, more than five heavy shots and refresh); existing powerups.gd passed 45, smoke.gd passed 33, duel.gd passed with DUEL TEST FAILURES: 0. Graphical --path . --script res://tests/ui.gd exited 0 with UI TEST FAILURES: 0, including combined co-op countdown bounds. git diff --check passed. Existing headless log/certificate errors and two shutdown leak warnings remain; no full human balance playtest. Supersedes historical five-shot heavy and two-second recovery feedback descriptions.
+
+
+## Thirty-second radial power-ups and distinct impacts - November 20, 2026
+
+Request summary: green heart-outline shield, circular elapsed timers for all power-ups lasting 30 seconds, angry moose-shot sound and a different tank-hit sound. Updated shared DURATION to 30 gameplay seconds, superseding prior eight-second default. Each active power has an icon, colored shrinking circular ring and remaining-seconds number below its tank. Shield now draws a green heart outline around tank and uses matching green-heart pickup/timer icon. Unlimited heavy shots continue for duration; healing remains immediate with 30-second recovery feedback. Pause/refresh/life-loss/reset semantics preserved. Added synthesized angry moose growl on provoked signal and separate metallic tank-impact sound on accepted damage from projectile or moose; protected/blocked hits do not sound, final hits preserve impact plus explosion. Ambient emergence roar retained. Volume/mute/pause respected.
+
+Files: scripts/player.gd, scripts/powerups.gd, scripts/game.gd, scripts/sound.gd; assets/powerup_shield_heart.svg, assets/audio/moose_angry.wav, tank_hit.wav and import metadata; tools/generate_impact_audio.py and assets/audio/LICENSE.txt; tests/powerup_duration.gd, powerups.gd, sound.gd, moose_charge.gd, preview.gd and tests/powerup-timers-preview.png. README.md/status.md/prompt_log.md updated. R1/R3/R5/R7/R8, UI2/UI3/UI6/UI8/UI9. Branch feat/powerup-radial-timers-hit-audio, local not pushed.
+
+Actual Godot 4.7.2 verification: editor import exited 0 without parser errors. Headless duration suite passed 17 checks over real 30-second gameplay interval; powerups 45 and smoke 33 passed. Graphical moose_charge passed 21 checks and sound passed 37, UI suite exited 0 / UI TEST FAILURES: 0. Commands --headless --path . --script res://tests/<suite>.gd for headless suites; --path . --script res://tests/sound.gd, moose_charge.gd, ui.gd graphically. Preview --path . --script res://tests/preview.gd -- --powerup-timers exited 0; inspected full 30-second and half 15-second rings, green heart shield and HUD layout. git diff --check passed. Existing certificate/log/editor-settings access errors and 2-19 ObjectDB shutdown leaks remain. Playback checks do not establish perceived quality or physical audio output; human listening/balance test outstanding. Original sounds/assets preserved.
+
+
+## Shield silhouette correction - November 20, 2026
+
+Request summary: shield power-up should be a shield shape around the tank. Replaced heart-outline protection with a green shield silhouette around tank in scripts/player.gd, and selected matching new assets/powerup_shield_green.svg in scripts/powerups.gd. Green color, protection behavior, 30-second duration and circular countdown unchanged; health/lives heart unchanged. Requirements R1/UI2/UI6/UI8/UI9. Refreshed tests/powerup-timers-preview.png and maintained README.md/status.md/prompt_log.md. Godot 4.7.2 import exited 0 without parser errors; --headless --path . --script res://tests/powerups.gd passed 45 checks. Graphical --path . --script res://tests/preview.gd -- --powerup-timers exited 0 and screenshot inspected. Existing import/headless certificate/log/editor-settings access errors remain. No human playtest. Supersedes earlier heart-outline shield description; branch fix/shield-outline-shape, local not pushed.
+
+
+## Commit and publish accumulated game updates - November 20, 2026
+
+Request summary: commit the changes to GitHub. Reviewed pending game code, assets, previews, tests and documentation; target origin https://github.com/AnnMaxine/Moooze-Tanks-Repository.git. Publishing accumulated authorized brick replacement, menus/lobby/credits, overhead vitals, angry moose, 30-second power-ups, circular timers, shield shape and distinct audio on feat/gameplay-ui-updates. Existing verification results recorded above; no new gameplay changes or test reruns for this Git handoff. GitHub main remains unchanged; branch publication will be reported with actual result. UI9.

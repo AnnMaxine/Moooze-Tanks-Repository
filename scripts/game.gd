@@ -15,8 +15,6 @@ var player_two: CharacterBody2D
 var local_coop := false
 var ui: CanvasLayer
 var panel: Control
-var hud: VBoxContainer
-var vitals_rows: Array[Dictionary] = []
 var hud_root: Panel
 var hud_stats: Label
 var hud_powerups: Label
@@ -61,6 +59,24 @@ func build_theme() -> void:
 	theme.default_font_size = 19
 	theme.set_color("font_color", "Label", CREAM)
 	for key in ["normal", "hover", "pressed", "focus", "disabled"]:
+		if key in ["normal", "hover", "pressed", "disabled"]:
+			var textured := StyleBoxTexture.new()
+			textured.texture = preload("res://assets/menu_button.svg")
+			textured.texture_margin_left = 16
+			textured.texture_margin_right = 16
+			textured.texture_margin_top = 12
+			textured.texture_margin_bottom = 12
+			textured.content_margin_left = 22
+			textured.content_margin_right = 22
+			textured.content_margin_top = 8
+			textured.content_margin_bottom = 8
+			textured.modulate_color = Color("#b7efff") if key == "hover" else Color.WHITE
+			if key == "pressed":
+				textured.modulate_color = Color("#85accc")
+			if key == "disabled":
+				textured.modulate_color = Color(0.45, 0.55, 0.65)
+			theme.set_stylebox(key, "Button", textured)
+			continue
 		var style := StyleBoxFlat.new()
 		style.bg_color = Color("#214d50") if key == "normal" else Color("#356e71")
 		if key == "disabled":
@@ -98,6 +114,14 @@ func overlay() -> VBoxContainer:
 	shade.color = Color(0.025, 0.07, 0.09, 0.78)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.add_child(shade)
+	if state == "menu":
+		var backdrop := TextureRect.new()
+		backdrop.texture = preload("res://assets/menu_winter.svg")
+		backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		panel.add_child(backdrop)
 	var center := CenterContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.add_child(center)
@@ -110,22 +134,22 @@ func overlay() -> VBoxContainer:
 	card.add_child(box)
 	return box
 
-func card_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#102f3c")
-	style.border_color = Color("#7fb9c9")
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(18)
+func card_style() -> StyleBoxTexture:
+	var style := StyleBoxTexture.new()
+	style.texture = preload("res://assets/menu_panel.svg")
+	style.texture_margin_left = 32
+	style.texture_margin_right = 32
+	style.texture_margin_top = 32
+	style.texture_margin_bottom = 16
 	style.content_margin_left = 32
 	style.content_margin_right = 32
 	style.content_margin_top = 24
 	style.content_margin_bottom = 24
-	style.shadow_color = Color(0, 0, 0, 0.3)
-	style.shadow_size = 12
 	return style
 
 func logo_in(box: VBoxContainer, height: float) -> void:
 	var logo := TextureRect.new()
+	logo.name = "MenuLogo"
 	logo.texture = preload("res://assets/menu_logo.png")
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -153,6 +177,47 @@ func button_in(box: VBoxContainer, text: String, callback: Callable, disabled: b
 	box.add_child(button)
 	return button
 
+func mode_button(box: VBoxContainer, title: String, description: String, callback: Callable, multiplayer_mode: bool = false) -> Button:
+	var button := button_in(box, title, callback)
+	button.custom_minimum_size.y = 88
+	# Retain the accessible button name; visible content uses a title and subtitle.
+	for color in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+		button.add_theme_color_override(color, Color.TRANSPARENT)
+	var icon := TextureRect.new()
+	icon.texture = preload("res://assets/menu_tank.svg")
+	icon.position = Vector2(22, 14)
+	icon.size = Vector2(100, 58)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(icon)
+	if multiplayer_mode:
+		var second := icon.duplicate() as TextureRect
+		second.position += Vector2(28, 5)
+		second.modulate = Color("#ffaaaa")
+		button.add_child(second)
+	var heading := Label.new()
+	heading.text = title.to_upper()
+	heading.position = Vector2(162, 9)
+	heading.add_theme_font_size_override("font_size", 28)
+	heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(heading)
+	var subtitle := Label.new()
+	subtitle.text = description
+	subtitle.position = Vector2(162, 47)
+	subtitle.add_theme_font_size_override("font_size", 16)
+	subtitle.add_theme_color_override("font_color", MINT)
+	subtitle.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(subtitle)
+	var arrow := Label.new()
+	arrow.text = "»"
+	arrow.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	arrow.position = Vector2(-46, 20)
+	arrow.add_theme_font_size_override("font_size", 34)
+	arrow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(arrow)
+	return button
+
 func show_menu() -> void:
 	get_tree().paused = false
 	state = "menu"
@@ -166,35 +231,69 @@ func show_menu() -> void:
 		pause_button.queue_free()
 	particles.clear()
 	var box := overlay()
-	logo_in(box, 118)
-	label_in(box, "MOOOZE TANKS", 46)
-	label_in(box, "Snowy trails. Big antlers. Tiny tanks.", 19, MINT)
-	button_in(box, "Play", show_play).grab_focus()
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 12)
-	box.add_child(row)
-	for entry in [["Controls", show_controls], ["Help", show_help]]:
-		var column := VBoxContainer.new()
-		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row.add_child(column)
-		button_in(column, entry[0], entry[1])
-	button_in(box, "Sound", show_sound)
-	button_in(box, "Credits", show_credits)
-	button_in(box, "Exit", func(): get_tree().quit())
-	label_in(box, "A winter field adventure for one or two players", 16, MINT)
+	box.custom_minimum_size.x = 640
+	box.add_theme_constant_override("separation", 10)
+	logo_in(box, 92)
+	var title := label_in(box, "MOOOZE TANKS", 44)
+	var title_font := SystemFont.new()
+	title_font.font_names = PackedStringArray(["Arial Black", "Arial"])
+	title_font.font_weight = 900
+	title.add_theme_font_override("font", title_font)
+	title.add_theme_color_override("font_outline_color", Color("#022139"))
+	title.add_theme_constant_override("outline_size", 6)
+	label_in(box, "Snowy trails. Big antlers. Tiny tanks.", 18, MINT)
+	mode_button(box, "Solo", "Practice on the winter field.", start_game).grab_focus()
+	mode_button(box, "Multiplayer", "Gather your crew in the lobby.", show_lobby, true)
+	var options := [
+		["Controls", show_controls, preload("res://assets/menu_controls.svg")],
+		["Sound", show_sound, preload("res://assets/menu_sound.svg")],
+		["Credits", show_credits, preload("res://assets/menu_credits.svg")],
+		["Exit", func(): get_tree().quit(), preload("res://assets/menu_exit.svg")],
+	]
+	for option in options:
+		var button := button_in(box, option[0], option[1])
+		button.icon = option[2]
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.expand_icon = true
+		button.add_theme_constant_override("icon_max_width", 26)
 	queue_redraw()
 
-func show_play() -> void:
+func show_lobby() -> void:
 	var box := overlay()
-	label_in(box, "CHOOSE YOUR CREW", 36, MINT)
-	label_in(box, "Clear the icy field alone or together.", 20)
-	button_in(box, "Solo Practice", start_game).grab_focus()
+	box.custom_minimum_size.x = 960
+	logo_in(box, 86)
+	label_in(box, "MOOOZE TANKS MULTIPLAYER LOBBY", 34, MINT)
+	label_in(box, "Snowy trails. Gather your crew.", 19)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 24)
+	box.add_child(row)
+	var actions := VBoxContainer.new()
+	actions.custom_minimum_size.x = 190
+	actions.add_theme_constant_override("separation", 12)
+	row.add_child(actions)
+	# Network controls remain unavailable until the server project is connected.
+	for title in ["Host", "Join"]:
+		var action := button_in(actions, title, Callable(), true)
+		action.tooltip_text = "Multiplayer services are not connected yet."
+	button_in(actions, "Exit", show_menu).grab_focus()
+	var games := VBoxContainer.new()
+	games.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(games)
+	label_in(games, "AVAILABLE GAMES", 24, MINT)
+	var list := ItemList.new()
+	list.name = "AvailableGames"
+	list.custom_minimum_size.y = 210
+	list.add_theme_stylebox_override("panel", card_style())
+	games.add_child(list)
+	var game_id := LineEdit.new()
+	game_id.name = "GameId"
+	game_id.placeholder_text = "Game ID or host address (not connected)"
+	game_id.editable = false
+	game_id.custom_minimum_size.y = 44
+	games.add_child(game_id)
+	label_in(box, "No games available. Multiplayer services are not connected yet.", 18, MINT)
+	label_in(box, "On the same computer? Play the existing two-player duel.", 18)
 	button_in(box, "Local Duel / 2 Players", start_game.bind(true))
-	label_in(box, "Duel: shoot your opponent. Last tank with lives wins.", 17, MINT)
-	var host := button_in(box, "Host Game - Coming with multiplayer", Callable(), true)
-	host.tooltip_text = "Server integration is not available yet."
-	button_in(box, "Join Game - Coming with multiplayer", Callable(), true)
-	button_in(box, "Main Menu", show_menu)
 
 func show_controls() -> void:
 	var box := overlay()
@@ -204,7 +303,6 @@ func show_controls() -> void:
 	label_in(box, "PLAYER 2  /  PURPLE TANK", 23, Color("#e3b7ff"))
 	label_in(box, "Move: Arrow keys\nAim: T up / F left / G down / H right\nShoot: J (hold to repeat)", 21)
 	label_in(box, "Combine aim keys for diagonals; release to keep your aim.\nMove and aim independently. Esc pauses or resumes.", 17, MINT)
-	button_in(box, "Help", show_help)
 	button_in(box, "Main Menu", show_menu).grab_focus()
 
 func show_sound() -> void:
@@ -225,52 +323,10 @@ func show_sound() -> void:
 	button_in(box, "Back to Menu", show_menu)
 	slider.grab_focus()
 
-func show_help() -> void:
-	var box := overlay()
-	box.add_theme_constant_override("separation", 8)
-	label_in(box, "FIELD GUIDE", 40, MINT)
-	label_in(box, "CLEAR THE WINTER FIELD", 22, Color("#ffd890"))
-	label_in(box, "Solo: shoot all 35 icy bricks to win. Each earns 100 points.\nDuel: eliminate the other tank's three lives to win.\nThe forest border is indestructible. Slide along walls to pass.", 19)
-	label_in(box, "KEEP YOUR CREW ROLLING", 22, Color("#ffd890"))
-	label_in(box, "Hearts show lives; five gas tanks show 100 health (20 each).\nStart: 100 health and 3 lives. Normal shots deal 20; heavy 40.\nAt zero health, lose a heart and respawn with full health.\nRespawn blocks shots for 2 seconds. Zero hearts: Game Over.", 19)
-	label_in(box, "GIVE THE MOOSE SOME ROOM", 22, Color("#ffd890"))
-	label_in(box, "Snowball hits make moose roar and charge the nearest tank.\nCharges end at a tank, obstacle, or after 2 seconds.\nContact deals 20 damage and knocks your tank back.\nA gold ring marks protection; separate to re-hit a moose.\nIn a duel, bricks block shots and shields protect tanks.", 19)
-	button_in(box, "Power-ups", show_powerup_help)
-	button_in(box, "Controls", show_controls)
-	button_in(box, "Main Menu", show_menu).grab_focus()
-
-func show_powerup_help() -> void:
-	var box := overlay()
-	label_in(box, "BLOCK POWER-UPS", 36, MINT)
-	label_in(box, "Some icy blocks hide a surprise power-up.\nShoot the block to reveal it and receive it immediately.", 20)
-	for entry in [
-		["heavy", "HEAVY AMMO", "5 orange shots: blast adjacent icy bricks within 58 pixels."],
-		["shield", "SHIELD", "Blue bubble: blocks damage and moose knockback for 8 seconds."],
-		["speed", "SPEED BOOST", "Green trails: move 50% faster for 8 seconds."],
-		["health", "HEALTH RECOVERY", "Pink heart: refills 35 health in your gas tanks. Cannot revive."],
-	]:
-		var row := HBoxContainer.new()
-		row.alignment = BoxContainer.ALIGNMENT_CENTER
-		box.add_child(row)
-		var icon := TextureRect.new()
-		icon.texture = Powerups.ICONS[entry[0]]
-		icon.custom_minimum_size = Vector2(32, 32)
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		row.add_child(icon)
-		var title := Label.new()
-		title.text = entry[1]
-		title.add_theme_color_override("font_color", Powerups.COLORS[entry[0]])
-		row.add_child(title)
-		label_in(box, entry[2], 18)
-	label_in(box, "Different effects combine. Repeats refill shots or refresh time.\nPause freezes effects; losing a life clears them.\nHeavy shots deal 40 damage in duels; the border stays intact.", 17, MINT)
-	button_in(box, "Help", show_help)
-	button_in(box, "Main Menu", show_menu).grab_focus()
-
 func show_credits() -> void:
 	var box := overlay()
-	label_in(box, "JDAT STUDIOS", 40, MINT)
-	label_in(box, "@Studio - Client-Side Development\nOlaniyi Tolulope - Product Design & Business Analysis\nAnna-Marie Oyemiren - Game Design & Project Operations", 19)
-	label_in(box, "Server-side project partner: Ctrl-Alt-Elite\nOriginal vector artwork created for Moooze Tanks.", 17)
+	label_in(box, "CREDITS", 40, MINT)
+	label_in(box, "@Studio - Client-Side Development\nAnna-Marie Oyemiren\nOlaniyi Tolulope\n\nCtrl-Alt-Elite - Server-side project\nJaden Dijkstra\nHarsh Patel\nMalik Sultan\nRica Vicente\n\nAssets generated by Codex", 19)
 	button_in(box, "Back to Menu", show_menu).grab_focus()
 
 func restart_game() -> void:
@@ -314,7 +370,7 @@ func start_game(coop: bool = false) -> void:
 	total = remaining
 	player = Player.new()
 	player.position = Vector2(208, 612)
-	player.moose_hit.connect(sound.play_moose_contact)
+	player.damaged.connect(sound.play.bind("tank_hit"))
 	player.exploded.connect(on_tank_exploded.bind(player))
 	player.fired.connect(spawn_bullet.bind(player))
 	player.vitals_changed.connect(update_hud)
@@ -324,7 +380,7 @@ func start_game(coop: bool = false) -> void:
 		player_two = Player.new()
 		player_two.player_number = 2
 		player_two.position = Vector2(1072, 612)
-		player_two.moose_hit.connect(sound.play_moose_contact)
+		player_two.damaged.connect(sound.play.bind("tank_hit"))
 		player_two.exploded.connect(on_tank_exploded.bind(player_two))
 		player_two.fired.connect(spawn_bullet.bind(player_two))
 		player_two.vitals_changed.connect(update_hud)
@@ -340,7 +396,7 @@ func start_game(coop: bool = false) -> void:
 		if local_coop:
 			moose.tanks.append(player_two)
 		moose.emerged.connect(func(): sound.play("moose_roar"))
-		moose.provoked.connect(sound.play_moose_contact)
+		moose.provoked.connect(sound.play.bind("moose_angry"))
 		world.add_child(moose)
 	build_hud()
 	state = "playing"
@@ -370,14 +426,6 @@ func build_hud() -> void:
 	brand.position = Vector2(7, 58)
 	brand.add_theme_font_size_override("font_size", 12)
 	hud_root.add_child(brand)
-	vitals_rows.clear()
-	hud = VBoxContainer.new()
-	hud.position = Vector2(118, 2)
-	hud.add_theme_constant_override("separation", 2)
-	hud_root.add_child(hud)
-	build_vitals_row(1)
-	if local_coop:
-		build_vitals_row(2)
 	hud_stats = Label.new()
 	hud_stats.position = Vector2(550, 2)
 	hud_stats.add_theme_font_size_override("font_size", 17)
@@ -401,53 +449,49 @@ func build_hud() -> void:
 	pause_button.pressed.connect(pause_game)
 	hud_root.add_child(pause_button)
 
-func build_vitals_row(number: int) -> void:
-	var row := HBoxContainer.new()
-	row.name = "P%d" % number
-	row.add_theme_constant_override("separation", 5)
-	hud.add_child(row)
-	var name_label := Label.new()
-	name_label.text = "P%d" % number
-	name_label.custom_minimum_size.x = 32
-	name_label.add_theme_font_size_override("font_size", 16)
-	name_label.add_theme_color_override("font_color", Color("#8fd5ff") if number == 1 else Color("#e3b7ff"))
-	row.add_child(name_label)
-	var hearts: Array[TextureRect] = []
-	for i in range(Player.STARTING_LIVES):
-		var heart := TextureRect.new()
-		heart.texture = Powerups.ICONS.health
-		heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		heart.custom_minimum_size = Vector2(24, 24)
-		row.add_child(heart)
-		hearts.append(heart)
-	var gap := Control.new()
-	gap.custom_minimum_size.x = 12
-	row.add_child(gap)
-	var fuel: Array[TextureProgressBar] = []
-	for i in range(5):
-		var can := TextureProgressBar.new()
-		can.texture_under = preload("res://assets/health_gas_tank_empty.svg")
-		can.texture_progress = preload("res://assets/health_gas_tank.svg")
-		can.fill_mode = TextureProgressBar.FILL_BOTTOM_TO_TOP
-		can.max_value = 20
-		can.custom_minimum_size = Vector2(24, 24)
-		row.add_child(can)
-		fuel.append(can)
-	vitals_rows.append({"hearts": hearts, "fuel": fuel})
-
-func add_brick(at: Vector2, reinforced: bool) -> void:
+func add_brick(at: Vector2, reinforced: bool, replacement: bool = false) -> void:
 	var brick := Brick.new()
 	brick.position = at
 	brick.reinforced = reinforced
 	# Eight hidden rewards, two of each type, spread across the four clusters.
-	if not reinforced and remaining < 32 and remaining % 4 == 2:
+	if replacement:
+		if randf() < 8.0 / 35.0:
+			brick.powerup = Powerups.TYPES.pick_random()
+	elif not reinforced and remaining < 32 and remaining % 4 == 2:
 		brick.powerup = Powerups.TYPES[(remaining / 4) % Powerups.TYPES.size()]
 	brick.powerup_released.connect(on_powerup_released.bind(at))
 	brick.destroyed.connect(on_brick_destroyed)
 	world.add_child(brick)
-	if not reinforced:
+	if not reinforced and not replacement:
 		remaining += 1
+
+func replace_brick(previous_position: Vector2, source_world: Node2D) -> void:
+	# Deferred until the impact/blast finishes; never populate a restarted match.
+	if not is_instance_valid(source_world) or source_world != world or state != "playing" or finish_pending:
+		return
+	var locations: Array[Vector2] = []
+	for column in range(20):
+		for row in range(12):
+			locations.append(Vector2(184 + column * 48, 212 + row * 40))
+	locations.shuffle()
+	for location in locations:
+		if location.distance_to(previous_position) < 96.0:
+			continue
+		# Keep both respawn points clear even when their tanks are elsewhere.
+		if location.distance_to(Vector2(208, 612)) < 90.0 or location.distance_to(Vector2(1072, 612)) < 90.0:
+			continue
+		var clear := true
+		for body in world.get_children():
+			if body is Brick:
+				if not body.broken and absf(body.position.x - location.x) < 52.0 and absf(body.position.y - location.y) < 44.0:
+					clear = false
+					break
+			elif body is PhysicsBody2D and body.position.distance_to(location) < 90.0:
+				clear = false
+				break
+		if clear:
+			add_brick(location, false, true)
+			return
 
 func spawn_bullet(origin: Vector2, muzzle: Vector2, direction: Vector2, shooter: Node = null) -> void:
 	if state != "playing":
@@ -482,13 +526,17 @@ func on_heavy_impact(at: Vector2, shooter: Node) -> void:
 	burst(at)
 
 func on_brick_destroyed(at: Vector2) -> void:
+	if finish_pending:
+		return
 	sound.play("brick")
-	remaining -= 1
+	remaining = maxi(0, remaining - 1)
 	score += 100
 	burst(at)
 	if remaining == 0 and not local_coop and not finish_pending:
 		finish_pending = true
 		finish_game.call_deferred()
+	else:
+		replace_brick.call_deferred(at, world)
 
 func burst(at: Vector2) -> void:
 	for i in range(12):
@@ -521,17 +569,10 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 func update_hud() -> void:
-	if is_instance_valid(hud):
-		var tanks := [player, player_two]
-		for row_index in range(vitals_rows.size()):
-			var tank = tanks[row_index]
-			var row := vitals_rows[row_index]
-			for i in range(row.hearts.size()):
-				row.hearts[i].modulate = Color.WHITE if i < tank.lives else Color(0.4, 0.4, 0.4, 0.35)
-				row.hearts[i].tooltip_text = "P%d: %d lives" % [row_index + 1, tank.lives]
-			for i in range(row.fuel.size()):
-				row.fuel[i].value = clampi(tank.health - i * 20, 0, 20)
-				row.fuel[i].tooltip_text = "P%d: %d / 100 health" % [row_index + 1, tank.health]
+	if is_instance_valid(hud_root):
+		for tank in [player, player_two]:
+			if is_instance_valid(tank):
+				tank.update_vitals_display()
 		hud_stats.text = "%s: %04d POINTS   |   %02d:%02d\nICE LEFT: %d / %d   |   SHOTS: %d" % ["FIELD SCORE" if local_coop else "SCORE", score, int(elapsed) / 60, int(elapsed) % 60, remaining, total, shots]
 		hud_powerups.text = "P1: " + player.powerup_status()
 		if local_coop and is_instance_valid(player_two):
@@ -585,7 +626,7 @@ func on_lives_depleted() -> void:
 		winner_number = 1 if player.active else (2 if player_two.active else 0)
 	state = "dying"
 	defeat_delay = maxf(preload("res://scripts/tank_explosion.gd").DURATION, sound.voices.explosion.stream.get_length())
-	sound.stop_gameplay(["explosion", "moose_roar"])
+	sound.stop_gameplay(["explosion", "tank_hit"])
 	sound.set_loop("music", false)
 	if winner_number > 0:
 		# A short loss cue precedes the winner's celebration on the shared screen.

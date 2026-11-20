@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="64" viewBox="0 0 256 64">
+<defs><linearGradient id="button" x2="0" y2="1"><stop stop-color="#125e8c"/><stop offset="1" stop-color="#073454"/></linearGradient></defs>
+<path d="M12 2H244L254 12V52L244 62H12L2 52V12Z" fill="url(#button)" stroke="#66dcf5" stroke-width="2"/>
+<path d="M14 6H242M14 58H242" stroke="#b0efff" opacity=".25"/>
+<path d="M3 15L10 6 16 2H51L42 5 32 5 25 8 17 7 12 12 8 14 5 20Z" fill="#c8f3ff"/>
+</svg>

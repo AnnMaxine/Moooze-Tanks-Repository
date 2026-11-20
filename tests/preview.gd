@@ -6,6 +6,64 @@ func _initialize() -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	if "--powerup-timers" in OS.get_cmdline_user_args():
+		game.start_game(true)
+		for animal in get_nodes_in_group("moose"):
+			animal.set_physics_process(false)
+		game.player.position = Vector2(450, 420)
+		game.player_two.position = Vector2(830, 420)
+		for tank in [game.player, game.player_two]:
+			for kind in game.Powerups.TYPES:
+				tank.apply_powerup(kind)
+		game.player_two.heavy_time = 15
+		game.player_two.shield_time = 15
+		game.player_two.speed_time = 15
+		game.player_two.recovery_time = 15
+		await capture("powerup-timers")
+		quit()
+		return
+	if "--angry-moose" in OS.get_cmdline_user_args():
+		game.start_game(true)
+		for animal in get_nodes_in_group("moose"):
+			animal.set_physics_process(false)
+		var moose = get_nodes_in_group("moose")[0]
+		moose.position = Vector2(640, 420)
+		game.player.position = Vector2(460, 420)
+		game.player_two.position = Vector2(850, 420)
+		game.player.user_id = "Player 1"
+		game.player_two.user_id = "Player 2"
+		moose.hit()
+		moose.set_physics_process(true)
+		await capture("angry-moose")
+		game.start_game()
+		game.player.position = Vector2(280, 380)
+		game.player.apply_powerup("shield")
+		Input.action_press("move_right")
+		await create_timer(0.25).timeout
+		paused = true
+		Input.action_release("move_right")
+		await capture("translucent-vitals")
+		quit()
+		return
+	if "--tank-vitals" in OS.get_cmdline_user_args():
+		game.start_game(true)
+		game.player.user_id = "Player-ID-101"
+		game.player_two.user_id = "Player-ID-202"
+		game.player.position = Vector2(440, 420)
+		game.player_two.position = Vector2(820, 420)
+		game.player.take_damage(100)
+		game.player.position = Vector2(440, 420)
+		game.player.take_damage(35)
+		game.player_two.take_damage(60)
+		await capture("tank-vitals")
+		quit()
+		return
+	if "--lobby" in OS.get_cmdline_user_args():
+		await capture("menu")
+		game.show_lobby()
+		await capture("lobby")
+		quit()
+		return
 	if "--snowballs" in OS.get_cmdline_user_args():
 		game.start_game(true)
 		await create_timer(0.1).timeout
@@ -49,8 +107,6 @@ func run() -> void:
 		game.player.shoot()
 		await capture("revealed-powerup")
 		game.show_menu()
-		game.show_help()
-		await capture("help")
 		quit()
 		return
 	if "--powerups" in OS.get_cmdline_user_args():
@@ -64,8 +120,6 @@ func run() -> void:
 		game.player_two.apply_powerup("health")
 		await capture("powerups")
 		game.show_menu()
-		game.show_powerup_help()
-		await capture("powerup-help")
 		quit()
 		return
 	if "--explosion" in OS.get_cmdline_user_args():
@@ -100,10 +154,13 @@ func run() -> void:
 	game.show_menu()
 	game.show_controls()
 	await capture("controls")
-	game.show_help()
-	await capture("help")
-	game.show_play()
+	game.show_lobby()
 	await capture("play")
+	await capture("lobby")
+	game.show_sound()
+	await capture("sound")
+	game.show_credits()
+	await capture("credits")
 	quit()
 
 func capture(screen: String) -> void:

@@ -6,3 +6,6 @@ attribution. Generator: tools/generate_audio.py (also CC0-1.0).
 
 Existing shoot.wav, engine.wav, brick.wav, explosion.wav and click.wav are
 preserved project-original synthesized assets, as documented in README.md.
+
+moose_angry.wav and tank_hit.wav are original procedural synthesis, CC0-1.0.
+Generator: tools/generate_impact_audio.py (standard Python only, no samples).

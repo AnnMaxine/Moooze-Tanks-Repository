@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+<defs>
+<radialGradient id="sky"><stop stop-color="#155887"/><stop offset="1" stop-color="#021a32"/></radialGradient>
+<linearGradient id="snow" x2="0" y2="1"><stop stop-color="#a8dff4"/><stop offset="1" stop-color="#15507c"/></linearGradient>
+<pattern id="flakes" width="113" height="91" patternUnits="userSpaceOnUse"><circle cx="18" cy="22" r="1" fill="#a5eafa" opacity=".45"/><circle cx="79" cy="69" r="1.4" fill="#c3f4ff" opacity=".35"/></pattern>
+<g id="tree"><path d="M0 0L-22 36H-13L-32 61H-18L-43 94H43L18 61H32L13 36H22Z" fill="#052d4d"/><path d="M0 2L-21 36 -9 30 0 19 11 32 22 36ZM-18 61L0 45 18 61 6 57 0 52Z" fill="#3677a0"/><path d="M-4 91H4V111H-4Z" fill="#07233b"/></g>
+<g id="tank"><path d="M-62 21Q-60 8-44 8H45Q64 8 65 21L73 53Q70 64 53 65H-48Q-70 64-72 53Z" fill="#05253f" stroke="#418ab0" stroke-width="3"/><path d="M-48 26H51L59 50H-57Z" fill="#154b70"/><path d="M-46 51H53M-33 28V52M-10 28V52M15 28V52M38 28V52" stroke="#82c4dc" stroke-width="5"/><path d="M-43 10L-32-19H28L43 10Z" fill="#22698d" stroke="#83c9e0" stroke-width="3"/><path d="M-23-12H23L28 6H-29Z" fill="#103e60"/><path d="M-3-9L74-27 79-15 3 3Z" fill="#216c98" stroke="#96dff2" stroke-width="3"/><path d="M-60 15Q-58 7-44 8H43L47 15Z" fill="#d0f2ff"/></g>
+</defs>
+<path d="M0 0H1280V800H0Z" fill="url(#sky)"/>
+<path d="M0 0H1280V800H0Z" fill="url(#flakes)"/>
+<path d="M0 367L139 205 277 339 380 224 550 390 732 263 907 371 1104 203 1280 356V800H0Z" fill="#124369"/>
+<path d="M54 307L139 205 234 298 163 260 145 278 126 248ZM1012 298L1104 203 1205 306 1134 261 1108 278 1082 246Z" fill="#367da2"/>
+<g opacity=".9"><use href="#tree" transform="translate(34 358) scale(1.8)"/><use href="#tree" transform="translate(109 453) scale(1.3)"/><use href="#tree" transform="translate(1250 348) scale(2)"/><use href="#tree" transform="translate(1165 480) scale(1.5)"/><use href="#tree" transform="translate(10 570) scale(2.2)"/><use href="#tree" transform="translate(1260 570) scale(2.4)"/></g>
+<path d="M0 701Q125 651 276 710T611 733T948 699T1280 691V800H0Z" fill="url(#snow)"/>
+<path d="M0 756Q180 701 351 755T753 761T1111 737T1280 755V800H0Z" fill="#0c3455"/>
+<use href="#tank" transform="translate(143 681) scale(1.25)"/>
+<use href="#tank" transform="translate(1134 690) scale(-1.15 1.15)"/>
+<path d="M14 35V14H1266V786H14V35" fill="none" stroke="#4a9bc1" stroke-width="2" opacity=".65"/>
+<path d="M23 24H1257M23 776H1257" stroke="#77d7f3" opacity=".4"/>
+</svg>

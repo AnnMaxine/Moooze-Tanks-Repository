@@ -7,6 +7,7 @@ signal provoked
 const SPEED := 68.0
 const CHARGE_SPEED := 300.0
 const CHARGE_DURATION := 2.0
+const ANGER_DURATION := 0.8
 const CONTACT_RADIUS := 45.0
 var tanks: Array = []
 var heading := Vector2.RIGHT
@@ -19,6 +20,7 @@ var hazard: Area2D
 var overlapping_tanks: Array = []
 var charge_target: Node2D
 var charge_remaining := 0.0
+var anger_remaining := 0.0
 
 func nearest_tank() -> Node2D:
 	var nearest: Node2D
@@ -34,11 +36,15 @@ func nearest_tank() -> Node2D:
 func hit() -> void:
 	if get_tree().paused:
 		return
+	# Extra hits cannot hold the moose in an endless wind-up.
+	if anger_remaining > 0.0 or charge_remaining > 0.0:
+		return
 	charge_target = nearest_tank()
 	if charge_target == null:
 		return
 	emerge_delay = 0.0
 	charge_remaining = CHARGE_DURATION
+	anger_remaining = ANGER_DURATION
 	provoked.emit()
 
 func _ready() -> void:
@@ -74,6 +80,25 @@ func _physics_process(delta: float) -> void:
 		emerge_delay -= delta
 		if emerge_delay <= 0.0:
 			emerged.emit()
+		return
+	if anger_remaining > 0.0:
+		anger_remaining = maxf(0.0, anger_remaining - delta)
+		velocity = Vector2.ZERO
+		if not is_instance_valid(charge_target) or not charge_target.active:
+			charge_target = nearest_tank()
+		if charge_target == null:
+			anger_remaining = 0.0
+			charge_remaining = 0.0
+		var progress := ANGER_DURATION - anger_remaining
+		sprite.position = Vector2(sin(progress * 65.0) * 5.0, cos(progress * 51.0) * 2.0)
+		sprite.rotation = sin(progress * 58.0) * 0.12
+		sprite.modulate = Color(1.4, 0.6, 0.45)
+		if anger_remaining == 0.0:
+			sprite.position = Vector2.ZERO
+			sprite.rotation = 0.0
+			sprite.modulate = Color.WHITE
+			charge_target = nearest_tank()
+		queue_redraw()
 		return
 	charge_remaining = maxf(0.0, charge_remaining - delta)
 	if charge_remaining > 0.0:
@@ -117,6 +142,19 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if anger_remaining > 0.0:
+		var elapsed := ANGER_DURATION - anger_remaining
+		var facing := -1.0 if sprite.flip_h else 1.0
+		# Two large, continuously rising ear plumes make the warning visible at game scale.
+		for ear in [Vector2(0, -12), Vector2(24, -12)]:
+			for puff in range(4):
+				var phase := fmod(elapsed * 1.8 + puff * 0.25, 1.0)
+				var at := Vector2(ear.x * facing, ear.y) + Vector2(sin(phase * 6.0 + puff) * 6.0, -phase * 48.0)
+				draw_circle(at, 6.0 + phase * 7.0, Color(0.35, 0.55, 0.68, (1.0 - phase) * 0.8))
+				draw_circle(at, 4.0 + phase * 7.0, Color(0.95, 0.99, 1.0, (1.0 - phase) * 0.9))
+		draw_arc(Vector2.ZERO, 36 + sin(elapsed * 20) * 3, 0, TAU, 40, Color(1, 0.2, 0.08, 0.7), 3, true)
+		draw_line(Vector2(34, -43), Vector2(34, -60), Color("#ff5c35"), 5, true)
+		draw_circle(Vector2(34, -35), 3, Color("#ff5c35"))
 	# Alternating hoof strides below the original vector sprite.
 	for i in range(4):
 		var x := -18.0 + (i % 2) * 27.0
