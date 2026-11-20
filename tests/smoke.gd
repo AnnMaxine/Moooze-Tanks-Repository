@@ -24,12 +24,13 @@ func run() -> void:
 	root.add_child(game)
 	await process_frame
 	check(game.state == "menu", "Main menu loads")
-	game.show_help()
 	game.show_credits()
 	game.start_game()
 	await frames(3)
 	check(game.remaining == 35, "R4/R9: field contains 35 destructible bricks")
-	check(game.player.get_child_count() == 3, "R1/R2: collision, chassis and separate turret exist")
+	check(game.player.get_child(0) is CollisionShape2D and game.player.chassis.get_parent() == game.player
+		and game.player.turret.get_parent() == game.player and game.player.turret != game.player.chassis,
+		"R1/R2: collision, chassis and separate turret exist")
 	var start: Vector2 = game.player.position
 	Input.action_press("move_right")
 	await frames(20)

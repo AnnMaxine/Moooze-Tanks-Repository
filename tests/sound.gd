@@ -21,7 +21,7 @@ func run() -> void:
 	game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	await process_frame
-	check(game.sound.voices.size() == 11, "Eleven audio streams including defeat loaded")
+	check(game.sound.voices.size() == 13, "Thirteen audio streams including distinct moose anger and tank hit")
 	game.sound.play("click")
 	check(game.sound.voices.click.playing, "Button click playback starts")
 	game.start_game(true)
@@ -32,14 +32,21 @@ func run() -> void:
 	check(game.sound.voices.music.playing and game.sound.voices.idle.playing, "Music and idle begin without movement")
 	game.burst(Vector2(300, 300))
 	check(not game.sound.voices.explosion.playing, "Visual projectile bursts do not trigger tank explosions")
+	game.player.take_projectile_hit(1)
+	check(game.sound.voices.tank_hit.playing and not game.sound.voices.moose_angry.playing, "Projectile damage uses tank-impact cue, not angry moose")
+	var impact_stamp = game.sound.last_played.tank_hit
+	game.player.apply_powerup("shield")
+	game.player.take_projectile_hit(20)
+	check(game.sound.last_played.tank_hit == impact_stamp, "Shielded projectile does not trigger damage audio")
+	game.player.shield_time = 0
 	for tank in [game.player, game.player_two]:
 		game.sound.voices.moose_roar.stop()
 		game.sound.last_played.moose_roar = Time.get_ticks_msec()
 		tank.take_moose_hit(Vector2.RIGHT)
-		check(game.sound.voices.moose_roar.playing and not game.sound.voices.moose_blast.playing, "Contact roar bypasses ambient cooldown for player %d" % tank.player_number)
-		check(game.sound.voices.moose_roar.volume_db > game.sound.voices.engine.volume_db + 10, "Contact roar stands out above driving engine")
-		var stamp = game.sound.last_played.moose_roar
-		check(not tank.take_moose_hit() and stamp == game.sound.last_played.moose_roar, "Protected contact does not retrigger roar")
+		check(game.sound.voices.tank_hit.playing and not game.sound.voices.moose_angry.playing, "Tank impact uses its own distinct cue for player %d" % tank.player_number)
+		check(game.sound.voices.tank_hit.stream != game.sound.voices.moose_angry.stream, "Tank impact and angry moose use separate streams")
+		var stamp = game.sound.last_played.tank_hit
+		check(not tank.take_moose_hit() and stamp == game.sound.last_played.tank_hit, "Protected contact does not retrigger impact cue")
 		game.sound.last_played.erase("explosion")
 		tank.take_damage(100)
 		check(game.sound.voices.explosion.playing, "Life loss explosion for player %d" % tank.player_number)
@@ -84,7 +91,7 @@ func run() -> void:
 		tank.moose_cooldown = 0
 		tank.take_moose_hit(Vector2.RIGHT)
 	await process_frame
-	check(game.state == "dying" and game.sound.voices.explosion.playing and game.sound.voices.moose_roar.playing, "Final moose hit plays explosion and roar before Game Over")
+	check(game.state == "dying" and game.sound.voices.explosion.playing and game.sound.voices.tank_hit.playing, "Final moose hit plays explosion and tank impact before Game Over")
 	check(not game.player.visible and not is_instance_valid(game.panel), "Destroyed tank disappears while explosion is unobscured")
 	var final_time = game.elapsed
 	await create_timer(1.2).timeout

@@ -50,7 +50,7 @@ func run() -> void:
 	check(game.player.health == 80 and game.player_two.health == 80, "P2 can shoot P1 without self-damage")
 	game.player.apply_powerup("heavy")
 	await fire(game.player, 0)
-	check(game.player_two.health == 40 and game.player.heavy_ammo == 4, "Heavy shot deals 40 and consumes ammunition")
+	check(game.player_two.health == 40 and game.player.heavy_time > 0, "Heavy shot deals 40 while timed power-up is active")
 	game.player_two.apply_powerup("shield")
 	await fire(game.player, 0)
 	check(game.player_two.health == 40, "Shield blocks enemy projectile damage")
@@ -75,7 +75,7 @@ func run() -> void:
 	game.resume_game()
 	game.player_two.respawn_protection = 0.03
 	await frames(6)
-	game.player.heavy_ammo = 0
+	game.player.heavy_time = 0
 	await fire(game.player, 0)
 	check(game.player_two.health == 80, "Damage resumes when respawn protection expires")
 	# Close-range muzzle sweep and overlapping tanks still exclude the shooter.

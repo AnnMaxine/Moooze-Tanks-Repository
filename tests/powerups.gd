@@ -63,9 +63,9 @@ func run() -> void:
 		await shoot_block(game.player_two, marked(kind))
 		var awarded := false
 		match kind:
-			"heavy": awarded = game.player_two.heavy_ammo == 5
-			"shield": awarded = game.player_two.shield_time > 7.0
-			"speed": awarded = game.player_two.speed_time > 7.0
+			"heavy": awarded = game.player_two.heavy_time > 29.0
+			"shield": awarded = game.player_two.shield_time > 29.0
+			"speed": awarded = game.player_two.speed_time > 29.0
 			"health": awarded = game.player_two.health == 75 and game.player_two.recovery_time > 0
 		check(awarded and game.remaining == 34 and game.score == 100, "R7/R8: real P2 projectile awards " + kind + " exactly once and scores one block")
 		check(game.player.powerup_status() == "No power-up" and game.player.health == 100, "Duel: " + kind + " belongs only to the shooter")
@@ -137,7 +137,7 @@ func run() -> void:
 	for child in game.world.get_children():
 		if child is Bullet:
 			heavy_bullet = child
-	check(is_instance_valid(heavy_bullet) and heavy_bullet.heavy and game.player.heavy_ammo == 4, "Heavy shot consumes one round and creates a heavy projectile")
+	check(is_instance_valid(heavy_bullet) and heavy_bullet.heavy and game.player.heavy_time > 0, "Timed heavy power-up creates a heavy projectile")
 	await frames(15)
 	check(game.remaining == 31 and game.score == 400, "Heavy blast destroys only target and its two adjacent blocks")
 	check(not is_instance_valid(heavy_bullet), "R3: heavy projectile removed on impact")
@@ -147,13 +147,14 @@ func run() -> void:
 	game.player.shoot()
 	await frames(8)
 	check(game.remaining == remaining and game.player_two.health == 100, "Heavy perimeter hit causes no damage to distant tank")
-	game.player.heavy_ammo = 1
+	game.player.heavy_time = 0.03
 	game.player.position = Vector2(500, 430)
 	game.player.turret.rotation = 0
 	game.player.shoot()
-	check(game.player.heavy_ammo == 0 and game.player.shot_is_heavy, "Last heavy round retains heavy payload")
+	check(game.player.shot_is_heavy, "Shot just before expiry retains heavy payload")
+	await frames(4)
 	game.player.shoot()
-	check(not game.player.shot_is_heavy, "Normal shots resume after ammunition runs out")
+	check(not game.player.shot_is_heavy, "Normal shots resume after heavy duration expires")
 	var expiry := Bullet.new()
 	expiry.heavy = true
 	expiry.position = Vector2(-1000, -1000)
@@ -167,15 +168,16 @@ func run() -> void:
 		game.player.apply_powerup(kind)
 	game.player.apply_powerup("heavy")
 	game.player.apply_powerup("speed")
-	check(game.player.heavy_ammo == 5 and game.player.speed_time == 8.0 and game.player.shield_time > 0, "Different powers combine; duplicate pickups refill instead of stacking")
+	check(game.player.heavy_time == 30.0 and game.player.speed_time == 30.0 and game.player.shield_time > 0, "Different powers combine; duplicate pickups refresh instead of stacking")
 	game.pause_game()
 	var shield_time: float = game.player.shield_time
 	var speed_time: float = game.player.speed_time
 	var recovery_time: float = game.player.recovery_time
+	var heavy_time: float = game.player.heavy_time
 	var shots: int = game.shots
 	await frames(10)
 	game.player.shoot()
-	check(game.player.shield_time == shield_time and game.player.speed_time == speed_time and game.player.recovery_time == recovery_time and game.shots == shots, "UI3: pause freezes timers and blocks firing")
+	check(game.player.shield_time == shield_time and game.player.speed_time == speed_time and game.player.recovery_time == recovery_time and game.player.heavy_time == heavy_time and game.shots == shots, "UI3: pause freezes timers and blocks firing")
 	game.resume_game()
 	await frames(4)
 	check(game.player.speed_time < speed_time, "Resume restarts effect timers")
