@@ -16,8 +16,10 @@ var hits_tanks := false
 func _ready() -> void:
 	var sprite := Sprite2D.new()
 	sprite.texture = preload("res://assets/bullet.svg")
+	# Enlarge only artwork; swept hit detection stays unchanged.
+	sprite.scale = Vector2.ONE * 2.0
 	if heavy:
-		sprite.scale = Vector2.ONE * 1.6
+		sprite.scale *= 1.6
 		sprite.modulate = Color("#ffae45")
 	add_child(sprite)
 	rotation = direction.angle()

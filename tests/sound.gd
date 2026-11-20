@@ -72,7 +72,7 @@ func run() -> void:
 	check(not game.sound.voices.shoot.playing and not game.sound.voices.explosion.playing and not game.sound.voices.click.playing, "Mute suppresses sound events")
 	game.sound.set_volume(0.5)
 	game.sound.play("shoot")
-	check(game.sound.voices.shoot.playing and game.sound.voices.shoot.volume_db < -20, "Unmute restores attenuated playback")
+	check(game.sound.voices.shoot.playing and is_equal_approx(game.sound.voices.shoot.volume_db, game.sound.LEVELS.shoot + linear_to_db(0.5)), "Unmute restores attenuated playback")
 	game.start_game()
 	game.finish_game()
 	check(game.sound.voices.victory.playing and not game.sound.voices.engine.playing, "Field clear plays victory and stops engines")

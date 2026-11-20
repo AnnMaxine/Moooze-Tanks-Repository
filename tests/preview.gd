@@ -6,6 +6,20 @@ func _initialize() -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	if "--snowballs" in OS.get_cmdline_user_args():
+		game.start_game(true)
+		await create_timer(0.1).timeout
+		game.player.turret.rotation = 0.0
+		game.player_two.turret.rotation = PI
+		game.player_two.apply_powerup("heavy")
+		game.player.shoot()
+		game.player_two.shoot()
+		await create_timer(0.08).timeout
+		paused = true
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://tests/snowballs-preview.png")
+		quit()
+		return
 	if "--outcomes" in OS.get_cmdline_user_args():
 		game.start_game()
 		game.player.lives = 1

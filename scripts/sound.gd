@@ -5,7 +5,7 @@ var voices: Dictionary = {}
 var last_played: Dictionary = {}
 var contact_roar := false
 const CONTACT_ROAR_DB := -9.0
-const LEVELS := {"shoot": -16.0, "brick": -12.0, "explosion": -10.0, "click": -18.0, "engine": -21.0, "idle": -28.0, "music": -27.0, "moose_blast": -20.0, "moose_roar": -25.0, "victory": -20.0, "defeat": -16.0}
+const LEVELS := {"shoot": -10.0, "brick": -12.0, "explosion": -10.0, "click": -18.0, "engine": -21.0, "idle": -28.0, "music": -27.0, "moose_blast": -20.0, "moose_roar": -25.0, "victory": -20.0, "defeat": -16.0}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
