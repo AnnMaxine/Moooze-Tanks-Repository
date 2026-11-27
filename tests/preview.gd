@@ -15,10 +15,9 @@ func run() -> void:
 		for tank in [game.player, game.player_two]:
 			for kind in game.Powerups.TYPES:
 				tank.apply_powerup(kind)
-		game.player_two.heavy_time = 15
-		game.player_two.shield_time = 15
-		game.player_two.speed_time = 15
-		game.player_two.recovery_time = 15
+		game.player_two.heavy_time = 5
+		game.player_two.shield_time = 3.5
+		game.player_two.speed_time = 5
 		await capture("powerup-timers")
 		quit()
 		return
@@ -117,7 +116,7 @@ func run() -> void:
 		game.player.apply_powerup("shield")
 		game.player_two.apply_powerup("speed")
 		game.player_two.take_damage(35)
-		game.player_two.apply_powerup("health")
+		game.player_two.apply_powerup("speed")
 		await capture("powerups")
 		game.show_menu()
 		quit()

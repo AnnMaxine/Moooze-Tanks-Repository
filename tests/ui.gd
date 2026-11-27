@@ -87,7 +87,7 @@ func run() -> void:
 	check(game.local_coop and game.player_two != null, "UI1: Play selects local duel")
 	check(game.hud_root.get_global_rect().end.y < 91 and game.hud_root.get_node("MooseTankLogo").get_global_rect().end.y < 91 and game.hud_stats.get_global_rect().end.y < 91, "UI2: logo and HUD stay above arena")
 	for tank in [game.player, game.player_two]:
-		for kind in ["heavy", "shield", "speed", "health"]:
+		for kind in ["heavy", "shield", "speed"]:
 			tank.apply_powerup(kind)
 	await process_frame
 	check(game.hud_root.get_global_rect().encloses(game.hud_powerups.get_global_rect()) and game.hud_powerups.get_global_rect().position.y >= game.hud_stats.get_global_rect().end.y, "UI2: combined duel power-ups fit inside HUD without covering score")
@@ -107,7 +107,7 @@ func run() -> void:
 	check(HudValues.lives(game) == 2 and HudValues.health(game) == 100, "UI2: losing a life decrements heart count and refills overhead health")
 	game.player.take_damage(35)
 	game.player.apply_powerup("health")
-	check(HudValues.health(game) == 100 and HudValues.lives(game) == 2, "UI2: health recovery refills bar without restoring lives")
+	check(HudValues.health(game) == 65 and HudValues.lives(game) == 2, "UI2: removed health pickup cannot heal or restore lives")
 	game.pause_button.pressed.emit()
 	var time: float = game.elapsed
 	var position: Vector2 = game.player.position

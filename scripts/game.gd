@@ -414,7 +414,7 @@ func build_hud() -> void:
 	var logo := TextureRect.new()
 	logo.name = "MooseTankLogo"
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	logo.texture = preload("res://assets/hud_logo.png")
+	logo.texture = preload("res://assets/menu_logo.png")
 	logo.position = Vector2(8, 1)
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.size = Vector2(90, 60)
@@ -453,7 +453,7 @@ func add_brick(at: Vector2, reinforced: bool, replacement: bool = false) -> void
 	var brick := Brick.new()
 	brick.position = at
 	brick.reinforced = reinforced
-	# Eight hidden rewards, two of each type, spread across the four clusters.
+	# Eight hidden rewards across the three available types, spread across the four clusters.
 	if replacement:
 		if randf() < 8.0 / 35.0:
 			brick.powerup = Powerups.TYPES.pick_random()
@@ -700,9 +700,9 @@ func results_summary(box: VBoxContainer) -> void:
 
 # Decorative grass adds no collisions or gameplay state.
 func draw_border_grass() -> void:
-	for i in range(85):
+	for i in range(70):
 		for bottom in [false, true]:
-			draw_grass_tuft(Vector2(18 + i * 15, (754 if bottom else 150) + (i % 3) * 2), i)
+			draw_grass_tuft(Vector2(120 + i * 15, (754 if bottom else 150) + (i % 3) * 2), i)
 	for i in range(43):
 		for right in [false, true]:
 			draw_grass_tuft(Vector2(1170 if right else 110, 164 + i * 13), i)

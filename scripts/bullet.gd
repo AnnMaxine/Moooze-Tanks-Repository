@@ -49,7 +49,7 @@ func _physics_process(delta: float) -> void:
 			if can_blast and heavy_impact.is_valid():
 				heavy_impact.call(center, shooter if is_instance_valid(shooter) else null)
 		elif hits_tanks and result.collider.has_method("take_projectile_hit"):
-			result.collider.take_projectile_hit(40 if heavy else 20)
+			result.collider.take_projectile_hit(40 if heavy else 20, heavy)
 		elif result.collider.has_method("hit"):
 			result.collider.hit()
 		if impact.is_valid():

@@ -54,7 +54,10 @@ func run() -> void:
 	game.player_two.apply_powerup("shield")
 	await fire(game.player, 0)
 	check(game.player_two.health == 40, "Shield blocks enemy projectile damage")
-	game.player_two.shield_time = 0
+	check(game.player_two.shield_time < 5.0 and game.player_two.shield_time > 4.0, "Real heavy hit removes two extra shield seconds")
+	game.player_two.shield_time = 1.0
+	await fire(game.player, 0)
+	check(game.player_two.shield_time == 0 and game.player_two.health == 40, "Heavy hit exhausts shield without spillover damage")
 	game.pause_game()
 	game.player_two.take_projectile_hit(40)
 	var shots: int = game.shots

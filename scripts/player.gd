@@ -12,7 +12,6 @@ const Powerups = preload("res://scripts/powerups.gd")
 var heavy_time := 0.0
 var shield_time := 0.0
 var speed_time := 0.0
-var recovery_time := 0.0
 var shot_is_heavy := false
 var respawn_protection := 0.0
 var player_number := 1
@@ -166,7 +165,6 @@ func _physics_process(delta: float) -> void:
 	heavy_time = maxf(0.0, heavy_time - delta)
 	shield_time = maxf(0.0, shield_time - delta)
 	speed_time = maxf(0.0, speed_time - delta)
-	recovery_time = maxf(0.0, recovery_time - delta)
 	var prefix := "p2_" if player_number == 2 else ""
 	var movement := Input.get_vector(prefix + "move_left", prefix + "move_right", prefix + "move_up", prefix + "move_down")
 	velocity = movement * SPEED * (Powerups.SPEED_MULTIPLIER if speed_time > 0.0 else 1.0) + hit_push
@@ -208,8 +206,13 @@ func take_moose_hit(away_from_moose: Vector2 = Vector2.ZERO) -> bool:
 	moose_hit.emit()
 	return true
 
-func take_projectile_hit(amount: int) -> void:
-	if respawn_protection > 0.0 or shield_time > 0.0 or not active or get_tree().paused:
+func take_projectile_hit(amount: int, heavy: bool = false) -> void:
+	if respawn_protection > 0.0 or not active or get_tree().paused:
+		return
+	if shield_time > 0.0:
+		if heavy:
+			shield_time = maxf(0.0, shield_time - Powerups.HEAVY_SHIELD_PENALTY)
+			queue_redraw()
 		return
 	var previous_lives := lives
 	take_damage(amount)
@@ -259,11 +262,8 @@ func apply_powerup(kind: String) -> void:
 		return
 	match kind:
 		"heavy": heavy_time = Powerups.DURATION
-		"shield": shield_time = Powerups.DURATION
+		"shield": shield_time = Powerups.SHIELD_DURATION
 		"speed": speed_time = Powerups.DURATION
-		"health":
-			health = mini(MAX_HEALTH, health + Powerups.HEAL_AMOUNT)
-			recovery_time = Powerups.DURATION
 		_: return
 	vitals_changed.emit()
 	queue_redraw()
@@ -272,7 +272,6 @@ func clear_powerups() -> void:
 	heavy_time = 0.0
 	shield_time = 0.0
 	speed_time = 0.0
-	recovery_time = 0.0
 	shot_is_heavy = false
 
 func powerup_status() -> String:
@@ -283,12 +282,10 @@ func powerup_status() -> String:
 		effects.append("SHIELD %ds" % ceili(shield_time))
 	if speed_time > 0.0:
 		effects.append("SPEED %ds" % ceili(speed_time))
-	if recovery_time > 0.0:
-		effects.append("HEALED %ds" % ceili(recovery_time))
 	return " / ".join(effects) if not effects.is_empty() else "No power-up"
 
 func _draw() -> void:
-	var times := [heavy_time, shield_time, speed_time, recovery_time]
+	var times := [heavy_time, shield_time, speed_time]
 	var active_effects := 0
 	for time in times:
 		if time > 0.0:
@@ -300,7 +297,7 @@ func _draw() -> void:
 		var kind: String = Powerups.TYPES[index]
 		var center := Vector2((slot - (active_effects - 1) * 0.5) * 32.0, 62)
 		draw_circle(center, 14, Color("#082641"))
-		draw_arc(center, 13, -PI / 2, -PI / 2 + TAU * times[index] / Powerups.DURATION, 48, Powerups.COLORS[kind], 3, true)
+		draw_arc(center, 13, -PI / 2, -PI / 2 + TAU * times[index] / (Powerups.SHIELD_DURATION if kind == "shield" else Powerups.DURATION), 48, Powerups.COLORS[kind], 3, true)
 		draw_texture_rect(Powerups.ICONS[kind], Rect2(center - Vector2(8, 8), Vector2(16, 16)), false)
 		var seconds := str(ceili(times[index]))
 		var font := ThemeDB.fallback_font
@@ -324,9 +321,6 @@ func _draw() -> void:
 			var tail: Vector2 = -forward * distance
 			draw_line(tail + side * 15, tail + forward * 8, Powerups.COLORS.speed, 3.0, true)
 			draw_line(tail - side * 15, tail + forward * 8, Powerups.COLORS.speed, 3.0, true)
-	if recovery_time > 0.0:
-		draw_arc(Vector2.ZERO, 42, 0, TAU, 48, Powerups.COLORS.health, 3.0, true)
-		draw_texture(Powerups.ICONS.health, Vector2(34, -40 - sin((Powerups.DURATION - recovery_time) * 3.0) * 5))
 	if hit_flash > 0.0:
 		var progress := 1.0 - hit_flash / HIT_FLASH_TIME
 		var impact_color := Color(1.0, 0.45, 0.12, 1.0 - progress)

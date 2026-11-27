@@ -43,7 +43,7 @@ func run() -> void:
 	root.add_child(game)
 	await process_frame
 	await fresh()
-	var counts := {"heavy": 0, "shield": 0, "speed": 0, "health": 0}
+	var counts := {"heavy": 0, "shield": 0, "speed": 0}
 	var safe_border := true
 	var hidden := true
 	for child in game.world.get_children():
@@ -54,7 +54,7 @@ func run() -> void:
 				counts[child.powerup] += 1
 			if child.reinforced:
 				safe_border = safe_border and child.powerup.is_empty()
-	check(counts.values() == [2, 2, 2, 2] and game.remaining == 35, "R4/R9: eight hidden rewards, two of each kind, unchanged 35-block field")
+	check(counts.values() == [3, 3, 2] and game.remaining == 35, "R4/R9: eight hidden rewards, only heavy, shield and speed, unchanged 35-block field")
 	check(hidden and get_nodes_in_group("powerup_reveals").is_empty(), "R4: power-up blocks look identical to ordinary ice before impact")
 	check(safe_border, "R9: no power-ups on indestructible perimeter")
 	for kind in counts:
@@ -63,10 +63,9 @@ func run() -> void:
 		await shoot_block(game.player_two, marked(kind))
 		var awarded := false
 		match kind:
-			"heavy": awarded = game.player_two.heavy_time > 29.0
-			"shield": awarded = game.player_two.shield_time > 29.0
-			"speed": awarded = game.player_two.speed_time > 29.0
-			"health": awarded = game.player_two.health == 75 and game.player_two.recovery_time > 0
+			"heavy": awarded = game.player_two.heavy_time > 9.0
+			"shield": awarded = game.player_two.shield_time > 6.0
+			"speed": awarded = game.player_two.speed_time > 9.0
 		check(awarded and game.remaining == 34 and game.score == 100, "R7/R8: real P2 projectile awards " + kind + " exactly once and scores one block")
 		check(game.player.powerup_status() == "No power-up" and game.player.health == 100, "Duel: " + kind + " belongs only to the shooter")
 		check(game.hud_powerups.text.contains(game.player_two.powerup_status()), "UI2: HUD reflects " + kind)
@@ -82,14 +81,6 @@ func run() -> void:
 			game.resume_game()
 			await create_timer(1.3).timeout
 			check(not is_instance_valid(reveal), "Revealed icon cleans up after its animation")
-	# Health is capped and never adds lives; destroyed blocks cannot award twice.
-	game.player_two.apply_powerup("health")
-	check(game.player_two.health == 100 and game.player_two.lives == 3, "Heart caps health at 100 without adding a life")
-	var heart := marked("health")
-	heart.hit(game.player_two)
-	game.player_two.take_damage(20)
-	heart.hit(game.player_two)
-	check(game.player_two.health == 80, "Broken block cannot grant its power-up twice")
 	# Protection includes knockback and all damage sources.
 	game.player_two.apply_powerup("shield")
 	var before: int = game.player_two.health
@@ -168,16 +159,15 @@ func run() -> void:
 		game.player.apply_powerup(kind)
 	game.player.apply_powerup("heavy")
 	game.player.apply_powerup("speed")
-	check(game.player.heavy_time == 30.0 and game.player.speed_time == 30.0 and game.player.shield_time > 0, "Different powers combine; duplicate pickups refresh instead of stacking")
+	check(game.player.heavy_time == 10.0 and game.player.speed_time == 10.0 and game.player.shield_time > 0, "Different powers combine; duplicate pickups refresh instead of stacking")
 	game.pause_game()
 	var shield_time: float = game.player.shield_time
 	var speed_time: float = game.player.speed_time
-	var recovery_time: float = game.player.recovery_time
 	var heavy_time: float = game.player.heavy_time
 	var shots: int = game.shots
 	await frames(10)
 	game.player.shoot()
-	check(game.player.shield_time == shield_time and game.player.speed_time == speed_time and game.player.recovery_time == recovery_time and game.player.heavy_time == heavy_time and game.shots == shots, "UI3: pause freezes timers and blocks firing")
+	check(game.player.shield_time == shield_time and game.player.speed_time == speed_time and game.player.heavy_time == heavy_time and game.shots == shots, "UI3: pause freezes timers and blocks firing")
 	game.resume_game()
 	await frames(4)
 	check(game.player.speed_time < speed_time, "Resume restarts effect timers")
